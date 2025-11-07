@@ -1,0 +1,48 @@
+mysql> tee C:/Proyectos/remuneraciones/respaldo_sesion.txt;
+mysql> tee C:/Proyectos/remuneraciones/respaldo_sesion.txt;
+mysql> USE remuneraciones;
+No connection. Trying to reconnect...
+Connection id:    21
+Current database: *** NONE ***
+
+Database changed
+mysql> SHOW TABLES;
++--------------------------+
+| Tables_in_remuneraciones |
++--------------------------+
+| afp                      |
+| cargo                    |
+| liquidacion              |
+| sistema_salud            |
+| tipos_contrato           |
+| trabajador               |
++--------------------------+
+6 rows in set (0.00 sec)
+
+mysql> DESC trabajador;
++------------------------+---------------+------+-----+---------+-------+
+| Field                  | Type          | Null | Key | Default | Extra |
++------------------------+---------------+------+-----+---------+-------+
+| rut_trabajador         | varchar(12)   | NO   | PRI | NULL    |       |
+| nombre_completo        | varchar(100)  | NO   |     | NULL    |       |
+| sueldo_base_fijo       | decimal(10,0) | NO   |     | NULL    |       |
+| id_cargo               | int           | NO   | MUL | NULL    |       |
+| id_tipo_contrato       | int           | NO   | MUL | NULL    |       |
+| fecha_inicio_contrato  | date          | NO   |     | NULL    |       |
+| fecha_termino_contrato | date          | YES  |     | NULL    |       |
+| id_afp                 | int           | NO   | MUL | NULL    |       |
+| id_salud               | int           | NO   | MUL | NULL    |       |
++------------------------+---------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM liquidacion;
++----------------+----------------+-------------+--------------+------------------+-----------------+----------+-----------------+---------------+----------+-------------------------------+-------------------------+-----------------+------------------+----------------+--------------+-----------------+-----------------+
+| id_liquidacion | rut_trabajador | mes_periodo | anio_periodo | nombre_empleador | dias_trabajados | valor_uf | sueldo_base_mes | gratificacion | colacion | cotiz_previsional_obligatoria | cotiz_salud_obligatoria | seguro_cesantia | otros_descuentos | imp_prev_salud | imp_cesantia | base_tributable | liquido_a_pagar |
++----------------+----------------+-------------+--------------+------------------+-----------------+----------+-----------------+---------------+----------+-------------------------------+-------------------------+-----------------+------------------+----------------+--------------+-----------------+-----------------+
+|              1 | 12.345.678-9   |           9 |         2025 | Empresa Demo     |              30 | 39597.67 |       850000.00 |     150000.00 | 80000.00 |                      95800.00 |                68000.00 |         9600.00 |             0.00 |           0.00 |         0.00 |       950000.00 |       880000.00 |
+|              2 | 12.345.678-9   |          10 |         2025 | Empresa Demo     |              30 | 39597.67 |       850000.00 |     150000.00 | 80000.00 |                      95800.00 |                68000.00 |         9600.00 |             0.00 |           0.00 |         0.00 |       950000.00 |       880000.00 |
++----------------+----------------+-------------+--------------+------------------+-----------------+----------+-----------------+---------------+----------+-------------------------------+-------------------------+-----------------+------------------+----------------+--------------+-----------------+-----------------+
+2 rows in set (0.00 sec)
+
+mysql> notee;
+mysql> notee;

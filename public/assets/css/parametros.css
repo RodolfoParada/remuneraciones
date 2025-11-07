@@ -1,0 +1,57 @@
+/*
+  Añade esta regla a tu CSS. 
+  Usa un valor en píxeles (px) que consideres apropiado para "mt-2"
+  (20px es un buen inicio para una separación clara).
+*/
+
+.boton {
+    /* Aplica un margen superior para separarlo de la tabla */
+    margin-top: 20px; 
+    
+    /* Para centrar o alinear a la derecha los botones (si es necesario) */
+    display: flex; 
+    gap: 10px; /* Espacio entre los botones */
+    justify-content: flex-end; /* Alinea los botones a la derecha (común en formularios) */
+}
+
+
+
+
+.mod-jun {
+  display: flex;
+  flex-direction: column; /* cada label en su propia fila */
+  gap: 12px;              /* espacio entre filas */
+}
+
+/* Cada label alinea su texto y su input en la misma línea */
+.mod-jun label {
+  display: flex;
+  flex-direction: row;    /* span e input lado a lado */
+  align-items: center;
+  gap: 10px;
+}
+
+/* ancho fijo para el texto del label, para que queden alineados */
+.mod-jun label span {
+  min-width: 120px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+/* hace que el input ocupe el espacio restante de la fila */
+.mod-jun label input {
+  flex: 1;
+  width: auto; /* evita que width:100% dentro del label cause overflow */
+}
+
+
+
+/* Primer input dentro del contenedor */
+label:nth-of-type(1) input {
+  width: 300px;   /* ancho del input "Empleador" */
+}
+
+/* Segundo input dentro del contenedor */
+label:nth-of-type(2) input {
+  width: 300px;   /* ancho del input "Mes-Año" */
+}

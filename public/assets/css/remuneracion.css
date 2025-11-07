@@ -1,0 +1,396 @@
+
+/*para empleador y mes-año*/
+
+/* CSS localizado: solo afecta a .fila-form */
+.fila-form {
+  display: flex;
+  flex-direction: column; /* cada label en su propia fila */
+  gap: 12px;              /* espacio entre filas */
+}
+
+/* Cada label alinea su texto y su input en la misma línea */
+.fila-form label {
+  display: flex;
+  flex-direction: row;    /* span e input lado a lado */
+  align-items: center;
+  gap: 10px;
+}
+
+/* ancho fijo para el texto del label, para que queden alineados */
+.fila-form label span {
+  min-width: 120px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+/* hace que el input ocupe el espacio restante de la fila */
+.fila-form label input {
+  flex: 1;
+  width: auto; /* evita que width:100% dentro del label cause overflow */
+}
+
+
+
+/* Primer input dentro del contenedor */
+label:nth-of-type(1) input {
+  width: 300px;   /* ancho del input "Empleador" */
+}
+
+/* Segundo input dentro del contenedor */
+label:nth-of-type(2) input {
+  width: 300px;   /* ancho del input "Mes-Año" */
+}
+
+
+/*Datos del trabajador*/
+
+
+.grid.two{
+  display: grid; /* Asegura que se comporta como una cuadrícula */
+  grid-template-columns: repeat(3, 1fr); /* Crea 2 columnas iguales */
+  gap: 20px; /* Opcional: añade espacio entre las dos columnas principales */
+
+}
+
+
+/* 
+Haberes Imponibles
+Descuentos Legales
+Haberes No Imponibles
+Otros Descuentos
+Total Haberes
+Total Descuentos
+*/
+.grid.tres{
+  display: grid; /* Asegura que se comporta como una cuadrícula */
+  grid-template-columns: repeat(2, 1fr); /* Crea 2 columnas iguales */
+  gap: 20px; /* Opcional: añade espacio entre las dos columnas principales */
+
+}
+
+/* --- Estilos específicos para la sección de liquidación --- */
+.Liquidacion label {
+  display: flex !important;
+  flex-direction: row !important; /* fuerza que estén lado a lado */
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.Liquidacion label span {
+  flex: 1;
+}
+
+.Liquidacion label input {
+  width: 150px;
+  text-align: right;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.titulos-fijos {
+  background: #1f2937;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.total-fijos{
+   background: #6b7280;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+
+.grid.four label {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.grid.four label input {
+  width: 120px;
+  text-align: right;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #0e1628;
+  color: var(--txt);
+}
+
+/* Mantén las 3 columnas horizontales */
+.grid.four {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* En pantallas pequeñas, apílalas */
+@media (max-width: 800px) {
+  .grid.four {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Estilo general para grid.five --- */
+.grid.five {
+  display: grid;
+  grid-template-columns: 1fr; /* Solo una columna, puedes ajustar si agregas más */
+  gap: 20px;
+}
+
+/* --- Estilo para los labels dentro de grid.five --- */
+.grid.five label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+/* --- Estilo del input --- */
+.grid.five label input {
+  width: 180px;
+  text-align: right;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #0e1628;
+  color: var(--txt);
+}
+/* --- Contenedor general de la sección --- */
+.grid.five.total-fijos {
+  display: flex;               /* Usamos flex para centrar contenido */
+  justify-content: center;     /* Centra horizontalmente */
+  align-items: center;         /* Centra verticalmente (opcional) */
+  height: 120px;               /* Puedes ajustar el alto */
+}
+
+/* --- Label con input uno al lado del otro --- */
+.grid.five.total-fijos label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;                   /* Espacio entre texto e input */
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: var(--panel, #1c2333);
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border, #333);
+  color: var(--txt, #fff);
+}
+
+/* --- Input estilo --- */
+.grid.five.total-fijos label input {
+  width: 180px;
+  text-align: right;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #555);
+  background: #0e1628;
+  color: var(--txt, #fff);
+}
+/* 🔹 Oculta las flechas de los inputs tipo number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+
+
+
+label.titulos-fijos .title {
+  text-align: center; /* centra el texto dentro del span */
+}
+#haberesImponibles,
+#otrosDescuentos,
+#descuentosLegales,
+#haberesNoImponibles {
+width: 180px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid #1f2937;   /* ejemplo: borde azul */
+  background: #1f2937;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+#haberesImponibles:focus,
+#otrosDescuentos:focus,
+#descuentosLegales:focus,
+#haberesNoImponibles:focus {
+  border-color: #1f2937; /* borde azul al seleccionar */
+  outline: none;          /* asegura que no aparezca el outline blanco */
+}
+
+
+#totalHaberes,
+#totalDescuentos{
+
+   width: 180px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid #6b7280;   /* ejemplo: borde azul */
+  background: #6b7280;
+  color: white !important;
+  text-align: center;
+  font-weight: bold;
+}
+
+#totalHaberes:focus,
+#totalDescuentos:focus {
+  border-color: #6b7280; /* borde azul al seleccionar */
+  outline: none;          /* asegura que no aparezca el outline blanco */
+}
+/* Estilo del placeholder */
+
+#prevSalud::placeholder,
+#impCesantia::placeholder,
+#baseTributable::placeholder, 
+#haberesImponibles::placeholder,
+#otrosDescuentos::placeholder,
+#descuentosLegales::placeholder,
+#haberesNoImponibles::placeholder, 
+#totalHaberes::placeholder,
+#totalDescuentos::placeholder {
+  color: white;          /* color del placeholder */
+  opacity: 1;            /* importante para que no se vea transparente */
+}
+
+
+/* --- Label con input horizontal --- */
+.grid.four.titulos-fijos label {
+  display: flex;
+  flex-direction: row;       /* texto e input en línea */
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid #1f2937; /* borde visible */
+  background: #1f2937;        /* fondo oscuro */
+  color: white;               /* texto visible */
+  font-weight: bold;
+}
+
+/* --- Inputs estilo uniforme --- */
+.grid.four.titulos-fijos input {
+  width: 120px;               /* ancho fijo */
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 2px solid #1f2937;
+  background: #1f2937;
+  color: white;               /* texto que se escribe */
+  text-align: right;
+  outline: none;              /* quita borde blanco al hacer focus */
+}
+
+/* --- Placeholder visible --- */
+.grid.four.titulos-fijos input::placeholder {
+  color: white;               /* placeholder visible */
+  opacity: 1;                 /* sin transparencia */
+}
+
+/* --- Focus en el input --- */
+.grid.four.titulos-fijos input:focus {
+  border-color: #6b7280;      /* ejemplo: azul al seleccionar */
+}
+
+
+----------------
+
+/* Centrar horizontalmente el contenido dentro del contenedor */
+.grid.five.total-fijos {
+  display: flex;
+  justify-content: center; /* centra el div que contiene el label */
+  margin-top: 20px;
+}
+
+/* Label con input alineados horizontalmente */
+.grid.five.total-fijos label {
+  display: flex;
+  flex-direction: row;    /* texto e input en línea */
+  align-items: center;    /* centra verticalmente */
+  gap: 10px;              /* espacio entre texto e input */
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 2px solid #6b7280;
+  background: #6b7280;
+  color: white;           /* color del texto del label */
+  font-weight: bold;
+}
+
+/* Input específico */
+#liquidoPagar {
+  width: 180px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 2px solid #6b7280;
+  background: #6b7280;
+  color: white;           /* texto que escribes */
+  text-align: right;
+  outline: none;          /* quita borde blanco al hacer focus */
+}
+
+/* Placeholder visible */
+#liquidoPagar::placeholder {
+  color: white;           /* placeholder visible */
+  opacity: 1;             /* sin transparencia */
+}
+
+/* Borde al hacer focus */
+#liquidoPagar:focus {
+  border-color: #6b7280;  /* borde azul al seleccionar */
+}
+
+
+
+/* 1. Aplica el ancho del 100% a todos los inputs y selects dentro de columna-centro */
+
+
+
+.columna-izquierda input,
+.columna-izquierda select,
+.columna-centro input,
+.columna-centro select {
+    width: 100%;
+    /* Asegura que el padding no cause desbordamiento */
+    box-sizing: border-box; 
+}
+
+
+
+/* 2. Regla específica para los campos de fecha, por si acaso */
+
+.columna-izquierda input[type="text"],
+.columna-centro input[type="date"] {
+    width: 100%;
+    /* Si tienes problemas de alineación vertical en Firefox/Safari, esta puede ayudar: */
+    height: 40px; /* Ajusta este valor para que coincida con la altura de tus otros inputs */
+}
+
+/* 3. Asegura que la etiqueta tenga display block para que el input llene el 100% correctamente */
+.columna-izquierda label,
+.columna-centro label {
+    display: block;
+    width: 100%;
+}

@@ -1,0 +1,82 @@
+/* Contenedor principal */
+.buscador {
+  background: var(--panel, #111827);
+  border: 1px solid var(--border, #1f2937);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 30px auto;
+  color: var(--txt, #e5e7eb);
+}
+
+.buscador h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--txt, #e5e7eb);
+}
+
+/* Grid con los tres campos */
+.buscador-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+/* Estilo para cada label + input */
+.buscador label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.buscador label span {
+  margin-bottom: 6px;
+  color: var(--muted, #94a3b8);
+}
+
+.buscador input {
+  background: #0e1628;
+  border: 1px solid var(--border, #2a364a);
+  color: var(--txt, #e5e7eb);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.buscador input:focus {
+  border-color: var(--primary, #2563eb);
+  outline: none;
+}
+
+/* Botones */
+.buscador-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-buscar {
+  background: var(--primary, #2563eb);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-buscar:hover {
+  background: var(--primary-600, #1d4ed8);
+}
+
+.btn-limpiar {
+  background: transparent;
+  border: 1px dashed var(--border, #2a364a);
+  color: var(--txt, #e5e7eb);
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-limpiar:hover {
+  background: #1a2236;
+}

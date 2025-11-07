@@ -1,0 +1,207 @@
+/* --- Variables del Tema Oscuro (DEFAULT) --- */
+:root {
+  --bg: #0f172a;       /* Fondo principal (Dark Blue) */
+  --panel: #111827;    /* Fondo de paneles y tarjetas */
+  --muted: #94a3b8;    /* Texto secundario/desactivado */
+  --txt: #e5e7eb;      /* Texto principal */
+  --primary: #2563eb;  /* Azul primario */
+  --primary-600: #1d4ed8; /* Azul primario al hover */
+  --success: #16a34a;  /* Verde (para badges) */
+  --border: #1f2937;   /* Bordes y separadores */
+  --input-bg: #0e1628; /* Fondo de inputs/selects */
+  --input-border: #2a364a; /* Borde de inputs */
+}
+
+/* --- Variables del Tema Claro (.light-mode) --- */
+.light-mode {
+  --bg: #f3f4f6;       /* Fondo principal (Light Gray) */
+  --panel: #ffffff;    /* Fondo de paneles y tarjetas (White) */
+  --muted: #6b7280;    /* Texto secundario/desactivado */
+  --txt: #1f2937;      /* Texto principal (Dark Gray) */
+  --primary: #1e40af;  /* Azul primario (más oscuro para contraste) */
+  --primary-600: #1d4ed8; /* Azul primario al hover */
+  --success: #059669;  /* Verde (para badges) */
+  --border: #d1d5db;   /* Bordes y separadores (Light Gray) */
+  --input-bg: #f9fafb; /* Fondo de inputs/selects (Off-white) */
+  --input-border: #e5e7eb; /* Borde de inputs */
+}
+
+
+/* --- Estilos Base --- */
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--txt);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,'Noto Sans',sans-serif;
+  transition: background-color 0.3s, color 0.3s; /* Transición suave al cambiar de modo */
+}
+a{color:inherit;text-decoration:none}
+
+/* Topbar */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  /* El fondo ahora usa variables para adaptarse */
+  background:var(--panel); 
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.brand{font-weight:700;letter-spacing:.3px}
+.nav a{margin:0 8px;padding:8px 10px;border-radius:8px}
+.nav a:hover{background:var(--input-border)} /* Usamos un color sutil para el hover */
+.nav .cta{background:var(--primary);padding:8px 14px;border-radius:10px;color:#fff;}
+.container{max-width:1100px;margin:24px auto;padding:0 16px}
+.lead{color:var(--muted)}
+.grid{display:grid;gap:16px}
+.grid.three{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.grid.two,.grid.three{grid-template-columns:1fr}}
+
+/* Cards y Paneles */
+.card{
+  display:block;
+  background:var(--panel);
+  padding:18px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  transition:.2s;
+  /* Sombra para modo claro */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+.card:hover{
+  transform:translateY(-2px);
+  border-color:var(--primary);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada al hover */
+}
+.card.primary{
+  /* Ajuste de degradado para modo claro */
+  background:linear-gradient(180deg,rgba(37,99,235,.15),var(--panel));
+  border-color:var(--primary);
+}
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  margin:16px 0;
+}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;margin:8px 0 16px}
+.tab{
+  background:var(--input-bg); /* Usar input-bg como fondo */
+  border:1px solid var(--border);
+  color:var(--txt);
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+}
+.tab.active{
+  background:var(--primary); /* Pestaña activa usa primary */
+  border-color:var(--primary-600);
+  color:#fff;
+}
+.tab:hover{
+  background:var(--primary-600);
+  color:#fff;
+}
+/* Table */
+.table{width:100%;border-collapse:separate;border-spacing:0;margin:8px 0 0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.table th,.table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.table thead th{
+  background:var(--input-bg);
+  text-align:left;
+  color:var(--muted);
+}
+.table tr:last-child td{border-bottom:none}
+.center{text-align:center}
+
+/* Badges */
+.badge{
+  background:var(--input-bg);
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  font-size:12px;
+  color:var(--muted);
+}
+.badge.success{
+  background:var(--success);
+  border-color:var(--success);
+  color:#fff;
+}
+
+/* Forms */
+label{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;font-size:14px}
+input,select,button{font:inherit}
+input,select{
+  background:var(--input-bg);
+  border:1px solid var(--input-border);
+  color:var(--txt);
+  padding:10px;
+  border-radius:10px;
+}
+input::placeholder{color:var(--muted)}
+.btn{
+  background:var(--border);
+  border:1px solid var(--muted);
+  color:var(--txt);
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  transition: background-color 0.2s;
+}
+.btn:hover{background:var(--muted)}
+.btn.small{padding:6px 10px;font-size:12px}
+.btn.ghost{background:transparent;border:1px dashed var(--muted)}
+.btn.primary{background:var(--primary);color:#fff;border:1px solid var(--primary-600)}
+.btn.primary:hover{background:var(--primary-600)}
+.actions{display:flex;gap:12px;justify-content:flex-end;margin-top:14px}
+.footer{margin:40px auto 24px;max-width:1100px;padding:0 16px;color:var(--muted);font-size:13px}
+
+/* Stats (Ajuste para modo claro) */
+.stat{background:var(--input-bg);border:1px solid var(--border);border-radius:12px;padding:14px}
+.stat .stat-label{color:var(--muted);font-size:12px}
+.stat .stat-value{font-weight:800;font-size:20px}
+.stat.highlight{
+  /* Ajuste de degradado */
+  background:linear-gradient(180deg,rgba(22,163,74,.12),var(--panel));
+  border-color:var(--success);
+}
+.flex{display:flex;gap:16px}
+.flex-1{flex:1}
+.form fieldset{border:1px dashed var(--muted);border-radius:12px;padding:12px;margin-bottom:12px}
+.form legend{padding:0 6px;color:var(--txt)}
+form label {display: block;margin-top: 10px;font-weight: bold;}
+form input,form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-sizing: border-box;
+    background: var(--input-bg);
+    color: var(--txt);
+}
+
+.buscador {
+    background: var(--panel); 
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px; 
+}
+/* O, si '.buscador' está dentro de '.panel' como en tu HTML: */
+.panel .buscador {
+    /* Si el panel ya es blanco, no necesita un fondo extra, 
+       pero por si acaso, puedes forzar el mismo color de superficie: */
+    background: var(--panel); 
+}
+
+.Liquidacion .title{
+  color: white; 
+}
