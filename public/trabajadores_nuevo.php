@@ -218,11 +218,6 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   </div>
 
   <!-- Mensajes -->
-  <?php if ($ok): ?>
-    <div class="badge success" id="msg-ok" style="display:inline-block;margin-bottom:12px">
-      <?= htmlspecialchars($okMsg) ?>
-    </div>
-  <?php endif; ?>
   <div class="badge success" id="msg-ok-js" style="display:none;margin-bottom:12px"></div>
 
   <?php if ($errores): ?>
@@ -301,7 +296,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 
       <label>RUT
         <input type="text" id="rut_trabajador" name="rut_trabajador"
-          placeholder="01.111.111-1" maxlength="12"
+          placeholder="11.111.111-1" maxlength="12"
           value="<?= htmlspecialchars($_POST['rut_trabajador'] ?? '') ?>" required>
         <small class="campo-ayuda">Formato: 1.111.111-1 hasta 99.999.999-9</small>
         <small id="aviso-rut-editable" class="campo-ayuda" style="display:none;color:#f59e0b">
@@ -311,7 +306,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 
       <label>Nombre completo
         <input type="text" id="nombre_completo" name="nombre_completo"
-          maxlength="50" placeholder="JUAN PÉREZ SOTO"
+          maxlength="50" placeholder="JULIANA PÉREZ SOTO"
           style="text-transform:uppercase"
           value="<?= htmlspecialchars(strtoupper($_POST['nombre_completo'] ?? '')) ?>" required>
         <small class="campo-ayuda">Máximo 50 caracteres — solo letras y espacios</small>

@@ -168,11 +168,22 @@ input.input-error {
 }
 
 /* ── Tabla del buscador ── */
-.tabla-buscador-wrap { 
-  max-height: 400px; 
-  overflow-y: auto; 
-  border: 1px solid var(--border);
-  border-radius: 8px; 
+/* Ajuste para mostrar 10 filas y luego scroll */
+.tabla-buscador-wrap {
+    max-height: 480px; /* Ajusta este valor según el alto de tus filas */
+    overflow-y: auto;  /* Activa la barra de desplazamiento vertical */
+    border: 1px solid var(--border-color); /* Opcional: para definir el límite visual */
+    scrollbar-width: thin; /* Para navegadores modernos */
+    scrollbar-color: var(--primary) transparent;
+}
+
+/* Asegurar que el encabezado de la tabla se mantenga visible al bajar (Sticky) */
+#tabla-buscador thead th {
+    position: sticky;
+    top: 0;
+    background-color: var(--panel-bg); /* O el color de fondo de tu panel */
+    z-index: 10;
+    box-shadow: inset 0 -1px 0 var(--border-color);
 }
 
 .fila-t.oculta { display: none; }
