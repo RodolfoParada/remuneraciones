@@ -241,3 +241,17 @@ input.input-error {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
+
+/* Hover tabs — modo oscuro */
+.tab:hover {
+  background: #5c5151;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* Hover tabs — modo claro */
+html.light-mode .tab:hover {
+  background: #5c5151;
+  border-color: var(--primary);
+  color: #ffffff;
+}

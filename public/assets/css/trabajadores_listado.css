@@ -190,3 +190,17 @@ body {
   overflow-x: auto; /* Si la tabla es mas grande que el monitor, el scroll será de TODA la página */
 }
 
+/* ── Hover tabs — modo oscuro ── */
+.tab:hover:not(.active) {
+  background: #5c5151 !important;
+  border-color: #ffffff;
+  color: #ffffff !important;
+ 
+}
+
+/* ── Hover tabs — modo claro ── */
+html.light-mode .tab:hover:not(.active) {
+  background: #5c5151 !important;
+  border-color: var(--primary) !important;
+  color: #ffffff !important;
+}
