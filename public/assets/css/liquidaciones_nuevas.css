@@ -3,3 +3,13 @@
   border-color: #ffffff;
   color: #ffffff !important;
 }
+
+/* Oculta la barra de scroll pero mantiene el funcionamiento */
+html, body {
+  scrollbar-width: none !important; /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari, Edge */
+}

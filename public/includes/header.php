@@ -16,7 +16,7 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
   <title><?= htmlspecialchars($pageTitle) ?></title>
 
   <link rel="stylesheet" href="<?= htmlspecialchars($basePath) ?>assets/css/app.css" />
-  <link rel="stylesheet" href="/remuneraciones/public/assets/css/header.css" />
+  <link rel="stylesheet" href="<?= htmlspecialchars($basePath) ?>assets/css/header.css" />
   <link rel="stylesheet" href="<?= htmlspecialchars($basePath) ?>assets/css/footer.css" />
 
 
@@ -64,3 +64,13 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
     });
   })();
 </script>
+ <!--Ocultar scroll en todas las páginas -->
+  <style>
+    html, body {
+      scrollbar-width: none; /* Firefox */
+    }
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Edge */
+    }
+  </style>

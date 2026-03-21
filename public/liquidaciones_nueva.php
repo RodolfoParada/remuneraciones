@@ -320,7 +320,7 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
       <legend>Resumen</legend>
       <div class="flex">
         <div class="flex-1">
-          <label>💰 Líquido a pagar (obligatorio)
+          <label>Líquido a pagar (obligatorio)
             <input type="number" step="0.01" name="liquido_a_pagar" required
                    value="<?= htmlspecialchars($_POST['liquido_a_pagar'] ?? '') ?>">
           </label>
