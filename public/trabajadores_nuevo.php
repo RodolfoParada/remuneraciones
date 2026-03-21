@@ -371,16 +371,16 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
      MODAL CONFIRMACIÓN ELIMINAR
 ══════════════════════════════════════════ -->
 <div id="modal-eliminar" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);align-items:center;justify-content:center">
-  <div style="background:var(--panel);border:1px solid #7f1d1d;border-radius:14px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5)">
-    <h3 style="margin:0 0 8px;color:#f87171">Confirmar eliminación</h3>
-    <p style="margin:0 0 20px;color:var(--txt)">
+  <div style="background:var(--panel);border:1px;border-radius:14px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+    <h3 style="margin:0 0 8px;">Confirmar eliminación</h3>
+    <p style="margin:0 0 20px;">
       ¿Está seguro que desea eliminar al trabajador<br>
-      <strong id="modal-nombre-trabajador" style="color:#fca5a5"></strong>?<br>
-      <small style="color:var(--muted)">Esta acción no se puede deshacer.</small>
+      <strong id="modal-nombre-trabajador"></strong>?<br>
+      <small >Esta acción no se puede deshacer.</small>
     </p>
     <div style="display:flex;gap:12px;justify-content:flex-end">
       <button type="button" id="modal-btn-cancelar" class="btn">Cancelar</button>
-      <button type="button" id="modal-btn-confirmar" style="background:#7f1d1d;border:1px solid #991b1b;color:#fca5a5;padding:10px 14px;border-radius:10px;cursor:pointer;font:inherit">
+      <button type="button" id="modal-btn-confirmar" class="btn">
          Sí, eliminar
       </button>
     </div>
