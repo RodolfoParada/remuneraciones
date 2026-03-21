@@ -17,6 +17,7 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
 
   <link rel="stylesheet" href="<?= htmlspecialchars($basePath) ?>assets/css/app.css" />
   <link rel="stylesheet" href="/remuneraciones/public/assets/css/header.css" />
+  <link rel="stylesheet" href="<?= htmlspecialchars($basePath) ?>assets/css/footer.css" />
 
 
   <!-- Anti-parpadeo: aplica tema antes de pintar -->

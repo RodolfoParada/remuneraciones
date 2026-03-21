@@ -205,13 +205,13 @@ input::placeholder{
   justify-content:flex-end;
   margin-top:14px
 }
-.footer{
+/* .footer{
   margin:40px auto 24px;
   max-width:1100px;
   padding:0 16px;
   color:#94a3b8;
   font-size:13px
-}
+} */
 .stat{
   background:#0e1628;
   border:1px solid var(--border);
