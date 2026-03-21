@@ -3,3 +3,101 @@
   border-color: #ffffff;
   color: #ffffff !important;
 }
+
+/* ============================================================
+   LIQUIDACIONES_NUEVAS.CSS — Formulario nueva liquidación
+   Modo oscuro (default) y modo claro (.light-mode en <html>)
+   ============================================================ */
+
+/* ── Fieldset y legend ── */
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+legend {
+  padding: 0 8px;
+  color: var(--txt);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ── Labels del formulario ── */
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--txt);
+}
+form input,
+form select {
+  width: 100%;
+  padding: 9px 12px;
+  margin-top: 2px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  box-sizing: border-box;
+  background: var(--input-bg);
+  color: var(--txt);
+  font: inherit;
+  transition: border-color 0.2s, background-color 0.3s;
+}
+form input:focus,
+form select:focus   { border-color: var(--primary); outline: none; }
+form input:disabled,
+form select:disabled { opacity: 0.65; cursor: not-allowed; }
+form input::placeholder { color: var(--muted); }
+
+/* ── Inputs dentro de tabla (haberes/descuentos) ── */
+.table input[type="number"] {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--txt);
+  font: inherit;
+  text-align: right;
+  transition: border-color 0.2s;
+}
+.table input[type="number"]:focus { border-color: var(--primary); outline: none; }
+.table input[readonly]            { opacity: 0.7; cursor: not-allowed; }
+.table td:first-child             { color: var(--txt); font-size: 13px; }
+
+/* ── Select días trabajados ── */
+#campo-dias {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--txt);
+  border-radius: 8px;
+  padding: 9px 12px;
+  width: 100%;
+  font: inherit;
+}
+
+/* ── Botón Volver ── */
+.btn-volver {
+  border: 1px dashed var(--toggle-border);
+  color: var(--txt);
+  background: transparent;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-volver:hover {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+
+/* ── Modo claro ── */
+html.light-mode fieldset           { border-color: #d1d5db; }
+html.light-mode legend             { color: #1f2937; }
+html.light-mode form label         { color: #1f2937; }
+html.light-mode form input,
+html.light-mode form select        { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
+html.light-mode .table input[type="number"] { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
+html.light-mode .table td:first-child       { color: #374151; }
+html.light-mode #campo-dias        { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }

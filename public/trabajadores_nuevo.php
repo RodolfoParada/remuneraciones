@@ -151,7 +151,7 @@ try {
                         ':afp'   => $idAfp,  ':salud'  => $idSalud, ':rut' => $rut,
                     ]);
                 }
-                $okMsg = 'rabajador actualizado correctamente.';
+                $okMsg = 'trabajador actualizado correctamente.';
             } else {
                 $stmt = $pdo->prepare("
                     INSERT INTO trabajador
@@ -165,7 +165,7 @@ try {
                     ':fini'  => $fInicio, ':fter'  => ($fTermino !== '' ? $fTermino : null),
                     ':afp'   => $idAfp,  ':salud'  => $idSalud,
                 ]);
-                $okMsg = 'Trabajador registrado correctamente.';
+                $okMsg = 'Trabajador agregado correctamente.';
             }
             $ok = true;
 
@@ -214,15 +214,10 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 <section class="panel">
   <div class="tabs">
     <a class="tab" href="/remuneraciones/public/trabajadores_listado.php">Listado Trabajadores</a>
-    <a class="tab active" id="tab-titulo">Nuevo trabajador</a>
+    <a class="tab active" id="tab-titulo">Crear Nuevo trabajador</a>
   </div>
 
   <!-- Mensajes -->
-  <?php if ($ok): ?>
-    <div class="badge success" id="msg-ok" style="display:inline-block;margin-bottom:12px">
-      <?= htmlspecialchars($okMsg) ?>
-    </div>
-  <?php endif; ?>
   <div class="badge success" id="msg-ok-js" style="display:none;margin-bottom:12px"></div>
 
   <?php if ($errores): ?>
@@ -236,7 +231,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
        BUSCADOR — botón en flujo, panel flotante fixed
   ══════════════════════════════════════════ -->
   <div class="buscador-barra">
-    <span class="buscador-titulo">Buscar trabajador para editar</span>
+    <span class="buscador-titulo">Buscar lista de trabajadores</span>
     <button type="button" id="btn-toggle-buscador" class="btn small">Mostrar lista</button>
   </div>
 
@@ -301,7 +296,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 
       <label>RUT
         <input type="text" id="rut_trabajador" name="rut_trabajador"
-          placeholder="01.111.111-1" maxlength="12"
+          placeholder="11.111.111-1" maxlength="12"
           value="<?= htmlspecialchars($_POST['rut_trabajador'] ?? '') ?>" required>
         <small class="campo-ayuda">Formato: 1.111.111-1 hasta 99.999.999-9</small>
         <small id="aviso-rut-editable" class="campo-ayuda" style="display:none;color:#f59e0b">
@@ -311,7 +306,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 
       <label>Nombre completo
         <input type="text" id="nombre_completo" name="nombre_completo"
-          maxlength="50" placeholder="JUAN PÉREZ SOTO"
+          maxlength="50" placeholder="JULIANA PÉREZ SOTO"
           style="text-transform:uppercase"
           value="<?= htmlspecialchars(strtoupper($_POST['nombre_completo'] ?? '')) ?>" required>
         <small class="campo-ayuda">Máximo 50 caracteres — solo letras y espacios</small>
@@ -367,7 +362,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     <div class="actions">
       <button type="button" id="btn-cancelar-edicion" class="btn" style="display:none">✖ Cancelar</button>
       <button class="btn primary" type="submit" id="btn-guardar">Guardar</button>
-          <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+             <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
     </div>
   </form>
 </section>
@@ -376,16 +371,16 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
      MODAL CONFIRMACIÓN ELIMINAR
 ══════════════════════════════════════════ -->
 <div id="modal-eliminar" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);align-items:center;justify-content:center">
-  <div style="background:var(--panel);border:1px solid #7f1d1d;border-radius:14px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5)">
-    <h3 style="margin:0 0 8px;color:#f87171">Confirmar eliminación</h3>
-    <p style="margin:0 0 20px;color:var(--txt)">
+  <div style="background:var(--panel);border:1px;border-radius:14px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+    <h3 style="margin:0 0 8px;">Confirmar eliminación</h3>
+    <p style="margin:0 0 20px;">
       ¿Está seguro que desea eliminar al trabajador<br>
-      <strong id="modal-nombre-trabajador" style="color:#fca5a5"></strong>?<br>
-      <small style="color:var(--muted)">Esta acción no se puede deshacer.</small>
+      <strong id="modal-nombre-trabajador"></strong>?<br>
+      <small >Esta acción no se puede deshacer.</small>
     </p>
     <div style="display:flex;gap:12px;justify-content:flex-end">
       <button type="button" id="modal-btn-cancelar" class="btn">Cancelar</button>
-      <button type="button" id="modal-btn-confirmar" style="background:#7f1d1d;border:1px solid #991b1b;color:#fca5a5;padding:10px 14px;border-radius:10px;cursor:pointer;font:inherit">
+      <button type="button" id="modal-btn-confirmar" class="btn">
          Sí, eliminar
       </button>
     </div>

@@ -45,7 +45,7 @@ try {
 <section class="panel">
   <div class="tabs">
     <a class="tab active"  href="/remuneraciones/public/trabajadores_listado.php">Listado Trabajadores</a>
-    <a class="tab" href="/remuneraciones/public/trabajadores_nuevo.php">Nuevo Trabajador</a>
+    <a class="tab" href="/remuneraciones/public/trabajadores_nuevo.php">Crear Nuevo Trabajador</a>
   </div>
 
   <?php if ($okMsg): ?>
@@ -150,122 +150,6 @@ try {
   </div>
 
 </section>
-  </div>
-</div>
-
-<style>
-  /* ── Controles superiores ── */
-  .controles-listado {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-
-  #input-filtro {
-    flex: 1;
-    min-width: 200px;
-    max-width: 340px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--input-bg, #0e1628);
-    color: var(--txt);
-    font: inherit;
-    transition: background .3s, border-color .3s, color .3s;
-  }
-  /* Modo claro: fondo blanco roto */
-  html.light-mode #input-filtro {
-    background: #f9fafb;
-    border-color: #d1d5db;
-    color: #1f2937;
-  }
-  #input-filtro::placeholder { color: var(--muted); }
-
-  /* ── Botones filtro de estado ── */
-  .filtro-estado { display: flex; gap: 6px; flex-wrap: wrap; }
-
-  .btn-estado {
-    background: var(--input-bg, #0e1628);
-    border: 1px solid var(--border);
-    color: var(--txt);
-    padding: 6px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    font: inherit;
-    font-size: 13px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: background .2s, border-color .2s, color .2s;
-  }
-  .btn-estado:hover { border-color: var(--primary); }
-  .btn-estado.activo-sel {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-  }
-
-  /* Modo claro: fondo gris claro para botones no seleccionados */
-  html.light-mode .btn-estado:not(.activo-sel) {
-    background: #f1f5f9;
-    border-color: #d1d5db;
-    color: #1f2937;
-  }
-  html.light-mode .btn-estado:not(.activo-sel):hover {
-    border-color: var(--primary);
-    background: #e0e7ff;
-  }
-
-  /* Badge contador dentro del botón */
-  .count-badge {
-    border-radius: 999px;
-    padding: 1px 7px;
-    font-size: 11px;
-    font-weight: 700;
-    background: rgba(255,255,255,.25);
-    color: inherit;
-  }
-  .btn-estado:not(.activo-sel) .count-badge {
-    background: var(--border);
-    color: var(--txt);
-  }
-  html.light-mode .btn-estado:not(.activo-sel) .count-badge {
-    background: #d1d5db;
-    color: #374151;
-  }
-
-  /* ── Badges de estado en la tabla ── */
-  .badge-estado {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  /* Modo oscuro */
-  .badge-estado.activo   { background: #052e1a; color: #86efac; border: 1px solid #0c3b24; }
-  .badge-estado.inactivo { background: #3b1f1f; color: #fca5a5; border: 1px solid #7f1d1d; }
-
-  /* Modo claro: fondos suaves con texto oscuro legible */
-  html.light-mode .badge-estado.activo {
-    background: #dcfce7;
-    color: #166534;
-    border-color: #86efac;
-  }
-  html.light-mode .badge-estado.inactivo {
-    background: #fee2e2;
-    color: #991b1b;
-    border-color: #fca5a5;
-  }
-
-
-  /* Fila inactiva: ligeramente atenuada */
-  .fila-listado[data-estado="inactivo"] { opacity: .8; }
-</style>
 
 <script>
 (function () {
@@ -274,6 +158,29 @@ try {
   var sinResultados = document.getElementById('sin-resultados-listado');
   var filtroTexto   = '';
   var filtroEstado  = 'todos';
+
+  var panel     = document.querySelector('.panel');
+  var tableWrap = document.querySelector('.table-wrap');
+
+  window.addEventListener('load', function () {
+
+    /* ── Fijar tamaño del panel ── */
+    if (panel) {
+      panel.style.minHeight = panel.offsetHeight + 'px';
+      panel.style.minWidth  = panel.offsetWidth  + 'px';
+    }
+
+    /* ── Scroll vertical si hay 15+ trabajadores ── */
+    if (tableWrap && filas.length >= 15) {
+      var alturaCabecera = document.querySelector('.table thead').offsetHeight;
+      var alturaFila     = document.querySelector('.fila-listado').offsetHeight;
+      var alturaMaxima   = alturaCabecera + (alturaFila * 14) + 10; /* muestra 14 filas + cabecera */
+      tableWrap.style.maxHeight = alturaMaxima + 'px';
+      tableWrap.style.overflowY = 'auto';
+      tableWrap.style.overflowX = 'auto';
+    }
+
+  });
 
   /* ── Aplicar filtros combinados ── */
   function aplicarFiltros() {
@@ -312,8 +219,8 @@ try {
     });
   });
 
-
 })();
 </script>
+
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

@@ -10,6 +10,13 @@
     <p class="lead">• Lista de trabajadores</p>
     <p class="lead">• Agregar a nuevo trabajador</p>
   </a>
+
+  <a class="card" href="/remuneraciones/public/liquidaciones_nueva.php">
+    <h2>Nueva liquidación</h2>
+    <br>
+    <p class="lead">•  Crear liquidación mensual</p>
+  </a>
+
   <a class="card" href="/remuneraciones/public/listado_liquidaciones.php">
     <h2>Liquidaciones</h2>
     <p class="lead">• Consulta de liquidacion por período</p>
@@ -17,24 +24,30 @@
     <p class="lead">• Previsualización de liquidacion por trabajador</p>
     <p class="lead">• Descarga de liquidacion por trabajador</p>
   </a>
-  <a class="card" href="/remuneraciones/public/resumen.php">
-    <h2>Resumen</h2>
-    <p class="lead">Indicadores del sistema</p>
-  </a>
+
 </section>
 
 <section class="grid three">
   <a class="card" href="/remuneraciones/public/parametros.php">
-    <h3>Parámetros</h3>
-    <p class="lead">Texto estático / instrucciones</p>
+    <h2>Parámetros</h2>
+    <br>
+    <p class="lead">•  UF de Referencia</p>
+    <p class="lead">•  Tope imponible</p>
+    <p class="lead">•  Gratificación</p>
+    <p class="lead">•  Cotización obligatoria</p>  
   </a>
   <a class="card" href="/remuneraciones/public/catalogos.php">
-    <h3>Catálogos</h3>
-    <p class="lead">Listas de referencia</p>
+    <h2>Catálogos</h2>
+    <br>
+    <p class="lead">•  Listas de Cargos</p>
+    <p class="lead">•  Tipos de Contratos</p>
+    <p class="lead">•  Lista de AFP</p>
+    <p class="lead">•  Lista de Sistema de Salud</p>
   </a>
-  <a class="card" href="/remuneraciones/public/liquidaciones_nueva.php">
-    <h3>Nueva liquidación</h3>
-    <p class="lead">Crear liquidación mensual</p>
+  <a class="card" href="/remuneraciones/public/resumen.php">
+    <h2>Resumen</h2>
+    <br>
+    <p class="lead">• Aún no se define que se mostrará aquí</p>
   </a>
 </section>
 
