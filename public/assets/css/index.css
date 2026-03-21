@@ -1,0 +1,107 @@
+/* ============================================================
+   INDEX.CSS — Página de inicio (index.php)
+   Modo oscuro (default) y modo claro (.light-mode en <html>)
+   ============================================================ */
+
+/* ── Contenedor de las secciones de cards: centrado en pantalla ── */
+.grid.three {
+  margin-top: 180px;
+  grid-template-columns: repeat(3, minmax(0, 300px));
+  justify-content: center;
+  height: 300px;
+}
+
+/* ── Separación entre las dos filas de cards ── */
+.grid.three + .grid.three {
+  margin-top: 16px;
+}
+
+/* ── Cards de la fila principal (h2) ── */
+.card h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--txt);
+}
+
+/* ── Cards de la fila secundaria (h3) ── */
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--txt);
+}
+
+/* ── Hover modo oscuro: texto blanco ── */
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+  transform: translateY(-3px);
+}
+.card:hover h2,
+.card:hover h3,
+.card:hover .lead {
+  color: #ffffff;
+}
+
+/* ── Hover modo claro: texto oscuro (se mantiene legible) ── */
+html.light-mode .card:hover h2,
+html.light-mode .card:hover h3,
+html.light-mode .card:hover .lead {
+  color: var(--txt);
+}
+
+/* ── Active: color al presionar antes de soltar el click ── */
+.card:active {
+  transform: translateY(0px);
+  background: rgba(37, 99, 235, 0.15);
+  border-color: var(--primary-600);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  transition: all 0.05s;
+}
+
+/* ── Modo claro: hover y active ── */
+html.light-mode .card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(30, 64, 175, 0.2);
+}
+html.light-mode .card:active {
+  background: rgba(30, 64, 175, 0.08);
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+}
+
+/* ── Card destacada (primary) ── */
+.card.primary {
+  background: linear-gradient(180deg, rgba(37,99,235,.15), rgba(17,24,39,.8));
+  border-color: #324569;
+}
+.card.primary h2,
+.card.primary h3 { color: #e5e7eb; }
+.card.primary:active {
+  background: rgba(37, 99, 235, 0.3);
+}
+
+/* ── Modo claro card primary ── */
+html.light-mode .card.primary {
+  background: linear-gradient(180deg, rgba(30,64,175,.1), var(--panel));
+  border-color: #bfdbfe;
+}
+html.light-mode .card.primary h2,
+html.light-mode .card.primary h3 { color: #1e40af; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .grid.three {
+    grid-template-columns: minmax(0, 300px);
+    justify-content: center;
+  }
+}
+
+/* ── Texto justificado dentro de las cards ── */
+.card .lead {
+  text-align: justify;
+  margin: 0 0 4px;
+  line-height: 1.5;
+}
+

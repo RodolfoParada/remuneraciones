@@ -1,5 +1,6 @@
 <?php $pageTitle = 'Resumen'; ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
+<link rel="stylesheet" href="/remuneraciones/public/assets/css/resumen.css" />
 
 <section class="panel">
   <div class="tabs"><span class="tab active">Resumen</span></div>
@@ -18,6 +19,12 @@
       <div class="stat-value"><?= date('Y-m-d H:i') ?></div>
     </div>
   </div>
+
+  
+  <div class="actions">
+           <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+  </div>
+</section>
 
   <p class="lead">Esta vista puede ampliarse con consultas SQL para indicadores.</p>
 </section>

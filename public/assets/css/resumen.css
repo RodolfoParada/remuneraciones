@@ -80,3 +80,9 @@
 .btn-limpiar:hover {
   background: #1a2236;
 }
+
+.btn-volver:hover {
+  background: #5c5151 !important;
+  border-color: #ffffff;
+  color: #ffffff !important;
+}

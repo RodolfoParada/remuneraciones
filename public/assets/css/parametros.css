@@ -55,3 +55,15 @@ label:nth-of-type(1) input {
 label:nth-of-type(2) input {
   width: 300px;   /* ancho del input "Mes-Año" */
 }
+
+.btn-volver:hover {
+  background: #5c5151 !important;
+  border-color: #ffffff;
+  color: #ffffff !important;
+}
+
+.btn-volver:hover {
+  background: #5c5151 !important;
+  border-color: #ffffff;
+  color: #ffffff !important;
+}

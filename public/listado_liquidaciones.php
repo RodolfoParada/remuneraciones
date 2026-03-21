@@ -26,11 +26,13 @@ try {
   $errores[] = $e->getMessage();
 }
 ?>
+<link rel="stylesheet" href="/remuneraciones/public/assets/css/listado_liquidaciones.css" />
+
 
 <section class="panel">
   <div class="tabs">
-    <span class="tab active">Listado</span>
-    <a class="tab" href="/remuneraciones/public/liquidaciones_nueva.php">Nueva liquidación</a>
+    <span class="tab active">Listado Liquidaciones</span>
+    <a class="tab" href="/remuneraciones/public/liquidaciones_nueva.php">Crear Nueva liquidación</a>
   </div>
 
   <?php if ($errores): ?>
@@ -74,7 +76,7 @@ try {
   <?php endif; ?>
 
   <div class="actions">
-    <a class="btn primary" href="/remuneraciones/public/liquidaciones_nueva.php">Registrar nueva liquidación</a>
+   <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
   </div>
 </section>
 
