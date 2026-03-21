@@ -87,6 +87,8 @@ CREATE TABLE liquidacion (
 
 ```
 
+# Datos de Prueba Antes de las funcionalidades.
+
 ##  Insert de Datos
 ### 1. Tabla `CARGO`
 ```
