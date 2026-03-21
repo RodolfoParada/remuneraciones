@@ -24,12 +24,15 @@
   font: inherit;
   transition: background .3s, border-color .3s, color .3s;
 }
+
+#input-filtro::placeholder { color: var(--muted); }
+
+/* Modo claro para input */
 html.light-mode #input-filtro {
   background: #f9fafb;
   border-color: #d1d5db;
   color: #1f2937;
 }
-#input-filtro::placeholder { color: var(--muted); }
 
 /* ── Botones filtro de estado ── */
 .filtro-estado { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -48,14 +51,22 @@ html.light-mode #input-filtro {
   gap: 6px;
   transition: background .2s, border-color .2s, color .2s;
 }
-.btn-estado:hover           { border-color: var(--primary); }
-.btn-estado.activo-sel      { background: var(--primary); border-color: var(--primary); color: #fff; }
 
+.btn-estado:hover { border-color: var(--primary); }
+
+.btn-estado.activo-sel {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* Modo claro para botones */
 html.light-mode .btn-estado:not(.activo-sel) {
   background: #f1f5f9;
   border-color: #d1d5db;
   color: #1f2937;
 }
+
 html.light-mode .btn-estado:not(.activo-sel):hover {
   border-color: var(--primary);
   background: #e0e7ff;
@@ -67,11 +78,19 @@ html.light-mode .btn-estado:not(.activo-sel):hover {
   padding: 1px 7px;
   font-size: 11px;
   font-weight: 700;
-  background: rgba(255,255,255,.25);
+  background: rgba(255, 255, 255, .25);
   color: inherit;
 }
-.btn-estado:not(.activo-sel) .count-badge        { background: var(--border); color: var(--txt); }
-html.light-mode .btn-estado:not(.activo-sel) .count-badge { background: #d1d5db; color: #374151; }
+
+.btn-estado:not(.activo-sel) .count-badge {
+  background: var(--border);
+  color: var(--txt);
+}
+
+html.light-mode .btn-estado:not(.activo-sel) .count-badge {
+  background: #d1d5db;
+  color: #374151;
+}
 
 /* ── Badges de estado en la tabla ── */
 .badge-estado {
@@ -82,17 +101,93 @@ html.light-mode .btn-estado:not(.activo-sel) .count-badge { background: #d1d5db;
   font-weight: 600;
   white-space: nowrap;
 }
-.badge-estado.activo   { background: #052e1a; color: #86efac; border: 1px solid #0c3b24; }
-.badge-estado.inactivo { background: #3b1f1f; color: #fca5a5; border: 1px solid #7f1d1d; }
 
-html.light-mode .badge-estado.activo   { background: #dcfce7; color: #166534; border-color: #86efac; }
-html.light-mode .badge-estado.inactivo { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+/* Modo oscuro Badges */
+.badge-estado.activo {
+  background: #052e1a;
+  color: #86efac;
+  border: 1px solid #0c3b24;
+}
 
-/* ── Fila inactiva atenuada ── */
-.fila-listado[data-estado="inactivo"] { opacity: .8; }
+.badge-estado.inactivo {
+  background: #3b1f1f;
+  color: #fca5a5;
+  border: 1px solid #7f1d1d;
+}
+
+/* Modo claro Badges */
+html.light-mode .badge-estado.activo {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+html.light-mode .badge-estado.inactivo {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+/* ── Otros ajustes ── */
+.fila-listado[data-estado="inactivo"] {
+  opacity: .8;
+}
 
 .btn-volver:hover {
   background: #5c5151 !important;
   border-color: #ffffff;
   color: #ffffff !important;
+}
+
+/* Contenedor Principal */
+.panel {
+  /* En lugar de 1500px fijos, usamos fit-content para que se 
+     ajuste exactamente al ancho de tu tabla */
+  width: fit-content; 
+  min-width: 100%;      /* Para que no se vea muy flaco si hay pocos datos */
+  max-width: 98vw;    /* Evita que toque los bordes físicos de la pantalla */
+  
+
+  /* Centrado horizontal absoluto */
+  margin: 50px 0px 0px -250px;
+  
+  /* Visualización limpia */
+  display: block;
+  height: auto !important;
+  overflow: visible !important; 
+  
+  /* Estética */
+  background: var(--input-bg, #0e1628);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3); /* Sombra para resaltar el centrado */
+}
+
+/* Contenedor de la Tabla */
+.table-wrap {
+  width: 100%;
+  overflow: visible !important; /* Eliminamos cualquier rastro de scroll interno */
+}
+
+/* La Tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto; /* Permite que las columnas definan su propio ancho */
+}
+
+/* Ajuste de celdas para evitar amontonamiento */
+.table th, .table td {
+  padding: 12px 15px;
+  text-align: left;
+  white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
+}
+
+/* Cuerpo de la página */
+body {
+  margin: 0;
+  padding: 0;
+  display: block; 
+  overflow-x: auto; /* Si la tabla es mas grande que el monitor, el scroll será de TODA la página */
 }
