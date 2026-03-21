@@ -172,8 +172,10 @@ try {
 
     /* ── Scroll vertical si hay 15+ trabajadores ── */
     if (tableWrap && filas.length >= 15) {
-      var alturaTable = tableWrap.offsetHeight;
-      tableWrap.style.maxHeight = alturaTable + 'px';
+      var alturaCabecera = document.querySelector('.table thead').offsetHeight;
+      var alturaFila     = document.querySelector('.fila-listado').offsetHeight;
+      var alturaMaxima   = alturaCabecera + (alturaFila * 14) + 10; /* muestra 14 filas + cabecera */
+      tableWrap.style.maxHeight = alturaMaxima + 'px';
       tableWrap.style.overflowY = 'auto';
       tableWrap.style.overflowX = 'auto';
     }
@@ -219,4 +221,6 @@ try {
 
 })();
 </script>
+
+
 <?php include __DIR__ . '/includes/footer.php'; ?>

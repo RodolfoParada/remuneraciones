@@ -140,34 +140,27 @@ html.light-mode .badge-estado.inactivo {
 }
 
 /* Contenedor Principal */
+/* Contenedor Principal */
 .panel {
-  /* En lugar de 1500px fijos, usamos fit-content para que se 
-     ajuste exactamente al ancho de tu tabla */
   width: fit-content; 
-  min-width: 100%;      /* Para que no se vea muy flaco si hay pocos datos */
-  max-width: 98vw;    /* Evita que toque los bordes físicos de la pantalla */
-  
-
-  /* Centrado horizontal absoluto */
+  min-width: 100%;
+  max-width: 98vw;
   margin: 50px 0px 0px -250px;
-  
-  /* Visualización limpia */
   display: block;
   height: auto !important;
-  overflow: visible !important; 
-  
-  /* Estética */
+  overflow: visible !important;   /* <-- este NO tocar, está bien aquí */
   background: var(--input-bg, #0e1628);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3); /* Sombra para resaltar el centrado */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 /* Contenedor de la Tabla */
 .table-wrap {
   width: 100%;
-   overflow-x: auto;
+  overflow-x: auto;
+  /* SIN overflow-y aquí, lo maneja el JS */
 }
 
 /* Scroll vertical solo cuando hay 15+ trabajadores */
