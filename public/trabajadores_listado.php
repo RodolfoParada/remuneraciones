@@ -45,7 +45,7 @@ try {
 <section class="panel">
   <div class="tabs">
     <a class="tab active"  href="/remuneraciones/public/trabajadores_listado.php">Listado Trabajadores</a>
-    <a class="tab" href="/remuneraciones/public/trabajadores_nuevo.php">Nuevo Trabajador</a>
+    <a class="tab" href="/remuneraciones/public/trabajadores_nuevo.php">Crear Nuevo Trabajador</a>
   </div>
 
   <?php if ($okMsg): ?>

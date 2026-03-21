@@ -214,7 +214,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 <section class="panel">
   <div class="tabs">
     <a class="tab" href="/remuneraciones/public/trabajadores_listado.php">Listado Trabajadores</a>
-    <a class="tab active" id="tab-titulo">Nuevo trabajador</a>
+    <a class="tab active" id="tab-titulo">Crear Nuevo trabajador</a>
   </div>
 
   <!-- Mensajes -->

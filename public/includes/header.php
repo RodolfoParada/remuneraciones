@@ -30,9 +30,10 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
   <div class="brand">Sistema de Remuneraciones</div>
   <nav class="nav">
     <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>index.php">Inicio</a>
-    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>trabajadores_listado.php">Trabajadores</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>trabajadores_listado.php">Lista de Trabajadores</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>trabajadores_nuevo.php">Crear Nuevo Trabajador</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>liquidaciones_nueva.php">Crear Nueva Liquidacion</a>
     <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>listado_liquidaciones.php">Liquidaciones</a>
-    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>trabajadores_nuevo.php">Nuevo Trabajador</a>
     <button class="nav-item" id="theme-toggle">🌙</button>
   </nav>
 </header>

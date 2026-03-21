@@ -2,24 +2,22 @@
    TRABAJADORES.CSS — Página hub de trabajadores (trabajadores.php)
    ============================================================ */
 
-
-   .panel{
-  margin-top:200px;  
-   }
+.panel {
+  margin-top: 200px;
+}
 
 /* ── Cards centradas en el contenedor ── */
 .cards-centradas {
   display: flex;
   gap: 16px;
-  justify-content: center;   /* centra horizontalmente */
+  justify-content: center;
   flex-wrap: wrap;
   margin: 8px 0 16px;
 }
 
 .cards-centradas .card {
-  width: 280px; 
-  height: 300px; 
-           /* ancho fijo igual para ambas */
+  width: 350px;
+  height: 300px;
   flex-shrink: 0;
 }
 
@@ -30,6 +28,7 @@
   font-weight: 700;
   color: var(--txt);
 }
+
 .cards-centradas .card p {
   margin: 0;
 }
@@ -42,20 +41,36 @@
 /* ── Modo claro ── */
 html.light-mode .cards-centradas .card h3 { color: var(--txt); }
 
-
-/*justifica el texto*/ 
+/* ── Texto justificado ── */
 .card .lead {
   text-align: justify;
   margin: 0 0 4px;
   line-height: 1.5;
 }
 
+/* ── Hover cards ── */
 .card:hover {
   border-color: var(--primary);
   box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
   transform: translateY(-3px);
 }
 
+/* ── Hover tabs — modo oscuro ── */
+.tab:hover:not(.active) {
+  background: #5c5151 !important;
+  border-color: #ffffff;
+  color: #ffffff !important;
+ 
+}
+
+/* ── Hover tabs — modo claro ── */
+html.light-mode .tab:hover:not(.active) {
+  background: #5c5151 !important;
+  border-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+
+/* ── Hover botón volver ── */
 .btn-volver:hover {
   background: #5c5151 !important;
   border-color: #ffffff;

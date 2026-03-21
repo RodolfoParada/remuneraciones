@@ -6,19 +6,19 @@
 <section class="panel">
   <div class="tabs">
     <a class="tab" href="/remuneraciones/public/trabajadores_listado.php">Listado Trabajadores</a>
-    <a class="tab" href="/remuneraciones/public/trabajadores_nuevo.php">Nuevo Trabajador</a>
+    <a class="tab" href="/remuneraciones/public/trabajadores_nuevo.php">Crear Nuevo Trabajador</a>
   </div>
 
   <div class="cards-centradas">
     <a class="card" href="/remuneraciones/public/trabajadores_listado.php">
-      <h3>Ver listado de Trabajadores</h3>
+      <h2>Listado de Trabajadores</h2>
       <br>
       <p class="lead">• Visualiza lista trabajadores</p>
       <p class="lead">• Busqueda de trabajador</p>
       <p class="lead">• Filtra por trabajador activo, no activo, Muestra todos los trabajadores</p>
     </a>
     <a class="card" href="/remuneraciones/public/trabajadores_nuevo.php">
-      <h3>Agregar Nuevo Trabajador</h3>
+      <h2>Crear Nuevo Trabajador</h2>
        <br>
       <p class="lead">• Formulario permite : <br>Agregar, Modificar, Eliminar, Dar término de contrato a un trabajador</p>
     </a>
