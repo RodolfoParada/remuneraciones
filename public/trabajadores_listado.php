@@ -72,7 +72,7 @@ try {
         autocomplete="off">
 
       <div class="filtro-estado" role="group" aria-label="Filtrar por estado">
-        <button type="button" class="btn-estado activo-sel" data-filtro="todos">
+        <button type="button" class="tab active"  data-filtro="todos">
           Todos
           <span class="count-badge"><?= count($rows) ?></span>
         </button>
