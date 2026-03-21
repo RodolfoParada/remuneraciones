@@ -1,9 +1,22 @@
 /* ============================================================
-   TRABAJADORES NUEVO — Formulario de registro y edición
-   Modo oscuro (default) y modo claro (.light-mode en <html>)
+   TRABAJADORES NUEVO — CSS UNIFICADO Y CORREGIDO
+   Ancho extendido, Grid de 2 columnas y Modo Responsivo
    ============================================================ */
 
-/* ── Barra del buscador: solo ocupa lo que necesita ── */
+/* ── Contenedor Principal (Ancho extendido y flexible) ── */
+.panel {
+  width: 95%;  
+  width: 1200px;            /* Ocupa el 95% de la pantalla */
+  max-width: 1200px;       /* Pero no más de 1200px */
+  margin: 20px auto;
+  background: var(--panel);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+/* ── Barra del buscador ── */
 .buscador-barra {
   display: flex;
   justify-content: space-between;
@@ -12,137 +25,208 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 12px 16px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
-.buscador-titulo { font-weight: 600; font-size: 14px; color: var(--txt); }
 
-/* ── Panel flotante fixed: cubre la pantalla sin desplazar nada ── */
+.buscador-titulo { 
+  font-weight: 600; 
+  font-size: 14px; 
+  color: var(--txt); 
+}
+
+/* ── Panel flotante (Modal de búsqueda) ── */
 #panel-buscador {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(820px, 92vw);
-  max-height: 70vh;
+  width: min(1200px, 94vw);
+  max-height: 80vh;
   overflow-y: auto;
   z-index: 500;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+ 
 }
-html.light-mode #panel-buscador {
-  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
-}
+
 #panel-buscador.abierto { display: block; }
 
-/* Overlay oscuro detrás del panel */
+/* Header del modal para alinear el botón cerrar */
+.panel-buscador-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+#btn-cerrar-buscador {
+  margin-left: auto; /* Empuja el botón a la derecha */
+}
+
+html.light-mode #panel-buscador {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Overlay con desenfoque */
 #buscador-overlay {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 499;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
 }
 #buscador-overlay.abierto { display: block; }
 
-/* Header del panel flotante */
-.panel-buscador-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+/* ── Formulario y Grid de 2 Columnas ── */
+.form fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Divide en 2 columnas */
+  gap: 16px 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
 }
 
-#input-buscar {
+.form legend {
+  padding: 0 10px;
+  font-weight: 600;
+  color: var(--txt);
+  font-size: 0.95rem;
+}
+
+/* Estilos de etiquetas e inputs */
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--txt);
+}
+
+form input,
+form select {
   width: 100%;
-  margin: 0 0 12px;
-  padding: 9px 12px;
-  border-radius: 8px;
+  height: 42px;
+  padding: 0 12px;
   border: 1px solid var(--border);
+  border-radius: 8px;
   background: var(--input-bg, #0e1628);
   color: var(--txt);
-  font-size: 14px;
   font-family: inherit;
-  transition: background 0.3s, border-color 0.3s, color 0.3s;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+
+form input:focus, 
+form select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* ── Modo Claro ── */
+html.light-mode form input,
+html.light-mode form select,
 html.light-mode #input-buscar {
-  background: #f9fafb;
+  background: #ffffff;
   border-color: #d1d5db;
   color: #1f2937;
 }
 
-.tabla-buscador-wrap { max-height: 340px; overflow-y: auto; border-radius: 10px; }
-.fila-t.oculta       { display: none; }
-.fila-t.seleccionada { background: rgba(37,99,235,.12) !important; }
-
-/* ── Ayudas de campo ── */
-.campo-ayuda { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-/* ── Validación en tiempo real ── */
-input.input-error  { border-color: #ef4444 !important; }
-.msg-error-campo   { font-size: 11px; color: #ef4444; margin-top: 2px; }
-
-/* ── Panel de errores: texto siempre blanco en ambos modos ── */
-.panel-errores,
-.panel-errores ul,
-.panel-errores li  { color: #ffffff !important; }
-.panel-errores .badge {
-  background:   #7f1d1d !important;
-  border-color: #991b1b !important;
-  color:        #ffffff !important;
+/* ── Ayudas y Errores ── */
+.campo-ayuda { 
+  font-size: 11px; 
+  color: var(--muted); 
+  font-weight: 400;
+  margin-top: 2px;
 }
 
-/* ── Animación al cargar datos del trabajador en el form ── */
+input.input-error { 
+  border-color: #ef4444 !important; 
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.msg-error-campo { 
+  font-size: 11px; 
+  color: #ef4444; 
+  margin-top: 2px; 
+}
+
+/* ── Animación Destacar ── */
 @keyframes destacar {
-  0%   { box-shadow: 0 0 0 3px rgba(37,99,235,.5); }
-  100% { box-shadow: none; }
+  0% { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3); }
+  100% { box-shadow: 0 0 0 0px transparent; }
 }
-.campo-destacado { animation: destacar .8s ease-out forwards; border-radius: 10px; }
+.campo-destacado { 
+  animation: destacar 1s ease-out forwards; 
+}
 
-/* ── Fieldset y legend del formulario ── */
-.form fieldset {
-  border: 1px dashed #2a364a;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 12px;
-}
-.form legend {
-  padding: 0 6px;
-  color: #cbd5e1;
-}
-form label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-}
-form input,
-form select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
+/* ── Tabla del buscador ── */
+.tabla-buscador-wrap { 
+  max-height: 400px; 
+  overflow-y: auto; 
   border: 1px solid var(--border);
-  border-radius: 6px;
-  box-sizing: border-box;
-  background: #0e1628;
-  color: var(--txt);
-  transition: background 0.3s, border-color 0.3s, color 0.3s;
+  border-radius: 8px; 
 }
 
-/* ── Modo claro: fieldset y form ── */
-html.light-mode .form fieldset { border-color: #d1d5db; }
-html.light-mode .form legend   { color: #374151; }
-html.light-mode form input,
-html.light-mode form select {
-  background:   #f9fafb;
-  border-color: #d1d5db;
-  color:        #1f2937;
+.fila-t.oculta { display: none; }
+.fila-t.seleccionada { background: rgba(37, 99, 235, 0.15) !important; }
+
+/* ── Botones y Acciones ── */
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
+
 
 .btn-volver:hover {
   background: #5c5151 !important;
   border-color: #ffffff;
   color: #ffffff !important;
+}
+
+/* ── Responsividad (Celulares) ── */
+@media (max-width: 768px) {
+  .form fieldset {
+    grid-template-columns: 1fr;
+  }
+  
+  .panel {
+    width: 98%;
+    margin: 10px auto;
+    padding: 15px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}
+
+#input-buscar {
+  width: 100%;         /* Ocupa el ancho disponible del panel */
+  max-width: 800px;    /* Se expande bastante, pero con un límite elegante */
+  display: block;      /* Permite usar márgenes automáticos */
+  margin: 0 auto 20px; /* Centrado horizontalmente y con espacio abajo */
+  padding: 12px 20px;  /* Más alto y cómodo para escribir */
+  font-size: 16px;     /* Texto más grande y legible */
+  border-radius: 10px; /* Bordes redondeados más modernos */
+  border: 1px solid var(--border);
+  background: var(--input-bg, #0e1628);
+  color: var(--txt);
+  transition: all 0.3s ease;
+}
+
+/* Efecto al hacer clic para que resalte */
+#input-buscar:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }

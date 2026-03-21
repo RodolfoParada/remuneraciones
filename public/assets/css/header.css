@@ -1,58 +1,62 @@
-/* ============================================================
-   HEADER — Barra de navegación superior
-   Modo oscuro (default) y modo claro (.light-mode en <html>)
-   ============================================================ */
+<?php
+$scriptPath = $_SERVER['SCRIPT_NAME'];
+$basePath   = dirname($scriptPath);
+if ($basePath === '/' || $basePath === '\\' || $basePath === '.') {
+    $basePath = '/';
+} else {
+    $basePath = rtrim($basePath, '/') . '/';
+}
+$pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
+?>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title><?= htmlspecialchars($pageTitle) ?></title>
 
-/* Topbar */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background: #0b1220;
-  border-bottom: 1px solid var(--border, #1f2937);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  transition: background 0.3s, border-color 0.3s;
-}
+  <link rel="stylesheet" href="<?= htmlspecialchars($basePath) ?>assets/css/app.css" />
 
-.brand {
-  font-weight: 700;
-  letter-spacing: .3px;
-  color: #e5e7eb;
-  transition: color 0.3s;
-}
+  <!-- Anti-parpadeo: aplica tema antes de pintar -->
+  <script>
+    if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.classList.add('light-mode');
+    }
+  </script>
+</head>
+<body>
 
-/* Estilo unificado para todos los items del nav */
-.nav-item {
-  all: unset;
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  padding: 7px 12px;
-  margin: 0 2px;
-  border-radius: 8px;
-  color: #e5e7eb;
-  background: transparent;
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  transition: background 0.15s, color 0.15s;
-}
-.nav-item:hover {
-  background: rgba(255,255,255,0.1);
-  color: #ffffff;
-}
+<header class="topbar">
+  <div class="brand">Sistema de Remuneraciones</div>
+  <nav class="nav">
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>index.php">Inicio</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>trabajadores_listado.php">Trabajadores</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>listado_liquidaciones.php">Liquidaciones</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>trabajadores_nuevo.php">Nuevo Trabajador</a>
+    <button class="nav-item" id="theme-toggle">🌙</button>
+  </nav>
+</header>
 
-/* Modo claro */
-html.light-mode .topbar {
-  background: #ffffff;
-  border-bottom-color: #e2e8f0;
-}
-html.light-mode .brand         { color: #1f2937; }
-html.light-mode .nav-item      { color: #1f2937; }
-html.light-mode .nav-item:hover {
-  background: rgba(0,0,0,0.07);
-  color: #111827;
-}
+<main class="container">
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn  = document.getElementById('theme-toggle');
+    if (!btn) return;
+
+    function sync() {
+      var light       = root.classList.contains('light-mode');
+      btn.textContent = light ? '☀️' : '🌙';
+      btn.title       = light ? 'Activar modo oscuro' : 'Activar modo claro';
+    }
+
+    sync();
+
+    btn.addEventListener('click', function () {
+      var nowLight = root.classList.toggle('light-mode');
+      localStorage.setItem('theme', nowLight ? 'light' : 'dark');
+      sync();
+    });
+  })();
+</script>

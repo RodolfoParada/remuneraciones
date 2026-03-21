@@ -151,7 +151,7 @@ try {
                         ':afp'   => $idAfp,  ':salud'  => $idSalud, ':rut' => $rut,
                     ]);
                 }
-                $okMsg = 'rabajador actualizado correctamente.';
+                $okMsg = 'trabajador actualizado correctamente.';
             } else {
                 $stmt = $pdo->prepare("
                     INSERT INTO trabajador
@@ -165,7 +165,7 @@ try {
                     ':fini'  => $fInicio, ':fter'  => ($fTermino !== '' ? $fTermino : null),
                     ':afp'   => $idAfp,  ':salud'  => $idSalud,
                 ]);
-                $okMsg = 'Trabajador registrado correctamente.';
+                $okMsg = 'Trabajador agregado correctamente.';
             }
             $ok = true;
 
@@ -236,7 +236,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
        BUSCADOR — botón en flujo, panel flotante fixed
   ══════════════════════════════════════════ -->
   <div class="buscador-barra">
-    <span class="buscador-titulo">Buscar trabajador para editar</span>
+    <span class="buscador-titulo">Buscar lista de trabajadores</span>
     <button type="button" id="btn-toggle-buscador" class="btn small">Mostrar lista</button>
   </div>
 
@@ -367,7 +367,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     <div class="actions">
       <button type="button" id="btn-cancelar-edicion" class="btn" style="display:none">✖ Cancelar</button>
       <button class="btn primary" type="submit" id="btn-guardar">Guardar</button>
-          <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+             <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
     </div>
   </form>
 </section>
