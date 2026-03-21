@@ -1,0 +1,148 @@
+/* ============================================================
+   TRABAJADORES NUEVO — Formulario de registro y edición
+   Modo oscuro (default) y modo claro (.light-mode en <html>)
+   ============================================================ */
+
+/* ── Barra del buscador: solo ocupa lo que necesita ── */
+.buscador-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.buscador-titulo { font-weight: 600; font-size: 14px; color: var(--txt); }
+
+/* ── Panel flotante fixed: cubre la pantalla sin desplazar nada ── */
+#panel-buscador {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(820px, 92vw);
+  max-height: 70vh;
+  overflow-y: auto;
+  z-index: 500;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+}
+html.light-mode #panel-buscador {
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+}
+#panel-buscador.abierto { display: block; }
+
+/* Overlay oscuro detrás del panel */
+#buscador-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 499;
+  background: rgba(0,0,0,0.45);
+}
+#buscador-overlay.abierto { display: block; }
+
+/* Header del panel flotante */
+.panel-buscador-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+#input-buscar {
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--input-bg, #0e1628);
+  color: var(--txt);
+  font-size: 14px;
+  font-family: inherit;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+html.light-mode #input-buscar {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #1f2937;
+}
+
+.tabla-buscador-wrap { max-height: 340px; overflow-y: auto; border-radius: 10px; }
+.fila-t.oculta       { display: none; }
+.fila-t.seleccionada { background: rgba(37,99,235,.12) !important; }
+
+/* ── Ayudas de campo ── */
+.campo-ayuda { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ── Validación en tiempo real ── */
+input.input-error  { border-color: #ef4444 !important; }
+.msg-error-campo   { font-size: 11px; color: #ef4444; margin-top: 2px; }
+
+/* ── Panel de errores: texto siempre blanco en ambos modos ── */
+.panel-errores,
+.panel-errores ul,
+.panel-errores li  { color: #ffffff !important; }
+.panel-errores .badge {
+  background:   #7f1d1d !important;
+  border-color: #991b1b !important;
+  color:        #ffffff !important;
+}
+
+/* ── Animación al cargar datos del trabajador en el form ── */
+@keyframes destacar {
+  0%   { box-shadow: 0 0 0 3px rgba(37,99,235,.5); }
+  100% { box-shadow: none; }
+}
+.campo-destacado { animation: destacar .8s ease-out forwards; border-radius: 10px; }
+
+/* ── Fieldset y legend del formulario ── */
+.form fieldset {
+  border: 1px dashed #2a364a;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.form legend {
+  padding: 0 6px;
+  color: #cbd5e1;
+}
+form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+form input,
+form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-sizing: border-box;
+  background: #0e1628;
+  color: var(--txt);
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* ── Modo claro: fieldset y form ── */
+html.light-mode .form fieldset { border-color: #d1d5db; }
+html.light-mode .form legend   { color: #374151; }
+html.light-mode form input,
+html.light-mode form select {
+  background:   #f9fafb;
+  border-color: #d1d5db;
+  color:        #1f2937;
+}
+
+.btn-volver:hover {
+  background: #5c5151 !important;
+  border-color: #ffffff;
+  color: #ffffff !important;
+}

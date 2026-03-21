@@ -106,10 +106,10 @@ INSERT INTO sistema_salud (Nombre_Salud) VALUES
 ```
 ### 3. Tabla `TIPOS_CONTRATO`
 ```
-INSERT INTO sistema_salud (Nombre_Salud) VALUES
-('Fonasa'),
-('Isapre Colmena'),
-('Isapre Banmedica');
+INSERT INTO tipos_contrato (Nombre_Contrato) VALUES
+('Indefinido'),
+('A plazo'),
+('Practica');
 
 ```
 ### 4. Tabla `AFP`

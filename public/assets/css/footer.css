@@ -1,0 +1,29 @@
+/* ============================================================
+   FOOTER — Pie de página
+   Modo oscuro (default) y modo claro (.light-mode en <html>)
+   ============================================================ */
+
+/* Empujar el footer al fondo de la pantalla */
+html, body       { height: 100%; }
+body             { min-height: 100vh; display: flex; flex-direction: column; }
+main.container   { flex: 1; }
+
+/* Footer base — modo oscuro */
+.footer {
+  width: 100%;
+  margin-top: auto;
+  padding: 16px 20px;
+  background: #0b1220;
+  border-top: 1px solid var(--border, #1f2937);
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* Footer — modo claro */
+html.light-mode .footer {
+  background: #f1f5f9;
+  border-top-color: #e2e8f0;
+  color: #6b7280;
+}

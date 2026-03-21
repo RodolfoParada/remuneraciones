@@ -1,6 +1,8 @@
 <?php $pageTitle = 'Parámetros'; ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
 
+<link rel="stylesheet" href="/remuneraciones/public/assets/css/parametros.css" />
+
 <section class="panel">
   <div class="tabs"><span class="tab active">Parámetros del sistema</span></div>
 
@@ -17,6 +19,9 @@
 
     <!-- Pega aquí tus textos originales -->
     <p>…</p>
+     <div class="actions">
+           <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+  </div>
   </div>
 </section>
 

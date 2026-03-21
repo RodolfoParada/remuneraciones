@@ -123,3 +123,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // initializeFirebase(); // Descomentar si se requiere la inicialización de Firebase
     setupThemeSwitcher();
 });
+
+// Toggle de tema oscuro / claro
+(function () {
+  var root = document.documentElement;
+  var btn  = document.getElementById('theme-toggle');
+  if (!btn) return;
+
+  // Sincronizar ícono con el estado aplicado por el script del <head>
+  function syncIcon() {
+    var light = root.classList.contains('light-mode');
+    btn.innerHTML = light ? '☀️' : '🌙';
+    btn.title     = light ? 'Activar modo oscuro' : 'Activar modo claro';
+  }
+
+  syncIcon();
+
+  btn.addEventListener('click', function () {
+    var isNowLight = root.classList.toggle('light-mode');
+    localStorage.setItem('theme', isNowLight ? 'light' : 'dark');
+    syncIcon();
+  });
+})();

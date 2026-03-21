@@ -1,0 +1,63 @@
+/* ============================================================
+   TRABAJADORES.CSS — Página hub de trabajadores (trabajadores.php)
+   ============================================================ */
+
+
+   .panel{
+  margin-top:200px;  
+   }
+
+/* ── Cards centradas en el contenedor ── */
+.cards-centradas {
+  display: flex;
+  gap: 16px;
+  justify-content: center;   /* centra horizontalmente */
+  flex-wrap: wrap;
+  margin: 8px 0 16px;
+}
+
+.cards-centradas .card {
+  width: 280px; 
+  height: 300px; 
+           /* ancho fijo igual para ambas */
+  flex-shrink: 0;
+}
+
+/* ── Títulos dentro de las cards ── */
+.cards-centradas .card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--txt);
+}
+.cards-centradas .card p {
+  margin: 0;
+}
+
+/* ── Responsive: apila en móvil ── */
+@media (max-width: 640px) {
+  .cards-centradas .card { width: 100%; }
+}
+
+/* ── Modo claro ── */
+html.light-mode .cards-centradas .card h3 { color: var(--txt); }
+
+
+/*justifica el texto*/ 
+.card .lead {
+  text-align: justify;
+  margin: 0 0 4px;
+  line-height: 1.5;
+}
+
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+  transform: translateY(-3px);
+}
+
+.btn-volver:hover {
+  background: #5c5151 !important;
+  border-color: #ffffff;
+  color: #ffffff !important;
+}

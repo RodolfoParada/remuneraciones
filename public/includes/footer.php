@@ -1,4 +1,7 @@
-  </main>
-  <footer class="footer">Prototipo EPE – Sistema de Remuneraciones</footer>
+</main>
+
+  <link rel="stylesheet" href="/remuneraciones/public/assets/css/footer.css" />
+
+  <footer class="footer">Prototipo – Sistema de Remuneraciones - Taller de Integraciones. </footer>
 </body>
 </html>
