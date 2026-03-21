@@ -159,6 +159,27 @@ try {
   var filtroTexto   = '';
   var filtroEstado  = 'todos';
 
+  var panel     = document.querySelector('.panel');
+  var tableWrap = document.querySelector('.table-wrap');
+
+  window.addEventListener('load', function () {
+
+    /* ── Fijar tamaño del panel ── */
+    if (panel) {
+      panel.style.minHeight = panel.offsetHeight + 'px';
+      panel.style.minWidth  = panel.offsetWidth  + 'px';
+    }
+
+    /* ── Scroll vertical si hay 15+ trabajadores ── */
+    if (tableWrap && filas.length >= 15) {
+      var alturaTable = tableWrap.offsetHeight;
+      tableWrap.style.maxHeight = alturaTable + 'px';
+      tableWrap.style.overflowY = 'auto';
+      tableWrap.style.overflowX = 'auto';
+    }
+
+  });
+
   /* ── Aplicar filtros combinados ── */
   function aplicarFiltros() {
     var visibles = 0;
@@ -196,8 +217,6 @@ try {
     });
   });
 
-
 })();
 </script>
-
 <?php include __DIR__ . '/includes/footer.php'; ?>

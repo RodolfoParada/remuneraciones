@@ -167,9 +167,14 @@ html.light-mode .badge-estado.inactivo {
 /* Contenedor de la Tabla */
 .table-wrap {
   width: 100%;
-  overflow: visible !important; /* Eliminamos cualquier rastro de scroll interno */
+   overflow-x: auto;
 }
 
+/* Scroll vertical solo cuando hay 15+ trabajadores */
+.table-wrap.con-scroll {
+  max-height: 600px;  /* Ajusta esta altura a tu gusto */
+  overflow-y: auto;
+}
 /* La Tabla */
 .table {
   width: 100%;
