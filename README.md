@@ -188,4 +188,3 @@ INSERT INTO liquidacion (
 
 ```
 
-###  Importante si se va a correr el proyecto en local hay que cambiar las rutas relativas del css y las rutas de navegación.
