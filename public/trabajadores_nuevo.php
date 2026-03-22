@@ -361,7 +361,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 
     <div class="actions">
       <button type="button" id="btn-cancelar-edicion" class="btn" style="display:none">✖ Cancelar</button>
-      <button class="btn primary" type="submit" id="btn-guardar">Guardar</button>
+      <button class="btn azul" type="submit" id="btn-guardar">Guardar</button>
              <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
     </div>
   </form>
