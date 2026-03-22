@@ -13,3 +13,17 @@ html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none !important; /* Chrome, Safari, Edge */
 }
+
+/* Hover tabs — modo oscuro */
+.tab:hover {
+  background: #5c5151;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* Hover tabs — modo claro */
+html.light-mode .tab:hover {
+  background: #5c5151;
+  border-color: var(--primary);
+  color: #ffffff;
+}

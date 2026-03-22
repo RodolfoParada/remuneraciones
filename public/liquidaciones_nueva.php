@@ -329,7 +329,7 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
     </fieldset>
 
     <div class="actions">
-      <button class="btn primary" name="guardar" type="submit">Guardar liquidación</button>
+      <button class="btn azul" name="guardar" type="submit">Guardar liquidación</button>
       <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
     </div>
 

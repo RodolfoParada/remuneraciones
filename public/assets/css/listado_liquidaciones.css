@@ -1,8 +1,3 @@
-.btn-volver:hover {
-  background: #5c5151 !important;
-  border-color: #ffffff;
-  color: #ffffff !important;
-}
 
 /* ============================================================
    LIQUIDACIONES_NUEVAS.CSS — Formulario nueva liquidación
@@ -80,6 +75,11 @@ form input::placeholder { color: var(--muted); }
 }
 
 /* ── Botón Volver ── */
+
+
+
+
+/* ── Botón Volver ── */
 .btn-volver {
   border: 1px dashed var(--toggle-border);
   color: var(--txt);
@@ -87,10 +87,23 @@ form input::placeholder { color: var(--muted); }
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 .btn-volver:hover {
-  background: var(--primary) !important;
-  border-color: var(--primary) !important;
-  color: #ffffff !important;
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
 }
+
+/* ── Tabs hover ── */
+.tab:hover {
+  background: #5c5151;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+html.light-mode .tab:hover {
+  background: #5c5151;
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
 
 /* ── Modo claro ── */
 html.light-mode fieldset           { border-color: #d1d5db; }
@@ -101,3 +114,4 @@ html.light-mode form select        { background: #f9fafb; border-color: #d1d5db;
 html.light-mode .table input[type="number"] { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
 html.light-mode .table td:first-child       { color: #374151; }
 html.light-mode #campo-dias        { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
+
