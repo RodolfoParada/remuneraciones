@@ -87,17 +87,23 @@ form input::placeholder { color: var(--muted); }
   color: #ffffff !important;
 }
 
-/* ── Tabs hover ── */
-.tab:hover {
-  background: #5c5151;
+
+/* ── Hover tabs — modo oscuro ── */
+.tab:hover:not(.active) {
+  background: #5c5151 !important;
   border-color: #ffffff;
-  color: #ffffff;
+  color: #ffffff !important;
+ 
 }
-html.light-mode .tab:hover {
-  background: #5c5151;
-  border-color: var(--primary);
-  color: #ffffff;
+
+/* ── Hover tabs — modo claro ── */
+html.light-mode .tab:hover:not(.active) {
+  background: #5c5151 !important;
+  border-color: var(--primary) !important;
+  color: #ffffff !important;
 }
+
+
 
 
 /* ── Modo claro ── */
