@@ -70,9 +70,16 @@ html.light-mode .tab:hover:not(.active) {
   color: #ffffff !important;
 }
 
-/* ── Hover botón volver ── */
-.btn-volver:hover {
+/* ── Botón volver consistente ── */
+.btn.btn-volver {
+  border: 1px dashed var(--toggle-border);
+  background: transparent;
+  color: var(--txt);
+  transition: all 0.2s ease;
+}
+
+.btn.btn-volver:hover {
   background: #5c5151 !important;
-  border-color: #ffffff;
+  border-color: #ffffff !important;
   color: #ffffff !important;
 }
