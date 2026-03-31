@@ -1,4 +1,4 @@
-# 📊 Base de Datos: Sistema de Remuneraciones
+# Base de Datos: Sistema de Remuneraciones
 
 Este script SQL crea y pobla una base de datos llamada **`remuneraciones`**, destinada a gestionar la información laboral, previsional y de salud de los trabajadores de una organización.
 
