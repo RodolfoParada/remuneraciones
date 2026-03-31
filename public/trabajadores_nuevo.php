@@ -16,6 +16,7 @@ try {
 
     $todosTrabajadores = $pdo->query("
         SELECT t.rut_trabajador, t.nombre_completo, t.sueldo_base_fijo,
+               t.colacion, t.transporte,
                t.id_cargo, t.id_tipo_contrato, t.id_afp, t.id_salud,
                t.fecha_inicio_contrato, t.fecha_termino_contrato,
                c.nombre_cargo, tc.nombre_contrato, a.nombre_afp, s.nombre_salud
@@ -29,9 +30,9 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $accion   = $_POST['accion']  ?? 'nuevo';
-        $rut      = trim($_POST['rut_trabajador']       ?? '');
-        $nombre   = strtoupper(trim($_POST['nombre_completo'] ?? ''));
+        $accion = $_POST['accion'] ?? 'nuevo';
+        $rut    = trim($_POST['rut_trabajador']   ?? '');
+        $nombre = strtoupper(trim($_POST['nombre_completo'] ?? ''));
 
         // ── ELIMINAR ──
         if ($accion === 'eliminar' && $rut !== '') {
@@ -42,6 +43,7 @@ try {
                 $okMsg = 'Trabajador eliminado correctamente.';
                 $todosTrabajadores = $pdo->query("
                     SELECT t.rut_trabajador, t.nombre_completo, t.sueldo_base_fijo,
+                           t.colacion, t.transporte,
                            t.id_cargo, t.id_tipo_contrato, t.id_afp, t.id_salud,
                            t.fecha_inicio_contrato, t.fecha_termino_contrato,
                            c.nombre_cargo, tc.nombre_contrato, a.nombre_afp, s.nombre_salud
@@ -57,10 +59,14 @@ try {
             }
             goto fin_post;
         }
-        $sueldo   = trim($_POST['sueldo_base_fijo']     ?? '');
-        $idCargo  = (int)($_POST['id_cargo']            ?? 0);
-        $idTipo   = (int)($_POST['id_tipo_contrato']    ?? 0);
-        $fInicio  = trim($_POST['fecha_inicio_contrato'] ?? '');
+
+        // ── LEER TODOS LOS CAMPOS POST ──
+        $sueldo   = trim($_POST['sueldo_base_fijo']       ?? '');
+        $colacion = (float)preg_replace('/\D/', '', $_POST['colacion']   ?? '0');
+        $transp   = (float)preg_replace('/\D/', '', $_POST['transporte'] ?? '0');
+        $idCargo  = (int)($_POST['id_cargo']              ?? 0);
+        $idTipo   = (int)($_POST['id_tipo_contrato']      ?? 0);
+        $fInicio  = trim($_POST['fecha_inicio_contrato']  ?? '');
         $fTermino = trim($_POST['fecha_termino_contrato'] ?? '');
         $idAfp    = (int)($_POST['id_afp']   ?? 0);
         $idSalud  = (int)($_POST['id_salud'] ?? 0);
@@ -87,6 +93,9 @@ try {
         if ($sueldo === '')           $errores[] = 'El sueldo base es obligatorio.';
         elseif ($sueldoNum < 500000)  $errores[] = 'El sueldo base no puede ser menor a $500.000.';
         elseif ($sueldoNum > 8000000) $errores[] = 'El sueldo base no puede superar los $8.000.000.';
+
+        if ($colacion > 1000000) $errores[] = 'La colación no puede superar $1.000.000.';
+        if ($transp   > 1000000) $errores[] = 'El transporte no puede superar $1.000.000.';
 
         if ($idCargo  <= 0) $errores[] = 'Seleccione un cargo.';
         if ($idTipo   <= 0) $errores[] = 'Seleccione un tipo de contrato.';
@@ -115,6 +124,8 @@ try {
                             rut_trabajador         = :rut_nuevo,
                             nombre_completo        = :nom,
                             sueldo_base_fijo       = :sueldo,
+                            colacion               = :colacion,
+                            transporte             = :transp,
                             id_cargo               = :cargo,
                             id_tipo_contrato       = :tipo,
                             fecha_inicio_contrato  = :fini,
@@ -125,10 +136,11 @@ try {
                     ");
                     $stmt->execute([
                         ':rut_nuevo' => $rut,
-                        ':nom'       => $nombre, ':sueldo' => $sueldoNum,
-                        ':cargo'     => $idCargo, ':tipo'  => $idTipo,
-                        ':fini'      => $fInicio, ':fter'  => ($fTermino !== '' ? $fTermino : null),
-                        ':afp'       => $idAfp,  ':salud'  => $idSalud,
+                        ':nom'       => $nombre,   ':sueldo'   => $sueldoNum,
+                        ':colacion'  => $colacion, ':transp'   => $transp,
+                        ':cargo'     => $idCargo,  ':tipo'     => $idTipo,
+                        ':fini'      => $fInicio,  ':fter'     => ($fTermino !== '' ? $fTermino : null),
+                        ':afp'       => $idAfp,    ':salud'    => $idSalud,
                         ':rut_orig'  => $rutOriginal,
                     ]);
                 } else {
@@ -136,6 +148,8 @@ try {
                         UPDATE trabajador SET
                             nombre_completo        = :nom,
                             sueldo_base_fijo       = :sueldo,
+                            colacion               = :colacion,
+                            transporte             = :transp,
                             id_cargo               = :cargo,
                             id_tipo_contrato       = :tipo,
                             fecha_inicio_contrato  = :fini,
@@ -145,25 +159,29 @@ try {
                         WHERE rut_trabajador = :rut
                     ");
                     $stmt->execute([
-                        ':nom'   => $nombre, ':sueldo' => $sueldoNum,
-                        ':cargo' => $idCargo, ':tipo'  => $idTipo,
-                        ':fini'  => $fInicio, ':fter'  => ($fTermino !== '' ? $fTermino : null),
-                        ':afp'   => $idAfp,  ':salud'  => $idSalud, ':rut' => $rut,
+                        ':nom'      => $nombre,   ':sueldo'  => $sueldoNum,
+                        ':colacion' => $colacion, ':transp'  => $transp,
+                        ':cargo'    => $idCargo,  ':tipo'    => $idTipo,
+                        ':fini'     => $fInicio,  ':fter'    => ($fTermino !== '' ? $fTermino : null),
+                        ':afp'      => $idAfp,    ':salud'   => $idSalud,
+                        ':rut'      => $rut,
                     ]);
                 }
-                $okMsg = 'trabajador actualizado correctamente.';
+                $okMsg = 'Trabajador actualizado correctamente.';
             } else {
                 $stmt = $pdo->prepare("
                     INSERT INTO trabajador
-                        (rut_trabajador, nombre_completo, sueldo_base_fijo, id_cargo,
-                         id_tipo_contrato, fecha_inicio_contrato, fecha_termino_contrato, id_afp, id_salud)
-                    VALUES (:rut, :nom, :sueldo, :cargo, :tipo, :fini, :fter, :afp, :salud)
+                        (rut_trabajador, nombre_completo, sueldo_base_fijo, colacion, transporte,
+                         id_cargo, id_tipo_contrato, fecha_inicio_contrato, fecha_termino_contrato,
+                         id_afp, id_salud)
+                    VALUES (:rut, :nom, :sueldo, :colacion, :transp, :cargo, :tipo, :fini, :fter, :afp, :salud)
                 ");
                 $stmt->execute([
-                    ':rut'   => $rut,    ':nom'    => $nombre,  ':sueldo' => $sueldoNum,
-                    ':cargo' => $idCargo, ':tipo'  => $idTipo,
-                    ':fini'  => $fInicio, ':fter'  => ($fTermino !== '' ? $fTermino : null),
-                    ':afp'   => $idAfp,  ':salud'  => $idSalud,
+                    ':rut'      => $rut,      ':nom'     => $nombre,   ':sueldo'   => $sueldoNum,
+                    ':colacion' => $colacion, ':transp'  => $transp,
+                    ':cargo'    => $idCargo,  ':tipo'    => $idTipo,
+                    ':fini'     => $fInicio,  ':fter'    => ($fTermino !== '' ? $fTermino : null),
+                    ':afp'      => $idAfp,    ':salud'   => $idSalud,
                 ]);
                 $okMsg = 'Trabajador agregado correctamente.';
             }
@@ -172,6 +190,7 @@ try {
             // Recargar lista actualizada
             $todosTrabajadores = $pdo->query("
                 SELECT t.rut_trabajador, t.nombre_completo, t.sueldo_base_fijo,
+                       t.colacion, t.transporte,
                        t.id_cargo, t.id_tipo_contrato, t.id_afp, t.id_salud,
                        t.fecha_inicio_contrato, t.fecha_termino_contrato,
                        c.nombre_cargo, tc.nombre_contrato, a.nombre_afp, s.nombre_salud
@@ -264,7 +283,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
                 <button type="button" class="btn small btn-cargar-edicion" data-rut="<?= htmlspecialchars($t['rut_trabajador']) ?>">
                   Editar
                 </button>
-                <button type="button" class="btn small btn-eliminar" 
+                <button type="button" class="btn small btn-eliminar"
                         data-rut="<?= htmlspecialchars($t['rut_trabajador']) ?>"
                         data-nombre="<?= htmlspecialchars($t['nombre_completo']) ?>">
                   Eliminar
@@ -273,7 +292,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
             </tr>
             <?php endforeach; ?>
             <?php if (empty($todosTrabajadores)): ?>
-              <tr><td colspan="7" class="center lead">Sin trabajadores registrados.</td></tr>
+              <tr><td colspan="6" class="center lead">Sin trabajadores registrados.</td></tr>
             <?php endif; ?>
           </tbody>
         </table>
@@ -357,12 +376,25 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
           <?php selOpt($sistemasSalud, 'id_salud', 'nombre_salud', $_POST['id_salud'] ?? 0); ?>
         </select>
       </label>
+
+      <label>Colación (Máx $1M)
+        <input type="text" id="colacion" name="colacion" class="monto-input"
+          placeholder="$0"
+          value="<?= htmlspecialchars($_POST['colacion'] ?? '') ?>">
+      </label>
+
+      <label>Transporte (Máx $1M)
+        <input type="text" id="transporte" name="transporte" class="monto-input"
+          placeholder="$0"
+          value="<?= htmlspecialchars($_POST['transporte'] ?? '') ?>">
+      </label>
+
     </fieldset>
 
     <div class="actions">
       <button type="button" id="btn-cancelar-edicion" class="btn" style="display:none">✖ Cancelar</button>
       <button class="btn azul" type="submit" id="btn-guardar">Guardar</button>
-             <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+      <a class="btn ghost btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
     </div>
   </form>
 </section>
@@ -371,18 +403,22 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
      MODAL CONFIRMACIÓN ELIMINAR
 ══════════════════════════════════════════ -->
 <div id="modal-eliminar" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);align-items:center;justify-content:center">
-  <div style="background:var(--panel);border:1px;border-radius:14px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+  <div style="background:var(--panel);border:1px solid var(--border,#333);border-radius:14px;padding:28px 32px;max-width:460px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5)">
     <h3 style="margin:0 0 8px;">Confirmar eliminación</h3>
-    <p style="margin:0 0 20px;">
+    <p style="margin:0 0 6px;">
       ¿Está seguro que desea eliminar al trabajador<br>
-      <strong id="modal-nombre-trabajador"></strong>?<br>
-      <small >Esta acción no se puede deshacer.</small>
+      <strong id="modal-nombre-trabajador"></strong>?
     </p>
+    <!-- Detalle: colación, transporte, fechas -->
+    <div id="modal-detalle-trabajador"
+         style="margin:10px 0 16px;padding:10px 14px;border-radius:8px;
+                background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+                font-size:13px;color:var(--muted,#aaa);line-height:1.7">
+    </div>
+    <small style="display:block;margin-bottom:20px;color:#f87171;">Esta acción no se puede deshacer.</small>
     <div style="display:flex;gap:12px;justify-content:flex-end">
       <button type="button" id="modal-btn-cancelar" class="btn">Cancelar</button>
-      <button type="button" id="modal-btn-confirmar" class="btn">
-         Sí, eliminar
-      </button>
+      <button type="button" id="modal-btn-confirmar" class="btn">Sí, eliminar</button>
     </div>
   </div>
 </div>
@@ -393,8 +429,6 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   <input type="hidden" name="rut_trabajador" id="eliminar-rut">
 </form>
 
-
-
 <script>
 (function () {
 
@@ -402,16 +436,12 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
      AUTO-CARGAR si viene ?editar=RUT desde listado
   ════════════════════════════════════════ */
   (function autoCargar() {
-    var params = new URLSearchParams(window.location.search);
+    var params   = new URLSearchParams(window.location.search);
     var rutParam = params.get('editar');
     if (!rutParam) return;
     var t = TRABAJADORES.find(function (w) { return w.rut_trabajador === rutParam; });
     if (!t) return;
-    // Abrir buscador y marcar fila
-    var panel = document.getElementById('panel-buscador');
-    var btnToggle = document.getElementById('btn-toggle-buscador');
-    if (panel) { abrirBuscador(); }
-    // Simular clic en el botón editar de esa fila
+    abrirBuscador();
     var btnFila = document.querySelector('.btn-cargar-edicion[data-rut="' + rutParam + '"]');
     if (btnFila) btnFila.click();
   })();
@@ -422,6 +452,8 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   var rutInput      = document.getElementById('rut_trabajador');
   var nombreInput   = document.getElementById('nombre_completo');
   var sueldoInput   = document.getElementById('sueldo_base_fijo');
+  var colacionInput = document.getElementById('colacion');
+  var transpInput   = document.getElementById('transporte');
   var fInicioInput  = document.getElementById('fecha_inicio_contrato');
   var fTerminoInput = document.getElementById('fecha_termino_contrato');
   var selCargo      = document.getElementById('id_cargo');
@@ -440,9 +472,8 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   ════════════════════════════════════════ */
   var btnToggle   = document.getElementById('btn-toggle-buscador');
   var panelBuscar = document.getElementById('panel-buscador');
-
-  var overlay    = document.getElementById('buscador-overlay');
-  var btnCerrar  = document.getElementById('btn-cerrar-buscador');
+  var overlay     = document.getElementById('buscador-overlay');
+  var btnCerrar   = document.getElementById('btn-cerrar-buscador');
 
   function abrirBuscador() {
     panelBuscar.classList.add('abierto');
@@ -460,7 +491,6 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   btnToggle.addEventListener('click', function () {
     panelBuscar.classList.contains('abierto') ? cerrarBuscador() : abrirBuscador();
   });
-
   btnCerrar.addEventListener('click', cerrarBuscador);
   overlay.addEventListener('click',   cerrarBuscador);
 
@@ -471,7 +501,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   var sinResultados = document.getElementById('sin-resultados');
 
   inputBuscar.addEventListener('input', function () {
-    var q       = this.value.toLowerCase().trim();
+    var q        = this.value.toLowerCase().trim();
     var visibles = 0;
     document.querySelectorAll('.fila-t').forEach(function (fila) {
       var match = fila.dataset.nombre.includes(q) || fila.dataset.rutraw.includes(q);
@@ -482,7 +512,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   });
 
   /* ════════════════════════════════════════
-     CARGAR DATOS EN FORMULARIO AL PRESIONAR ✏️ EDITAR
+     CARGAR DATOS EN FORMULARIO AL PRESIONAR EDITAR
   ════════════════════════════════════════ */
   document.getElementById('tbody-buscador').addEventListener('click', function (e) {
     var btn = e.target.closest('.btn-cargar-edicion');
@@ -501,14 +531,14 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     rutInput.readOnly   = false;
     rutInput.style.opacity = '1';
     rutInput.style.cursor  = '';
-    document.getElementById('campo-rut-original').value = '';
-    document.getElementById('aviso-rut-editable').style.display = 'none';
-    // Guardar RUT original para detectar si cambió
+
     document.getElementById('campo-rut-original').value = t.rut_trabajador;
     document.getElementById('aviso-rut-editable').style.display = 'block';
 
     nombreInput.value   = t.nombre_completo;
-    sueldoInput.value   = parseInt(t.sueldo_base_fijo, 10).toLocaleString('es-CL');
+    sueldoInput.value   = parseInt(t.sueldo_base_fijo  || 0, 10).toLocaleString('es-CL');
+    colacionInput.value = parseInt(t.colacion          || 0, 10).toLocaleString('es-CL');
+    transpInput.value   = parseInt(t.transporte        || 0, 10).toLocaleString('es-CL');
     fInicioInput.value  = t.fecha_inicio_contrato  || '';
     fTerminoInput.value = t.fecha_termino_contrato || '';
 
@@ -518,51 +548,69 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     setSelect(selSalud, t.id_salud);
 
     // Modo edición
-    campoAccion.value   = 'editar';
-    btnGuardar.textContent = 'Actualizar';
-    formLegend.textContent = 'Editando: ' + t.nombre_completo;
-    tabTitulo.textContent  = 'Editar trabajador';
-    btnCancelar.style.display = 'inline-flex';
+    campoAccion.value          = 'editar';
+    btnGuardar.textContent     = 'Actualizar';
+    formLegend.textContent     = 'Editando: ' + t.nombre_completo;
+    tabTitulo.textContent      = 'Editar trabajador';
+    btnCancelar.style.display  = 'inline-flex';
 
-    // Animar campos para que el usuario note que se llenaron
-    [rutInput, nombreInput, sueldoInput, selCargo, selTipo,
-     selAfp, selSalud, fInicioInput, fTerminoInput].forEach(function (el) {
+    // Animar campos
+    [rutInput, nombreInput, sueldoInput, colacionInput, transpInput,
+     selCargo, selTipo, selAfp, selSalud, fInicioInput, fTerminoInput].forEach(function (el) {
       el.classList.remove('campo-destacado');
-      void el.offsetWidth; // reflow para reiniciar animación
+      void el.offsetWidth;
       el.classList.add('campo-destacado');
     });
 
-    // Cerrar buscador y scroll al formulario
     cerrarBuscador();
     document.getElementById('form-trabajador').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   /* ════════════════════════════════════════
-     ELIMINAR — modal de confirmación
+     ELIMINAR — modal con detalle completo
   ════════════════════════════════════════ */
-  var modal         = document.getElementById('modal-eliminar');
-  var modalNombre   = document.getElementById('modal-nombre-trabajador');
-  var modalCancelar = document.getElementById('modal-btn-cancelar');
-  var modalConfirmar= document.getElementById('modal-btn-confirmar');
-  var formEliminar  = document.getElementById('form-eliminar');
+  var modal            = document.getElementById('modal-eliminar');
+  var modalNombre      = document.getElementById('modal-nombre-trabajador');
+  var modalDetalle     = document.getElementById('modal-detalle-trabajador');
+  var modalCancelar    = document.getElementById('modal-btn-cancelar');
+  var modalConfirmar   = document.getElementById('modal-btn-confirmar');
+  var formEliminar     = document.getElementById('form-eliminar');
   var eliminarRutInput = document.getElementById('eliminar-rut');
+
+  function fmt(n) {
+    return parseInt(n || 0, 10).toLocaleString('es-CL');
+  }
+  function fmtFecha(f) {
+    if (!f) return '—';
+    // Formato YYYY-MM-DD → DD/MM/YYYY
+    var parts = String(f).split('-');
+    return parts.length === 3 ? parts[2] + '/' + parts[1] + '/' + parts[0] : f;
+  }
 
   // Abrir modal al hacer clic en ELIMINAR
   document.getElementById('tbody-buscador').addEventListener('click', function (e) {
     var btn = e.target.closest('.btn-eliminar');
     if (!btn) return;
-    eliminarRutInput.value  = btn.dataset.rut;
-    modalNombre.textContent = btn.dataset.nombre + ' (' + btn.dataset.rut + ')';
-    modal.style.display     = 'flex';
+
+    var rut = btn.dataset.rut;
+    var t   = TRABAJADORES.find(function (w) { return w.rut_trabajador === rut; });
+
+    eliminarRutInput.value  = rut;
+    modalNombre.textContent = btn.dataset.nombre + ' (' + rut + ')';
+
+    // Mostrar detalle: colación, transporte, fechas
+    modalDetalle.innerHTML =
+      '<span> Colación: <strong>$' + fmt(t ? t.colacion   : 0) + '</strong></span><br>' +
+      '<span>Transporte: <strong>$' + fmt(t ? t.transporte : 0) + '</strong></span><br>' +
+      '<span>Inicio contrato: <strong>' + fmtFecha(t ? t.fecha_inicio_contrato  : null) + '</strong></span><br>' +
+      '<span>Término contrato: <strong>' + (t && t.fecha_termino_contrato ? fmtFecha(t.fecha_termino_contrato) : 'Indefinido') + '</strong></span>';
+
+    modal.style.display = 'flex';
   });
 
   // Cerrar modal
-  modalCancelar.addEventListener('click', function () {
-    modal.style.display = 'none';
-  });
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal) modal.style.display = 'none';
-  });
+  modalCancelar.addEventListener('click', function () { modal.style.display = 'none'; });
+  modal.addEventListener('click', function (e) { if (e.target === modal) modal.style.display = 'none'; });
 
   // Confirmar → enviar form POST
   modalConfirmar.addEventListener('click', function () {
@@ -583,39 +631,36 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   ════════════════════════════════════════ */
   <?php if ($ok): ?>
   (function () {
-    // El servidor ya guardó. Actualizamos la tabla del buscador en el cliente.
-    var datos = TRABAJADORES; // ya tiene los datos actualizados (PHP los recargó)
+    var datos = TRABAJADORES;
     var tbody = document.getElementById('tbody-buscador');
 
-    // Reconstruir filas
     tbody.innerHTML = '';
     if (datos.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" class="center lead">Sin trabajadores registrados.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="center lead">Sin trabajadores registrados.</td></tr>';
     } else {
       datos.forEach(function (t) {
         var sueldo = parseInt(t.sueldo_base_fijo, 10).toLocaleString('es-CL');
         var tr = document.createElement('tr');
-        tr.className   = 'fila-t';
-        tr.dataset.rut     = t.rut_trabajador;
-        tr.dataset.nombre  = t.nombre_completo.toLowerCase();
-        tr.dataset.rutraw  = t.rut_trabajador.toLowerCase();
+        tr.className          = 'fila-t';
+        tr.dataset.rut        = t.rut_trabajador;
+        tr.dataset.nombre     = t.nombre_completo.toLowerCase();
+        tr.dataset.rutraw     = t.rut_trabajador.toLowerCase();
         tr.innerHTML =
-          '<td class="col-rut">'      + esc(t.rut_trabajador)   + '</td>' +
-          '<td class="col-nombre">'   + esc(t.nombre_completo)  + '</td>' +
-          '<td class="col-cargo">'    + esc(t.nombre_cargo)     + '</td>' +
-          '<td class="col-contrato">' + esc(t.nombre_contrato)  + '</td>' +
-          '<td class="col-sueldo">$'  + sueldo                  + '</td>' +
+          '<td class="col-rut">'      + esc(t.rut_trabajador)  + '</td>' +
+          '<td class="col-nombre">'   + esc(t.nombre_completo) + '</td>' +
+          '<td class="col-cargo">'    + esc(t.nombre_cargo)    + '</td>' +
+          '<td class="col-contrato">' + esc(t.nombre_contrato) + '</td>' +
+          '<td class="col-sueldo">$'  + sueldo                 + '</td>' +
           '<td style="white-space:nowrap">' +
-            '<button type="button" class="btn small btn-cargar-edicion" data-rut="' + esc(t.rut_trabajador) + '">✏️ Editar</button> ' +
-            '<button type="button" class="btn small btn-eliminar" style="background:#7f1d1d;border-color:#991b1b;color:#fca5a5;margin-left:4px" data-rut="' + esc(t.rut_trabajador) + '" data-nombre="' + esc(t.nombre_completo) + '">🗑️ Eliminar</button>' +
+            '<button type="button" class="btn small btn-cargar-edicion" data-rut="' + esc(t.rut_trabajador) + '">Editar</button> ' +
+            '<button type="button" class="btn small btn-eliminar" data-rut="' + esc(t.rut_trabajador) + '" data-nombre="' + esc(t.nombre_completo) + '">Eliminar</button>' +
           '</td>';
         tbody.appendChild(tr);
       });
     }
 
-    // Mostrar mensaje y limpiar formulario
-    msgOkJs.textContent = '<?= addslashes($okMsg) ?>';
-    msgOkJs.style.display = 'inline-block';
+    msgOkJs.textContent     = '<?= addslashes($okMsg) ?>';
+    msgOkJs.style.display   = 'inline-block';
     setTimeout(function () { msgOkJs.style.display = 'none'; }, 4000);
 
     limpiarFormulario();
@@ -640,6 +685,8 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     rutInput.style.cursor  = '';
     nombreInput.value   = '';
     sueldoInput.value   = '';
+    colacionInput.value = '';
+    transpInput.value   = '';
     fInicioInput.value  = '';
     fTerminoInput.value = '';
     selCargo.selectedIndex = 0;
@@ -651,6 +698,8 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     formLegend.textContent = 'Datos del trabajador';
     tabTitulo.textContent  = 'Nuevo trabajador';
     btnCancelar.style.display = 'none';
+    document.getElementById('aviso-rut-editable').style.display = 'none';
+    document.getElementById('campo-rut-original').value = '';
     document.querySelectorAll('.input-error').forEach(function (el) { el.classList.remove('input-error'); });
     document.querySelectorAll('.msg-error-campo').forEach(function (el) { el.remove(); });
   }
@@ -703,7 +752,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     toggleError(this, len===0 ? 'Obligatorio.' : len>50 ? 'Máximo 50 caracteres.' : null);
   });
 
-  // Sueldo
+  // Sueldo base
   sueldoInput.addEventListener('keypress', function (e) {
     if (!/[0-9]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key))
       e.preventDefault();
@@ -715,6 +764,23 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   sueldoInput.addEventListener('blur', function () {
     var n = parseInt(this.value.replace(/\D/g,'')||'0',10);
     toggleError(this, n<500000 ? 'Mínimo $500.000.' : n>8000000 ? 'Máximo $8.000.000.' : null);
+  });
+
+  // Colación y Transporte (formato + tope $1.000.000)
+  [colacionInput, transpInput].forEach(function (input) {
+    input.addEventListener('keypress', function (e) {
+      if (!/[0-9]/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(e.key))
+        e.preventDefault();
+    });
+    input.addEventListener('input', function () {
+      var raw = this.value.replace(/\D/g,'');
+      if (parseInt(raw,10) > 1000000) raw = '1000000';
+      this.value = raw ? parseInt(raw,10).toLocaleString('es-CL') : '';
+    });
+    input.addEventListener('blur', function () {
+      var n = parseInt(this.value.replace(/\D/g,'')||'0',10);
+      toggleError(this, n > 1000000 ? 'Máximo $1.000.000.' : null);
+    });
   });
 
   function toggleError(input, msg) {

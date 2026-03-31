@@ -11,6 +11,7 @@ try {
     // Todos los trabajadores con sus datos completos para el JS
     $trabajadores = $pdo->query("
         SELECT t.rut_trabajador, t.nombre_completo, t.sueldo_base_fijo,
+        t.colacion, t.transporte,
                c.nombre_cargo, tc.nombre_contrato, a.nombre_afp, s.nombre_salud
         FROM trabajador t
         JOIN cargo c           ON c.id_cargo          = t.id_cargo
@@ -19,59 +20,64 @@ try {
         JOIN sistema_salud s   ON s.id_salud          = t.id_salud
         ORDER BY t.nombre_completo
     ")->fetchAll();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
+    // Función para limpiar formato $1.000.000 → número
+    $limpiar = fn($campo) => isset($_POST[$campo]) && $_POST[$campo] !== ''
+        ? (float) str_replace(['$', '.', ' '], '', $_POST[$campo])
+        : null;
 
-        $rut      = trim($_POST['rut_trabajador']  ?? '');
-        $mes      = (int)($_POST['mes_periodo']    ?? 0);
-        $anio     = (int)($_POST['anio_periodo']   ?? 0);
-        $dias     = ($_POST['dias_trabajados'] !== '') ? (int)$_POST['dias_trabajados']                   : null;
-        $valor_uf = ($_POST['valor_uf']        !== '') ? (float)$_POST['valor_uf']                        : null;
-        $sueldo   = ($_POST['sueldo_base_mes'] !== '') ? (float)$_POST['sueldo_base_mes']                 : null;
-        $grat     = ($_POST['gratificacion']   !== '') ? (float)$_POST['gratificacion']                   : null;
-        $colacion = ($_POST['colacion']        !== '') ? (float)$_POST['colacion']                        : null;
-        $cotPrev  = ($_POST['cotiz_previsional_obligatoria'] !== '') ? (float)$_POST['cotiz_previsional_obligatoria'] : null;
-        $cotSalud = ($_POST['cotiz_salud_obligatoria']       !== '') ? (float)$_POST['cotiz_salud_obligatoria']       : null;
-        $segCes   = ($_POST['seguro_cesantia']               !== '') ? (float)$_POST['seguro_cesantia']               : null;
-        $impPrev  = ($_POST['imp_prev_salud']                !== '') ? (float)$_POST['imp_prev_salud']                : null;
-        $otros    = ($_POST['otros_descuentos']              !== '') ? (float)$_POST['otros_descuentos']              : null;
-        $base     = ($_POST['base_tributable']               !== '') ? (float)$_POST['base_tributable']               : null;
-        $liquido  = ($_POST['liquido_a_pagar']               !== '') ? (float)$_POST['liquido_a_pagar']               : null;
+    $rut      = trim($_POST['rut_trabajador'] ?? '');
+    $mes      = (int)($_POST['mes_periodo']   ?? 0);
+    $anio     = (int)($_POST['anio_periodo']  ?? 0);
+    $dias     = (int)($_POST['dias_trabajados'] ?? 30);
 
-        if ($rut === '')            $errores[] = 'Seleccione un trabajador.';
-        if ($mes < 1 || $mes > 12) $errores[] = 'Mes inválido.';
-        if ($anio < 2000)          $errores[] = 'Año inválido.';
-        if ($liquido === null)      $errores[] = 'Debe indicar el líquido a pagar.';
+    $sueldo   = $limpiar('sueldo_base_mes');
+    $grat     = $limpiar('gratificacion');
+    $colacion = $limpiar('colacion');
+    $transp   = $limpiar('transporte');
+    $cotPrev  = $limpiar('cotiz_previsional_obligatoria');
+    $cotSalud = $limpiar('cotiz_salud_obligatoria');
+    $segCes   = $limpiar('seguro_cesantia');
+    $liquido  = $limpiar('liquido_a_pagar');
 
-        if (!$errores) {
-            $stmt = $pdo->prepare("
-                INSERT INTO liquidacion
-                    (rut_trabajador, mes_periodo, anio_periodo, nombre_empleador,
-                     dias_trabajados, valor_uf, sueldo_base_mes, gratificacion,
-                     colacion, cotiz_previsional_obligatoria, cotiz_salud_obligatoria,
-                     seguro_cesantia, otros_descuentos, imp_prev_salud, imp_cesantia,
-                     base_tributable, liquido_a_pagar)
-                VALUES
-                    (:rut, :mes, :anio, :empleador,
-                     :dias, :uf, :sueldo, :grat,
-                     :col, :prev, :sal,
-                     :ces, :otros, :impPrev, NULL,
-                     :base, :liq)
-            ");
-            $stmt->execute([
-                ':rut'      => $rut,    ':mes'   => $mes,      ':anio'    => $anio,
-                ':empleador'=> 'Colegio Ejemplo',
-                ':dias'     => $dias,   ':uf'    => $valor_uf,
-                ':sueldo'   => $sueldo, ':grat'  => $grat,     ':col'     => $colacion,
-                ':prev'     => $cotPrev,':sal'   => $cotSalud, ':ces'     => $segCes,
-                ':otros'    => $otros,  ':impPrev'=> $impPrev,
-                ':base'     => $base,   ':liq'   => $liquido,
-            ]);
-            $lastId = (int)$pdo->lastInsertId();
-            header('Location: /remuneraciones/public/liquidacion_ver.php?id=' . $lastId);
-            exit;
-        }
+    if ($rut === '')            $errores[] = 'Seleccione un trabajador.';
+    if ($mes < 1 || $mes > 12) $errores[] = 'Mes inválido.';
+    if ($anio < 2000)          $errores[] = 'Año inválido.';
+    if ($liquido === null)      $errores[] = 'Debe indicar el líquido a pagar.';
+
+    if (!$errores) {
+        $stmt = $pdo->prepare("
+            INSERT INTO liquidacion
+                (rut_trabajador, mes_periodo, anio_periodo, nombre_empleador,
+                 dias_trabajados, sueldo_base_mes, gratificacion,
+                 colacion, transporte, cotiz_previsional, cotiz_salud,
+                 seguro_cesantia, liquido_a_pagar)
+            VALUES
+                (:rut, :mes, :anio, 'Colegio Ejemplo',
+                 :dias, :sueldo, :grat,
+                 :col, :trans, :prev, :sal,
+                 :ces, :liq)
+        ");
+        $stmt->execute([
+            ':rut'    => $rut,
+            ':mes'    => $mes,
+            ':anio'   => $anio,
+            ':dias'   => $dias,
+            ':sueldo' => $sueldo,
+            ':grat'   => $grat,
+            ':col'    => $colacion,
+            ':trans'  => $transp,
+            ':prev'   => $cotPrev,
+            ':sal'    => $cotSalud,
+            ':ces'    => $segCes,
+            ':liq'    => $liquido,
+        ]);
+        $lastId = (int)$pdo->lastInsertId();
+        header('Location: /remuneraciones/public/liquidacion_ver.php?id=' . $lastId);
+        exit;
     }
+}
 
 } catch (Throwable $e) {
     $errores[] = 'Error: ' . $e->getMessage();
@@ -209,71 +215,110 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
 
     <!-- ===== HABERES y DESCUENTOS ===== -->
     <div class="flex">
-      <div class="flex-1">
-        <fieldset>
-          <legend>HABERES</legend>
-          <table class="table">
+     <div class="flex-1">
+    <fieldset>
+      
+        <table class="table">
             <tbody>
-              <tr>
-                <td>Sueldo base mes</td>
-                <td><input type="number" step="0.01" name="sueldo_base_mes" id="campo-sueldo"
-                           value="<?= htmlspecialchars($_POST['sueldo_base_mes'] ?? '') ?>"></td>
-              </tr>
-              <tr>
-                <td>Gratificación</td>
-                <td><input type="number" step="0.01" name="gratificacion"
-                           value="<?= htmlspecialchars($_POST['gratificacion'] ?? '') ?>"></td>
-              </tr>
-              <tr>
-                <td>Colación / Movilización (no imponible)</td>
-                <td><input type="number" step="0.01" name="colacion"
-                           value="<?= htmlspecialchars($_POST['colacion'] ?? '') ?>"></td>
-              </tr>
-              <tr>
-                <td>Valor UF</td>
-                <td><input type="number" step="0.01" name="valor_uf"
-                           value="<?= htmlspecialchars($_POST['valor_uf'] ?? '') ?>"></td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
-      </div>
+                <tr class="titulos-fijos">
+                    <td colspan="2" style="text-align: center; font-weight: bold;">HABERES IMPONIBLES</td>
+                </tr>
+                <tr>
+                    <td>Sueldo base</td>
+                    <td>
+                        <input type="number" step="0.01" name="sueldo_base_mes" id="campo-sueldo" 
+                               value="<?= htmlspecialchars($_POST['sueldo_base_mes'] ?? '') ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gratificación (25% c/tope)</td>
+                    <td>
+                        <input type="number" step="0.01" name="gratificacion" id="campo-gratificacion" 
+                               value="<?= htmlspecialchars($_POST['gratificacion'] ?? '') ?>" readonly>
+                    </td>
+                </tr>
 
-      <div class="flex-1">
-        <fieldset>
-          <legend>DESCUENTOS</legend>
-          <table class="table">
-            <tbody>
-              <tr>
-                <td>Cotiz. previsional obligatoria <span class="badge">10% IT</span></td>
-                <td><input type="number" step="0.01" name="cotiz_previsional_obligatoria" readonly></td>
-              </tr>
-              <tr>
-                <td>Cotiz. salud obligatoria <span class="badge">7% IT</span></td>
-                <td><input type="number" step="0.01" name="cotiz_salud_obligatoria" readonly></td>
-              </tr>
-              <tr>
-                <td>Seguro cesantía <span class="badge">0,60% IT</span></td>
-                <td><input type="number" step="0.01" name="seguro_cesantia" readonly></td>
-              </tr>
-              <tr>
-                <td>Impuesto previsión</td>
-                <td><input type="number" step="0.01" name="imp_prev_salud"
-                           value="<?= htmlspecialchars($_POST['imp_prev_salud'] ?? '') ?>"></td>
-              </tr>
-              <tr>
-                <td>Otros descuentos (voluntarios)</td>
-                <td><input type="number" step="0.01" name="otros_descuentos"
-                           value="<?= htmlspecialchars($_POST['otros_descuentos'] ?? '') ?>"></td>
-              </tr>
+                <tr class="titulos-fijos">
+                    <td colspan="2" style="text-align: center; font-weight: bold;">HABERES NO IMPONIBLES</td>
+                </tr>
+                <tr>
+                    <td>Colación</td>
+                    <td>
+                        <input type="number" step="0.01" name="colacion" id="campo-colacion"
+                               value="<?= htmlspecialchars($_POST['colacion'] ?? '') ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Movilización</td>
+                    <td>
+                        <input type="number" step="0.01" name="transporte" id="campo-transporte"
+                               value="<?= htmlspecialchars($_POST['transporte'] ?? '') ?>">
+                    </td>
+                </tr>
+
+                <tr class="total-fijos">
+                    <td><strong>TOTAL HABERES</strong></td>
+                    <td>
+                        <input type="number" step="0.01" id="total_haberes" name="total_haberes" readonly>
+                    </td>
+                </tr>
             </tbody>
-          </table>
-        </fieldset>
-      </div>
+        </table>
+    </fieldset>
+</div>
+
+<div class="flex-1">
+    <fieldset>
+        <table class="table">
+            <tbody>
+                <tr class="titulos-fijos">
+                    <td colspan="2" style="text-align: center; font-weight: bold;">DESCUENTOS LEGALES</td>
+                </tr>
+                <tr>
+                    <td>Cotiz. previsional obligatoria (APF)<span class="badge">10% IT</span></td>
+                    <td><input type="number" step="0.01" name="cotiz_previsional_obligatoria" id="campo-prev" readonly></td>
+                </tr>
+                <tr>
+                    <td>Cotiz. salud obligatoria <span class="badge">7% IT</span></td>
+                    <td><input type="number" step="0.01" name="cotiz_salud_obligatoria" id="campo-salud" readonly></td>
+                </tr>
+                <tr>
+                    <td>Seguro cesantía <span class="badge">0,60% IT</span></td>
+                    <td><input type="number" step="0.01" name="seguro_cesantia" id="campo-cesantia" readonly></td>
+                </tr>
+                <!-- <tr>
+                    <td>Impuesto previsión / Salud adicional</td>
+                    <td>
+                        <input type="number" step="0.01" name="imp_prev_salud" id="campo-imp-prev"
+                               value="<?= htmlspecialchars($_POST['imp_prev_salud'] ?? '') ?>">
+                    </td>
+                </tr> -->
+
+                <tr class="titulos-fijos">
+                    <td colspan="2" style="text-align: center; font-weight: bold;">OTROS DESCUENTOS</td>
+                </tr>
+                <tr>
+                    <td>Otros descuentos</td>
+                    <td>
+                        <input type="number" step="0.01" name="otros_descuentos" id="campo-otros"
+                               value="<?= htmlspecialchars($_POST['otros_descuentos'] ?? '') ?>">
+                    </td>
+                </tr>
+
+                <tr class="total-fijos">
+                    <td><strong>TOTAL DESCUENTOS</strong></td>
+                    <td>
+                        <input type="number" step="0.01" id="total_descuentos" name="total_descuentos" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</div>
     </div>
 
     <!-- ===== TOTALES ===== -->
-    <fieldset>
+    <!-- <fieldset>
       <legend>Totales por tipo</legend>
       <div class="flex">
         <div class="flex-1">
@@ -313,14 +358,14 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
           </table>
         </div>
       </div>
-    </fieldset>
+    </fieldset> -->
 
     <!-- ===== RESUMEN ===== -->
     <fieldset>
-      <legend>Resumen</legend>
+    
       <div class="flex">
         <div class="flex-1">
-          <label>Líquido a pagar (obligatorio)
+          <label>LIQUIDO A RECIBIR
             <input type="number" step="0.01" name="liquido_a_pagar" required
                    value="<?= htmlspecialchars($_POST['liquido_a_pagar'] ?? '') ?>">
           </label>
@@ -333,7 +378,13 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
       <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
     </div>
 
-  </form>
+    <H4>Certifico que he recibido de del colegio a mi entera satisfacción el saldo indicado en la presente Liquidación y no tengo cargo ni cobro
+     posterior que hacer</H4>
+     <br>
+     <br>
+     <br>________________________
+     <h3>FIRMA CONFORME</h3>
+    </form>
 </section>
 
 <script>
@@ -354,7 +405,7 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
   const q   = s => document.querySelector(s);
   const num = el => { if (!el) return 0; const v = parseFloat((el.value || '').replace(',','.')); return isNaN(v) ? 0 : v; };
   const set = (el, val) => { if (el) el.value = (Math.round((val + Number.EPSILON) * 100) / 100).toFixed(2); };
-
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-CL');
   /* ── 1. Cargar datos del trabajador al seleccionar ── */
   function cargarTrabajador() {
     const rut = selTrabajador.value;
@@ -375,8 +426,14 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
     campoSalud.value    = t.nombre_salud;
 
     // Precargar sueldo base del trabajador
-    campoSueldo.value = parseFloat(t.sueldo_base_fijo).toFixed(2);
-    recalc();
+   campoSueldo.value = parseFloat(t.sueldo_base_fijo).toFixed(2);
+
+const $colaField  = q('input[name="colacion"]');
+const $transField = q('input[name="transporte"]');
+if ($colaField)  $colaField.value  = parseFloat(t.colacion   || 0).toFixed(2);
+if ($transField) $transField.value = parseFloat(t.transporte || 0).toFixed(2);
+
+recalc();
   }
 
   /* ── 2. Seleccionar el último día del mes en el desplegable ── */
@@ -406,9 +463,17 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
   const $td     = q('#total_descuentos');
   const $liq    = q('input[name="liquido_a_pagar"]');
 
-  function recalc() {
-    const IT       = num($sueldo) + num($grat);
-    const NN       = num($cola);
+ 
+function recalc() {
+    const sueldo = num($sueldo);
+    const grat   = Math.round(sueldo * 0.25);  // 25% sueldo base → gratificación
+
+    set($grat, grat);                           // escribe el valor calculado
+
+    const IT       = sueldo + grat;             // base imponible tributable
+    const trans    = num(q('input[name="transporte"]'));
+    const NN       = num($cola) + trans;        // colación + movilización (no imponibles)
+
     const cotPrev  = IT * 0.10;
     const cotSalud = IT * 0.07;
     const cesantia = IT * 0.006;
@@ -417,20 +482,20 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
     set($salud, cotSalud);
     set($ces,   cesantia);
 
-    const totalHaberes = IT + NN;
-    const DL = cotPrev + cotSalud + cesantia + num($impPS);
-    const DV = num($otros);
-    const totalDesc  = DL + DV;
-    const liquidoSug = totalHaberes - totalDesc;
+    const totalHaberes = IT + NN;               // sueldo + grat + col + mov
+    const DL           = cotPrev + cotSalud + cesantia + num($impPS);
+    const DV           = num($otros);
+    const totalDesc    = DL + DV;
+    const liquidoSug   = totalHaberes - totalDesc;
 
     set($it, IT);  set($nn, NN);  set($th, totalHaberes);
     set($dl, DL);  set($dv, DV);  set($td, totalDesc);
 
     if ($liq && ($liq.value === '' || $liq.dataset.autofill === '1')) {
-      $liq.value = liquidoSug.toFixed(2);
-      $liq.dataset.autofill = '1';
+        $liq.value = liquidoSug.toFixed(2);
+        $liq.dataset.autofill = '1';
     }
-  }
+}
 
   /* ── Eventos ── */
   selTrabajador.addEventListener('change', cargarTrabajador);
@@ -445,6 +510,20 @@ var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores), JSON_UNESCAP
   actualizarDias();
   recalc();
 
+    /* ── 5. Estilo líquido a pagar ── */
+  if ($liq) {
+    $liq.style.textAlign  = 'center';
+    $liq.style.fontSize   = '1.4rem';
+    $liq.style.fontWeight = 'bold';
+    $liq.readOnly = true;
+  }
+
+
+
+   /* ── 7. Inicializar ── */
+  if (selTrabajador.value) cargarTrabajador();
+  actualizarDias();
+  recalc();
 })();
 </script>
 
