@@ -1,0 +1,79 @@
+DROP DATABASE IF EXISTS remuneraciones;
+CREATE DATABASE remuneraciones;
+USE remuneraciones;
+
+-- 1. CARGO
+CREATE TABLE cargo (
+    id_cargo INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_cargo VARCHAR(50) NOT NULL
+) ENGINE=InnoDB;
+
+-- 2. SISTEMA SALUD
+CREATE TABLE sistema_salud (
+    id_salud INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_salud VARCHAR(50) NOT NULL
+) ENGINE=InnoDB;
+
+-- 3. TIPOS CONTRATO
+CREATE TABLE tipos_contrato (
+    id_tipo_contrato INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_contrato VARCHAR(50) NOT NULL
+) ENGINE=InnoDB;
+
+-- 4. AFP (Incluye porcentaje para cálculos)
+CREATE TABLE afp (
+    id_afp INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_afp VARCHAR(50) NOT NULL,
+    porcentaje_descuento DECIMAL(5,2) NOT NULL
+) ENGINE=InnoDB;
+
+-- 5. TRABAJADOR (Aquí definimos los montos FIJOS pactados)
+CREATE TABLE trabajador (
+    rut_trabajador VARCHAR(12) PRIMARY KEY,
+    id_cargo INT,
+    id_tipo_contrato INT,
+    id_afp INT,
+    id_salud INT,
+    nombre_completo VARCHAR(100) NOT NULL,
+    sueldo_base_fijo DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+    colacion DECIMAL(12,2) NOT NULL DEFAULT 0.00, -- Monto pactado
+    transporte DECIMAL(12,2) NOT NULL DEFAULT 0.00, -- Monto pactado
+    fecha_inicio_contrato DATE NOT NULL,
+    fecha_termino_contrato DATE NULL,
+    FOREIGN KEY (id_cargo) REFERENCES cargo(id_cargo),
+    FOREIGN KEY (id_tipo_contrato) REFERENCES tipos_contrato(id_tipo_contrato),
+    FOREIGN KEY (id_afp) REFERENCES afp(id_afp),
+    FOREIGN KEY (id_salud) REFERENCES sistema_salud(id_salud)
+) ENGINE=InnoDB;
+
+-- 6. LIQUIDACION (Registro histórico de lo pagado)
+CREATE TABLE liquidacion (
+    id_liquidacion INT AUTO_INCREMENT PRIMARY KEY,
+    rut_trabajador VARCHAR(12),
+    mes_periodo INT,
+    anio_periodo INT,
+    nombre_empleador VARCHAR(100) DEFAULT 'Colegio Ejemplo',
+    dias_trabajados INT DEFAULT 30,
+    sueldo_base_mes DECIMAL(12,2),
+    gratificacion DECIMAL(12,2),
+    colacion DECIMAL(12,2), -- Lo pagado en el mes
+    transporte DECIMAL(12,2), -- Lo pagado en el mes
+    cotiz_previsional DECIMAL(12,2),
+    cotiz_salud DECIMAL(12,2),
+    seguro_cesantia DECIMAL(12,2),
+    liquido_a_pagar DECIMAL(12,2),
+    fecha_emision TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (rut_trabajador) REFERENCES trabajador(rut_trabajador)
+) ENGINE=InnoDB;
+
+-- ==========================================
+-- INSERCIÓN DE DATOS MAESTROS
+-- ==========================================
+
+INSERT INTO cargo (nombre_cargo) VALUES ('Docente'), ('Administrativo'), ('Auxiliar');
+INSERT INTO sistema_salud (nombre_salud) VALUES ('Fonasa'), ('Isapre Colmena'), ('Isapre Banmedica');
+INSERT INTO tipos_contrato (nombre_contrato) VALUES ('Indefinido'), ('A plazo fijo'), ('Práctica');
+
+INSERT INTO afp (nombre_afp, porcentaje_descuento) VALUES 
+('Capital', 11.44), ('Cuprum', 11.44), ('Habitat', 11.27), 
+('PlanVital', 11.16), ('ProVida', 11.45), ('Modelo', 10.58), ('Uno', 10.46);

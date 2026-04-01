@@ -10,9 +10,12 @@ try {
     $pdo = (new Db())->pdo();
 
     $rows = $pdo->query("
-        SELECT t.rut_trabajador, t.nombre_completo, c.nombre_cargo,
+     SELECT t.rut_trabajador, t.nombre_completo, c.nombre_cargo,
                tc.nombre_contrato, a.nombre_afp, s.nombre_salud,
-               t.sueldo_base_fijo, t.fecha_inicio_contrato, t.fecha_termino_contrato
+               t.sueldo_base_fijo, 
+               COALESCE(t.colacion, 0) AS colacion, 
+               COALESCE(t.transporte, 0) AS transporte,
+               t.fecha_inicio_contrato, t.fecha_termino_contrato
         FROM trabajador t
         JOIN cargo c           ON c.id_cargo           = t.id_cargo
         JOIN tipos_contrato tc ON tc.id_tipo_contrato  = t.id_tipo_contrato
@@ -71,21 +74,20 @@ try {
         placeholder="Buscar por nombre o RUT…"
         autocomplete="off">
 
-      <div class="filtro-estado" role="group" aria-label="Filtrar por estado">
-        <button type="button" class="tab active"  data-filtro="todos">
-          Todos
-          <span class="count-badge"><?= count($rows) ?></span>
-        </button>
-        <button type="button" class="btn-estado" data-filtro="activo">
-          Activos
-          <span class="count-badge count-activos"><?= $totalActivos ?></span>
-        </button>
-        <button type="button" class="btn-estado" data-filtro="inactivo">
-          🔴 No activos
-          <span class="count-badge count-inactivos"><?= $totalInactivos ?></span>
-        </button>
-      </div>
-
+     <div class="filtro-estado" role="group" aria-label="Filtrar por estado">
+         <button type="button" class="btn-estado active" data-filtro="todos">
+            Todos
+            <span class="count-badge"><?= count($rows) ?></span>
+         </button>
+            <button type="button" class="btn-estado" data-filtro="activo">
+             Activos
+            <span class="count-badge count-activos"><?= $totalActivos ?></span>
+         </button>
+          <button type="button" class="btn-estado" data-filtro="inactivo">
+           🔴 No activos
+             <span class="count-badge count-inactivos"><?= $totalInactivos ?></span>
+          </button>
+     </div>
     </div>
 
     <!-- ── Tabla ── -->
@@ -100,6 +102,8 @@ try {
             <th>Contrato</th>
             <th>AFP</th>
             <th>Salud</th>
+            <th>Colación</th>
+            <th>Transporte</th>
             <th>Sueldo base</th>
             <th>Inicio</th>
             <th>Término</th>
@@ -128,6 +132,8 @@ try {
             <td><?= htmlspecialchars($r['nombre_contrato']) ?></td>
             <td><?= htmlspecialchars($r['nombre_afp']) ?></td>
             <td><?= htmlspecialchars($r['nombre_salud']) ?></td>
+            <td>$<?= number_format((float)$r['colacion'],         0, ',', '.') ?></td>
+            <td>$<?= number_format((float)$r['transporte'],       0, ',', '.') ?></td>
             <td>$<?= number_format((float)$r['sueldo_base_fijo'], 0, ',', '.') ?></td>
             <td><?= htmlspecialchars($r['fecha_inicio_contrato']) ?></td>
             <td><?= $termino ? htmlspecialchars($termino) : '—' ?></td>
@@ -182,43 +188,63 @@ try {
 
   });
 
-  /* ── Aplicar filtros combinados ── */
-  function aplicarFiltros() {
-    var visibles = 0;
-    filas.forEach(function (fila) {
-      var textoOk  = filtroTexto === '' ||
-                     fila.dataset.nombre.includes(filtroTexto) ||
-                     fila.dataset.rut.includes(filtroTexto);
-      var estadoOk = filtroEstado === 'todos' || fila.dataset.estado === filtroEstado;
-      var mostrar  = textoOk && estadoOk;
-      fila.style.display = mostrar ? '' : 'none';
-      if (mostrar) visibles++;
-    });
-    if (sinResultados)
-      sinResultados.style.display = visibles === 0 ? 'block' : 'none';
-  }
-
-  /* ── Buscador de texto ── */
+/* ── Aplicar filtros combinados ── */
+(function () {
+  var filas = document.querySelectorAll('.fila-listado');
   var inputFiltro = document.getElementById('input-filtro');
-  if (inputFiltro) {
-    inputFiltro.addEventListener('input', function () {
-      filtroTexto = this.value.toLowerCase().trim();
-      aplicarFiltros();
+  var botonesEstado = document.querySelectorAll('.btn-estado'); // Solo los botones de filtro
+  var filtroEstadoActual = 'todos';
+
+  function aplicarFiltros() {
+    var q = inputFiltro ? inputFiltro.value.toLowerCase().trim() : '';
+    var visibles = 0;
+
+    filas.forEach(function (f) {
+      // 1. Filtro por texto (Nombre o RUT)
+      var matchTexto = q === '' || 
+                       f.dataset.nombre.includes(q) || 
+                       f.dataset.rut.includes(q);
+
+      // 2. Filtro por estado (activo/inactivo)
+      var matchEstado = filtroEstadoActual === 'todos' || 
+                        f.dataset.estado === filtroEstadoActual;
+
+      if (matchTexto && matchEstado) {
+        f.style.display = '';
+        visibles++;
+      } else {
+        f.style.display = 'none';
+      }
     });
+
+    // Mostrar/ocultar mensaje de "Sin resultados"
+    var sinResultados = document.getElementById('sin-resultados-listado');
+    if (sinResultados) {
+      sinResultados.style.display = (visibles === 0) ? 'block' : 'none';
+    }
   }
 
-  /* ── Botones de estado ── */
-  document.querySelectorAll('.btn-estado').forEach(function (btn) {
+  // Evento para el buscador
+  if (inputFiltro) {
+    inputFiltro.addEventListener('input', aplicarFiltros);
+  }
+
+  // Evento para los botones de Activo/Inactivo/Todos
+  botonesEstado.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      filtroEstado = this.dataset.filtro;
-      document.querySelectorAll('.btn-estado').forEach(function (b) {
-        b.classList.remove('activo-sel');
-      });
-      this.classList.add('activo-sel');
+      var filtro = this.dataset.filtro;
+      if (!filtro) return;
+
+      filtroEstadoActual = filtro;
+
+      // Manejo de clases visuales
+      botonesEstado.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
       aplicarFiltros();
     });
   });
-
+})();
 })();
 </script>
 

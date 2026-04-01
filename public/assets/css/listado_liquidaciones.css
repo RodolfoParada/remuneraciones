@@ -116,3 +116,32 @@ html.light-mode .table input[type="number"] { background: #f9fafb; border-color:
 html.light-mode .table td:first-child       { color: #374151; }
 html.light-mode #campo-dias        { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
 
+
+
+/* Estilo adaptativo para la alerta */
+.alert-success-custom {
+  background: var(--panel);
+  border-left: 5px solid var(--success) !important; /* Resalte verde a la izquierda */
+  box-shadow: var(--shadow-md);
+  transition: opacity 0.5s ease; /* Para el efecto de desaparición */
+}
+
+/* Animación de salida */
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* Estilo base para el recuadro del modal */
+.modal-content {
+  background-color: #ffffff !important; /* Forzamos blanco en modo claro */
+  color: #111827;
+}
+
+/* Ajuste para Modo Oscuro (si el html NO tiene la clase light-mode) */
+html:not(.light-mode) .modal-content {
+  background-color: #1f2937 !important; /* Gris oscuro */
+  color: #ffffff;
+  border: 1px solid #374151;
+}
