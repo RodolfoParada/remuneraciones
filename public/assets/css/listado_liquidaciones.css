@@ -131,3 +131,17 @@ html.light-mode #campo-dias        { background: #f9fafb; border-color: #d1d5db;
   opacity: 0;
   pointer-events: none;
 }
+
+
+/* Estilo base para el recuadro del modal */
+.modal-content {
+  background-color: #ffffff !important; /* Forzamos blanco en modo claro */
+  color: #111827;
+}
+
+/* Ajuste para Modo Oscuro (si el html NO tiene la clase light-mode) */
+html:not(.light-mode) .modal-content {
+  background-color: #1f2937 !important; /* Gris oscuro */
+  color: #ffffff;
+  border: 1px solid #374151;
+}
