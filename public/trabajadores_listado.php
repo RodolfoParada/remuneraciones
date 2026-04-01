@@ -74,21 +74,20 @@ try {
         placeholder="Buscar por nombre o RUT…"
         autocomplete="off">
 
-      <div class="filtro-estado" role="group" aria-label="Filtrar por estado">
-        <button type="button" class="tab active"  data-filtro="todos">
-          Todos
-          <span class="count-badge"><?= count($rows) ?></span>
-        </button>
-        <button type="button" class="btn-estado" data-filtro="activo">
-          Activos
-          <span class="count-badge count-activos"><?= $totalActivos ?></span>
-        </button>
-        <button type="button" class="btn-estado" data-filtro="inactivo">
-          🔴 No activos
-          <span class="count-badge count-inactivos"><?= $totalInactivos ?></span>
-        </button>
-      </div>
-
+     <div class="filtro-estado" role="group" aria-label="Filtrar por estado">
+         <button type="button" class="btn-estado active" data-filtro="todos">
+            Todos
+            <span class="count-badge"><?= count($rows) ?></span>
+         </button>
+            <button type="button" class="btn-estado" data-filtro="activo">
+             Activos
+            <span class="count-badge count-activos"><?= $totalActivos ?></span>
+         </button>
+          <button type="button" class="btn-estado" data-filtro="inactivo">
+           🔴 No activos
+             <span class="count-badge count-inactivos"><?= $totalInactivos ?></span>
+          </button>
+     </div>
     </div>
 
     <!-- ── Tabla ── -->
@@ -189,32 +188,63 @@ try {
 
   });
 
-  /* ── Aplicar filtros combinados ── */
- (function () {
+/* ── Aplicar filtros combinados ── */
+(function () {
   var filas = document.querySelectorAll('.fila-listado');
   var inputFiltro = document.getElementById('input-filtro');
-  var filtroEstado = 'todos';
+  var botonesEstado = document.querySelectorAll('.btn-estado'); // Solo los botones de filtro
+  var filtroEstadoActual = 'todos';
 
   function aplicarFiltros() {
-    var q = inputFiltro.value.toLowerCase().trim();
+    var q = inputFiltro ? inputFiltro.value.toLowerCase().trim() : '';
+    var visibles = 0;
+
     filas.forEach(function (f) {
-      var matchTexto = q === '' || f.dataset.nombre.includes(q) || f.dataset.rut.includes(q);
-      var matchEstado = filtroEstado === 'todos' || f.dataset.estado === filtroEstado;
-      f.style.display = (matchTexto && matchEstado) ? '' : 'none';
+      // 1. Filtro por texto (Nombre o RUT)
+      var matchTexto = q === '' || 
+                       f.dataset.nombre.includes(q) || 
+                       f.dataset.rut.includes(q);
+
+      // 2. Filtro por estado (activo/inactivo)
+      var matchEstado = filtroEstadoActual === 'todos' || 
+                        f.dataset.estado === filtroEstadoActual;
+
+      if (matchTexto && matchEstado) {
+        f.style.display = '';
+        visibles++;
+      } else {
+        f.style.display = 'none';
+      }
     });
+
+    // Mostrar/ocultar mensaje de "Sin resultados"
+    var sinResultados = document.getElementById('sin-resultados-listado');
+    if (sinResultados) {
+      sinResultados.style.display = (visibles === 0) ? 'block' : 'none';
+    }
   }
 
-  if (inputFiltro) { inputFiltro.addEventListener('input', aplicarFiltros); }
+  // Evento para el buscador
+  if (inputFiltro) {
+    inputFiltro.addEventListener('input', aplicarFiltros);
+  }
 
-  document.querySelectorAll('.btn-estado, .tab').forEach(function (btn) {
+  // Evento para los botones de Activo/Inactivo/Todos
+  botonesEstado.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      if(!this.dataset.filtro) return;
-      filtroEstado = this.dataset.filtro;
-      document.querySelectorAll('.btn-estado, .tab').forEach(b => b.classList.remove('active', 'activo-sel'));
-      this.classList.add(this.classList.contains('tab') ? 'active' : 'activo-sel');
+      var filtro = this.dataset.filtro;
+      if (!filtro) return;
+
+      filtroEstadoActual = filtro;
+
+      // Manejo de clases visuales
+      botonesEstado.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
       aplicarFiltros();
     });
   });
+})();
 })();
 </script>
 
