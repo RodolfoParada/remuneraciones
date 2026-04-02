@@ -28,6 +28,11 @@
 </section>
 
 <section class="grid three">
+   <a class="card" href="/remuneraciones/public/resumen.php">
+    <h2>Guia de Remuneraciones Chile</h2>
+    <br>
+    <p class="lead">• Conceptos Importantes</p>
+  </a>
   <a class="card" href="/remuneraciones/public/parametros.php">
     <h2>Parámetros</h2>
     <br>
@@ -44,11 +49,7 @@
     <p class="lead">•  Lista de AFP</p>
     <p class="lead">•  Lista de Sistema de Salud</p>
   </a>
-  <a class="card" href="/remuneraciones/public/resumen.php">
-    <h2>Resumen</h2>
-    <br>
-    <p class="lead">• Aún no se define que se mostrará aquí</p>
-  </a>
+ 
 </section>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
