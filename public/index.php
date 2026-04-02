@@ -34,12 +34,12 @@
     <p class="lead">• Conceptos Importantes</p>
   </a>
   <a class="card" href="/remuneraciones/public/parametros.php">
-    <h2>Parámetros</h2>
+    <h2>Término de Contrato</h2>
     <br>
-    <p class="lead">•  UF de Referencia</p>
-    <p class="lead">•  Tope imponible</p>
-    <p class="lead">•  Gratificación</p>
-    <p class="lead">•  Cotización obligatoria</p>  
+    <p class="lead">•  Artículo 159</p>
+    <p class="lead">•  Articulo 160</p>
+    <p class="lead">•  Articulo 161</p>
+   
   </a>
   <a class="card" href="/remuneraciones/public/catalogos.php">
     <h2>Catálogos</h2>
