@@ -66,6 +66,27 @@ CREATE TABLE liquidacion (
     FOREIGN KEY (rut_trabajador) REFERENCES trabajador(rut_trabajador)
 ) ENGINE=InnoDB;
 
+
+-- 7. USUARIOS (Control de acceso al sistema)
+CREATE TABLE usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuario VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    rol ENUM('admin', 'supervisor') NOT NULL DEFAULT 'admin',
+    activo TINYINT NOT NULL DEFAULT 1, -- Se eliminó el (1) para evitar el Warning 1681
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultimo_acceso TIMESTAMP NULL
+) ENGINE=InnoDB;
+
+INSERT INTO usuarios (nombre_usuario, email, password_hash, rol)
+VALUES (
+    'Administrador',
+    'admin@empresa.cl',
+    '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    'admin'
+);
+
 -- ==========================================
 -- INSERCIÓN DE DATOS MAESTROS
 -- ==========================================
