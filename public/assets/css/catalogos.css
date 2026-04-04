@@ -31,10 +31,14 @@
   color: #ffffff;
 }
 .panel-error ul,
-.panel-error li { color: #ffffff; }
+.panel-error li { 
+  color: #ffffff; 
+}
 
 /* ── Modo claro ── */
-html.light-mode .card h3 { color: var(--txt); }
+html.light-mode .card h3 { 
+  color: var(--txt); 
+}
 
 html.light-mode .panel-error {
   background: #fee2e2;
@@ -47,7 +51,9 @@ html.light-mode .panel-error .badge {
   color: #991b1b;
 }
 html.light-mode .panel-error ul,
-html.light-mode .panel-error li { color: #991b1b; }
+html.light-mode .panel-error li { 
+  color: #991b1b; 
+}
 
 .btn-volver:hover {
   background: #5c5151 !important;

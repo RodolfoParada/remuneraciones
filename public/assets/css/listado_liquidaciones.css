@@ -41,10 +41,18 @@ form select {
   transition: border-color 0.2s, background-color 0.3s;
 }
 form input:focus,
-form select:focus   { border-color: var(--primary); outline: none; }
+form select:focus   { 
+  border-color: var(--primary); 
+  outline: none; 
+}
 form input:disabled,
-form select:disabled { opacity: 0.65; cursor: not-allowed; }
-form input::placeholder { color: var(--muted); }
+form select:disabled { 
+  opacity: 0.65; 
+  cursor: not-allowed; 
+}
+form input::placeholder { 
+  color: var(--muted); 
+}
 
 /* ── Inputs dentro de tabla (haberes/descuentos) ── */
 .table input[type="number"] {
@@ -58,9 +66,18 @@ form input::placeholder { color: var(--muted); }
   text-align: right;
   transition: border-color 0.2s;
 }
-.table input[type="number"]:focus { border-color: var(--primary); outline: none; }
-.table input[readonly]            { opacity: 0.7; cursor: not-allowed; }
-.table td:first-child             { color: var(--txt); font-size: 13px; }
+.table input[type="number"]:focus { 
+  border-color: var(--primary); 
+  outline: none; 
+}
+.table input[readonly] { 
+  opacity: 0.7; 
+  cursor: not-allowed; 
+}
+.table td:first-child { 
+  color: var(--txt); 
+  font-size: 13px; 
+}
 
 /* ── Select días trabajados ── */
 #campo-dias {
@@ -107,16 +124,34 @@ html.light-mode .tab:hover:not(.active) {
 
 
 /* ── Modo claro ── */
-html.light-mode fieldset           { border-color: #d1d5db; }
-html.light-mode legend             { color: #1f2937; }
-html.light-mode form label         { color: #1f2937; }
+html.light-mode fieldset { 
+  border-color: #d1d5db; 
+}
+html.light-mode legend { 
+  color: #1f2937; 
+}
+html.light-mode form label { 
+  color: #1f2937; 
+}
 html.light-mode form input,
-html.light-mode form select        { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
-html.light-mode .table input[type="number"] { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
-html.light-mode .table td:first-child       { color: #374151; }
-html.light-mode #campo-dias        { background: #f9fafb; border-color: #d1d5db; color: #1f2937; }
-
-
+html.light-mode form select { 
+  background: #f9fafb; 
+  border-color: #d1d5db; 
+  color: #1f2937; 
+}
+html.light-mode .table input[type="number"] { 
+  background: #f9fafb; 
+  border-color: #d1d5db; 
+  color: #1f2937; 
+}
+html.light-mode .table td:first-child { 
+  color: #374151; 
+}
+html.light-mode #campo-dias { 
+  background: #f9fafb; 
+  border-color: #d1d5db; 
+  color: #1f2937; 
+}
 
 /* Estilo adaptativo para la alerta */
 .alert-success-custom {
@@ -125,20 +160,16 @@ html.light-mode #campo-dias        { background: #f9fafb; border-color: #d1d5db;
   box-shadow: var(--shadow-md);
   transition: opacity 0.5s ease; /* Para el efecto de desaparición */
 }
-
 /* Animación de salida */
 .fade-out {
   opacity: 0;
   pointer-events: none;
 }
-
-
 /* Estilo base para el recuadro del modal */
 .modal-content {
   background-color: #ffffff !important; /* Forzamos blanco en modo claro */
   color: #111827;
 }
-
 /* Ajuste para Modo Oscuro (si el html NO tiene la clase light-mode) */
 html:not(.light-mode) .modal-content {
   background-color: #1f2937 !important; /* Gris oscuro */

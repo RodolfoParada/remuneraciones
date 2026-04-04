@@ -35,11 +35,15 @@
 
 /* ── Responsive: apila en móvil ── */
 @media (max-width: 640px) {
-  .cards-centradas .card { width: 100%; }
+  .cards-centradas .card {
+    width: 100%;
+  }
 }
 
 /* ── Modo claro ── */
-html.light-mode .cards-centradas .card h3 { color: var(--txt); }
+html.light-mode .cards-centradas .card h3 {
+  color: var(--txt);
+}
 
 /* ── Texto justificado ── */
 .card .lead {
@@ -60,7 +64,6 @@ html.light-mode .cards-centradas .card h3 { color: var(--txt); }
   background: #5c5151 !important;
   border-color: #ffffff;
   color: #ffffff !important;
- 
 }
 
 /* ── Hover tabs — modo claro ── */

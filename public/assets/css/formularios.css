@@ -48,13 +48,24 @@
   box-sizing: border-box;
 }
 .form input:focus,
-.form select:focus   { border-color: var(--primary); outline: none; }
+.form select:focus   { 
+  border-color: var(--primary); 
+  outline: none; 
+}
 .form input:disabled,
-.form select:disabled { opacity: 0.65; cursor: not-allowed; }
+.form select:disabled { 
+  opacity: 0.65; 
+  cursor: not-allowed; 
+}
 
 /* ── Tabla haberes/descuentos ── */
-.form .table td:first-child { font-size: 13px; color: var(--txt); }
-.form .table td:last-child  { width: 180px; }
+.form .table td:first-child { 
+  font-size: 13px; 
+  color: var(--txt); 
+}
+.form .table td:last-child  { 
+  width: 180px; 
+}
 .form .table input {
   text-align: right;
   padding: 6px 10px;
@@ -88,12 +99,26 @@
   margin-bottom: 8px;
 }
 .panel-form-error ul,
-.panel-form-error li { color: #fff; padding-left: 16px; margin: 0; }
+.panel-form-error li { 
+  color: #fff; 
+  padding-left: 16px; 
+  margin: 0; 
+}
 
-html.light-mode .panel-form-error         { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
-html.light-mode .panel-form-error .badge-error { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+html.light-mode .panel-form-error         { 
+  background: #fee2e2; 
+  border-color: #fca5a5; 
+  color: #991b1b; 
+}
+html.light-mode .panel-form-error .badge-error { 
+  background: #fee2e2; 
+  border-color: #fca5a5; 
+  color: #991b1b; 
+}
 html.light-mode .panel-form-error ul,
-html.light-mode .panel-form-error li      { color: #991b1b; }
+html.light-mode .panel-form-error li      {
+   color: #991b1b; 
+  }
 
 /* ── Responsive ── */
 @media (max-width: 700px) {
