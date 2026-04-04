@@ -1,14 +1,14 @@
 # Login
 
 ```
-admin@empresas.cl
+admin@empresa.cl
 ```
 ```
 password
 ```
 --------------------------------
 ```
-usuario@empresas.cl
+usuario@empresa.cl
 ```
 ```
 password
