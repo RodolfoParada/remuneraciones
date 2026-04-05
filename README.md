@@ -1,16 +1,16 @@
 # Login
 
-```
+```usuario
 admin@empresa.cl
 ```
-```
+```contraseña
 password
 ```
 --------------------------------
-```
+```usuario
 usuario@empresa.cl
 ```
-```
+```contraseña
 password
 ```
 # Base de Datos: Sistema de Remuneraciones
@@ -119,20 +119,24 @@ CREATE TABLE usuarios (
     nombre_usuario VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    rol ENUM('admin', 'supervisor') NOT NULL DEFAULT 'admin',
+    rol ENUM('admin', 'usuario') NOT NULL DEFAULT 'admin',
     activo TINYINT NOT NULL DEFAULT 1, -- Se eliminó el (1) para evitar el Warning 1681
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ultimo_acceso TIMESTAMP NULL
 ) ENGINE=InnoDB;
 ```
+
 ```
-INSERT INTO usuarios (nombre_usuario, email, password_hash, rol)
+INSERT INTO usuarios (nombre_usuario, email, password_hash, rol, activo)
 VALUES (
-    'Administrador',
+    'admin',
     'admin@empresa.cl',
-    '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-    'admin'
+    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    'admin',
+    1
 );
+```
+```
 INSERT INTO usuarios (nombre_usuario, email, password_hash, rol, activo)
 VALUES (
     'usuario',
@@ -141,9 +145,7 @@ VALUES (
     'supervisor',
     1
 );
-
 ```
-
 -- ==========================================
 -- INSERCIÓN DE DATOS MAESTROS
 -- ==========================================

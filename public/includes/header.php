@@ -85,6 +85,19 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
       sync();
     });
   })();
+
+  var avatar = document.querySelector('.nav-avatar');
+  var dropdown = document.querySelector('.nav-dropdown');
+
+  avatar.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+
+  // Cierra al hacer click en cualquier parte de la página
+  document.addEventListener('click', function() {
+    dropdown.classList.remove('open');
+  });
 </script>
 
 <!--Ocultar scroll en todas las páginas -->
@@ -126,7 +139,9 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
     z-index: 999;
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
-  .nav-user:hover .nav-dropdown { display: block; }
+.nav-dropdown.open { 
+  display: block; 
+}
   .nav-username {
     display: block;
     font-size: 0.78rem;
@@ -148,6 +163,11 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
     color: var(--text, #e6edf3);
     transition: background 0.15s;
   }
-  .nav-dropdown a:hover { background: rgba(255,255,255,0.06); }
-  .nav-logout { color: #f87171 !important; margin-top: 4px; }
+  .nav-dropdown a:hover {
+     background: rgba(255,255,255,0.06); 
+    }
+  .nav-logout { 
+    color: #f87171 !important; 
+    margin-top: 4px; 
+    }
 </style>

@@ -162,13 +162,25 @@ if ($basePath === '/' || $basePath === '\\' || $basePath === '.') {
 <body>
 
 <div class="welcome-screen">
-  <!-- <div class="welcome-logo">💼</div> -->
+  <div class="welcome-logo">💼</div>
 
   <h1 class="welcome-title">Sistema de<br>Remuneraciones</h1>
-  <p class="welcome-subtitle">Gestión de trabajadores y liquidaciones</p>
+  <p class="welcome-subtitle">
+    <?= $authUser['rol'] === 'admin'
+        ? 'Tienes acceso completo al sistema'
+        : 'Tienes acceso de consulta al sistema' ?>
+  </p>
 
   <p class="welcome-user">
-    Bienvenido, <strong><?= htmlspecialchars($authUser['nombre']) ?></strong>
+    <?php
+    $saludo = match($authUser['rol']) {
+        'admin'      => '&#128100; Bienvenido Administrador:',
+        'usuario' => '&#128100; Bienvenido Usuario:',
+        default      => '&#128100; Bienvenido:'
+    };
+    echo $saludo;
+    ?>
+    <strong><?= htmlspecialchars($authUser['nombre']) ?></strong>
   </p>
 
   <div class="progress-wrap">
