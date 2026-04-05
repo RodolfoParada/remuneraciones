@@ -44,6 +44,9 @@ $pageTitle = $pageTitle ?? 'Sistema de Remuneraciones';
     <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>trabajadores_nuevo.php">Crear Nuevo Trabajador</a>
     <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>liquidaciones_nueva.php">Crear Nueva Liquidacion</a>
     <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>listado_liquidaciones.php">Liquidaciones</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>resumen.php">Guía</a>
+      <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>parametros.php">Término de contrato</a>
+    <a class="nav-item" href="<?= htmlspecialchars($basePath) ?>catalogos.php">Catálogos</a>
     <button class="nav-item" id="theme-toggle">🌙</button>
 
     <!-- ── USUARIO / LOGOUT ── -->

@@ -5,7 +5,7 @@
 
 /* ── Contenedor de las secciones de cards: centrado en pantalla ── */
 .grid.three {
-  margin-top: 180px;
+  margin-top: 160px;
   grid-template-columns: repeat(3, minmax(0, 300px));
   justify-content: center;
   height: 300px;
@@ -33,75 +33,156 @@
 }
 
 /* ── Hover modo oscuro: texto blanco ── */
-.card:hover {
-  border-color: var(--primary);
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
-  transform: translateY(-3px);
+.* ── Línea degradada superior al hover ── */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), #7c3aed);
+  opacity: 0;
+  transition: opacity 0.25s;
 }
-.card:hover h2,
-.card:hover h3,
-.card:hover .lead {
-  color: #ffffff;
+.card:hover::before {
+  opacity: 1;
 }
 
-/* ── Hover modo claro: texto oscuro (se mantiene legible) ── */
-html.light-mode .card:hover h2,
-html.light-mode .card:hover h3,
-html.light-mode .card:hover .lead {
+/* ── Flecha al hover ── */
+.card::after {
+  content: "→";
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  font-size: 1rem;
+  color: var(--primary);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.card:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Títulos ── */
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--txt);
+  transition: color 0.2s;
+}
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--txt);
 }
 
-/* ── Active: color al presionar antes de soltar el click ── */
-.card:active {
-  transform: translateY(0px);
-  background: rgba(37, 99, 235, 0.15);
-  border-color: var(--primary-600);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
-  transition: all 0.05s;
+/* ── Hover modo oscuro ── */
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+  transform: translateY(-3px);
+}
+.card:hover h2 {
+  color: var(--primary);
+}
+.card:hover .lead {
+  color: var(--txt);
 }
 
-/* ── Modo claro: hover y active ── */
+/* ── Hover modo claro ── */
 html.light-mode .card:hover {
   border-color: var(--primary);
-  box-shadow: 0 4px 16px rgba(30, 64, 175, 0.2);
+  box-shadow: 0 8px 24px rgba(22, 189, 58, 0.15);
 }
-html.light-mode .card:active {
-  background: rgba(30, 64, 175, 0.08);
-  border-color: var(--primary);
-  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+html.light-mode .card:hover h2 {
+  color: var(--primary);
+}
+html.light-mode .card:hover .lead {
+  color: var();
 }
 
-/* ── Card destacada (primary) ── */
+/* ── Active ── */
+.card:active {
+  transform: translateY(0px);
+  background: rgba(37, 99, 235, 0.08);
+  border-color: var(--primary-600);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+  transition: all 0.05s;
+}
+html.light-mode .card:active {
+  background: rgba(30, 64, 175, 0.06);
+  border-color: var(--primary);
+}
+
+/* ── Card primary ── */
 .card.primary {
-  background: linear-gradient(180deg, rgba(37,99,235,.15), rgba(17,24,39,.8));
+  background: linear-gradient(
+    180deg,
+    rgba(37, 99, 235, 0.15),
+    rgba(17, 24, 39, 0.8)
+  );
   border-color: #324569;
 }
 .card.primary h2,
-.card.primary h3 { color: #e5e7eb; }
+.card.primary h3 {
+  color: #e5e7eb;
+}
 .card.primary:active {
   background: rgba(37, 99, 235, 0.3);
 }
 
-/* ── Modo claro card primary ── */
 html.light-mode .card.primary {
-  background: linear-gradient(180deg, rgba(30,64,175,.1), var(--panel));
+  background: linear-gradient(180deg, rgba(30, 64, 175, 0.1), var(--panel));
   border-color: #bfdbfe;
 }
 html.light-mode .card.primary h2,
-html.light-mode .card.primary h3 { color: #1e40af; }
+html.light-mode .card.primary h3 {
+  color: #1e40af;
+}
+
+/* ── Lead text ── */
+.card .lead {
+  text-align: left;
+  margin: 0 0 5px;
+  line-height: 1.65;
+  font-size: 13.5px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .grid.three {
-    grid-template-columns: minmax(0, 300px);
+    grid-template-columns: minmax(0, 360px);
     justify-content: center;
   }
 }
 
-/* ── Texto justificado dentro de las cards ── */
-.card .lead {
-  text-align: justify;
-  margin: 0 0 4px;
-  line-height: 1.5;
+/* ── Hover interior de la card ── */
+.card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+  transform: translateY(-3px);
+  background: linear-gradient(
+    160deg,
+    rgba(37, 99, 235, 0.08) 0%,
+    var(--panel) 60%
+  );
 }
 
+html.light-mode .card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.15);
+  background: linear-gradient(
+    160deg,
+    rgba(30, 64, 175, 0.06) 0%,
+    var(--panel) 60%
+  );
+}

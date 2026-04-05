@@ -5,7 +5,7 @@ require_once __DIR__ . '/../src/Auth.php';
 
 // Si ya está logueado, redirigir al inicio
 if (Auth::check()) {
-    header('Location: /remuneraciones/public/index.php');
+    header('Location: /remuneraciones/public/bienvenida.php');
     exit;
 }
 
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ->execute([':id' => $usuario['id_usuario']]);
 
                 Auth::login($usuario);
-                header('Location: /remuneraciones/public/index.php');
+                header('Location: /remuneraciones/public/bienvenida.php');
                 exit;
             } else {
                 $error = 'Correo o contraseña incorrectos.';
