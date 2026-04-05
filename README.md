@@ -133,6 +133,15 @@ VALUES (
     '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
     'admin'
 );
+INSERT INTO usuarios (nombre_usuario, email, password_hash, rol, activo)
+VALUES (
+    'usuario',
+    'usuario@empresa.cl',
+    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    'supervisor',
+    1
+);
+
 ```
 
 -- ==========================================
