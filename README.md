@@ -101,11 +101,12 @@ CREATE TABLE liquidacion (
     dias_trabajados INT DEFAULT 30,
     sueldo_base_mes DECIMAL(12,2),
     gratificacion DECIMAL(12,2),
-    colacion DECIMAL(12,2), -- Lo pagado en el mes
-    transporte DECIMAL(12,2), -- Lo pagado en el mes
+    colacion DECIMAL(12,2),
+    transporte DECIMAL(12,2),
     cotiz_previsional DECIMAL(12,2),
     cotiz_salud DECIMAL(12,2),
     seguro_cesantia DECIMAL(12,2),
+    impuesto_unico DECIMAL(12,2) DEFAULT 0,
     liquido_a_pagar DECIMAL(12,2),
     fecha_emision TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rut_trabajador) REFERENCES trabajador(rut_trabajador)
@@ -146,6 +147,41 @@ VALUES (
     1
 );
 ```
+
+##-- ============================================================
+##-- TABLA IMPUESTO ÚNICO DE SEGUNDA CATEGORÍA
+##-- Agregar a tu base de datos remuneraciones
+##-- ============================================================
+```
+CREATE TABLE IF NOT EXISTS impuesto_unico (
+    id_tramo        INT AUTO_INCREMENT PRIMARY KEY,
+    desde           DECIMAL(14,2) NOT NULL,
+    hasta           DECIMAL(14,2) NULL,        -- NULL = sin límite superior
+    factor          DECIMAL(5,4) NOT NULL,
+    cantidad_rebajar DECIMAL(14,2) NOT NULL,
+    tasa_efectiva   VARCHAR(20) NOT NULL
+) ENGINE=InnoDB;
+```
+##-- Datos vigentes
+```
+INSERT INTO impuesto_unico (desde, hasta, factor, cantidad_rebajar, tasa_efectiva) VALUES
+(0,            908469.00,    0,      0,           'Exento'),
+(908469.01,    2018820.00,   0.04,   36338.76,    '2,20%'),
+(2018820.01,   3364700.00,   0.08,   117091.56,   '4,52%'),
+(3364700.01,   4710580.00,   0.135,  302150.06,   '7,09%'),
+(4710580.01,   6056460.00,   0.23,   749655.16,   '10,62%'),
+(6056460.01,   8075280.00,   0.304,  1197833.20,  '15,57%'),
+(8075280.01,   20861140.00,  0.35,   1569296.08,  '27,48%'),
+(20861140.01,  NULL,         0.4,    2612353.08,  'Más de 27,48%');
+```
+##-- Agregar columna impuesto_unico a la tabla liquidacion (si no existe)
+```
+ALTER TABLE liquidacion
+    ADD COLUMN IF NOT EXISTS impuesto_unico DECIMAL(12,2) DEFAULT 0;
+```
+
+
+
 -- ==========================================
 -- INSERCIÓN DE DATOS MAESTROS
 -- ==========================================

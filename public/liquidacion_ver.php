@@ -15,38 +15,37 @@ try {
 
     $stmt = $pdo->prepare("
         SELECT l.*,
-           l.cotiz_previsional AS cotiz_previsional_obligatoria, -- ALIAS CLAVE
-           l.cotiz_salud AS cotiz_salud_obligatoria,             -- ALIAS CLAVE
-           t.nombre_completo, t.rut_trabajador,
-           c.nombre_cargo, tc.nombre_contrato,
-           a.nombre_afp, s.nombre_salud
-              FROM liquidacion l
-              JOIN trabajador t      ON t.rut_trabajador    = l.rut_trabajador
-              JOIN cargo c           ON c.id_cargo          = t.id_cargo
-              JOIN tipos_contrato tc ON tc.id_tipo_contrato = t.id_tipo_contrato
-              JOIN afp a             ON a.id_afp            = t.id_afp
-              JOIN sistema_salud s   ON s.id_salud          = t.id_salud
-              WHERE l.id_liquidacion = :id
-              LIMIT 1
+               l.cotiz_previsional AS cotiz_previsional_obligatoria,
+               l.cotiz_salud       AS cotiz_salud_obligatoria,
+               t.nombre_completo, t.rut_trabajador,
+               c.nombre_cargo, tc.nombre_contrato,
+               a.nombre_afp, s.nombre_salud
+        FROM liquidacion l
+        JOIN trabajador t      ON t.rut_trabajador    = l.rut_trabajador
+        JOIN cargo c           ON c.id_cargo          = t.id_cargo
+        JOIN tipos_contrato tc ON tc.id_tipo_contrato = t.id_tipo_contrato
+        JOIN afp a             ON a.id_afp            = t.id_afp
+        JOIN sistema_salud s   ON s.id_salud          = t.id_salud
+        WHERE l.id_liquidacion = :id
+        LIMIT 1
     ");
     $stmt->execute([':id' => $id]);
     $row = $stmt->fetch();
-    if ($row) {
-    echo "";
-}
     if (!$row) throw new RuntimeException('Liquidación no encontrada.');
 
     $meses = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio',
               'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
     $IT           = (float)($row['sueldo_base_mes'] ?? 0) + (float)($row['gratificacion'] ?? 0);
-    $NN           = (float)($row['colacion'] ?? 0) + (float)($row['transporte'] ?? 0);
+    $NN           = (float)($row['colacion']        ?? 0) + (float)($row['transporte']    ?? 0);
     $totalHaberes = $IT + $NN;
-  
-        $DL = (float)($row['cotiz_previsional'] ?? 0) // Nombre correcto en tu DB
-              + (float)($row['cotiz_salud']       ?? 0) // Nombre correcto en tu DB
-              + (float)($row['seguro_cesantia']   ?? 0)
-               + (float)($row['imp_prev_salud']    ?? 0);
+
+    $impUnico     = (float)($row['impuesto_unico']  ?? 0);
+
+    $DL = (float)($row['cotiz_previsional'] ?? 0)
+        + (float)($row['cotiz_salud']       ?? 0)
+        + (float)($row['seguro_cesantia']   ?? 0)
+        + $impUnico;
     $DV           = (float)($row['otros_descuentos'] ?? 0);
     $totalDesc    = $DL + $DV;
     $liquidoCalc  = $totalHaberes - $totalDesc;
@@ -84,7 +83,7 @@ include __DIR__ . '/includes/header.php';
 
   <form class="form">
 
-    <!-- ===== ENCABEZADO ===== -->
+    <!-- ENCABEZADO -->
     <fieldset>
       <legend>Identificación de la liquidación</legend>
 
@@ -134,12 +133,12 @@ include __DIR__ . '/includes/header.php';
       <div class="flex">
         <div class="flex-1">
           <label>AFP
-           <input type="text" value="$<?= number_format((float)($row['cotiz_previsional'] ?? 0), 0, ',', '.') ?>" disabled>
+            <input type="text" value="<?= htmlspecialchars($row['nombre_afp']) ?>" disabled>
           </label>
         </div>
         <div class="flex-1">
           <label>Salud
-            <input type="text" value="$<?= number_format((float)($row['cotiz_salud'] ?? 0), 0, ',', '.') ?>" disabled>
+            <input type="text" value="<?= htmlspecialchars($row['nombre_salud']) ?>" disabled>
           </label>
         </div>
       </div>
@@ -156,10 +155,9 @@ include __DIR__ . '/includes/header.php';
           </label>
         </div>
       </div>
-
     </fieldset>
 
-    <!-- ===== HABERES y DESCUENTOS ===== -->
+    <!-- HABERES Y DESCUENTOS -->
     <div class="flex">
       <div class="flex-1">
         <fieldset>
@@ -176,7 +174,6 @@ include __DIR__ . '/includes/header.php';
                 <td>Gratificación (25% c/tope)</td>
                 <td><input type="text" value="$<?= number_format((float)$row['gratificacion'], 0, ',', '.') ?>" disabled></td>
               </tr>
-
               <tr class="titulos-fijos">
                 <td colspan="2" style="text-align:center;font-weight:bold;">HABERES NO IMPONIBLES</td>
               </tr>
@@ -188,7 +185,6 @@ include __DIR__ . '/includes/header.php';
                 <td>Movilización</td>
                 <td><input type="text" value="$<?= number_format((float)($row['transporte'] ?? 0), 0, ',', '.') ?>" disabled></td>
               </tr>
-
               <tr class="total-fijos">
                 <td><strong>TOTAL HABERES</strong></td>
                 <td><input type="text" value="$<?= number_format($totalHaberes, 0, ',', '.') ?>" disabled></td>
@@ -217,15 +213,24 @@ include __DIR__ . '/includes/header.php';
                 <td>Seguro cesantía <span class="badge">0,60% IT</span></td>
                 <td><input type="text" value="$<?= number_format((float)$row['seguro_cesantia'], 0, ',', '.') ?>" disabled></td>
               </tr>
-
+              <tr>
+                <td>
+                  Impuesto Único 2ª Categoría
+                  <?php if ($impUnico > 0): ?>
+                    <span class="badge" style="background:rgba(245,158,11,.12);color:#fbbf24;border-color:rgba(245,158,11,.25);">Aplicado</span>
+                  <?php else: ?>
+                    <span class="badge" style="background:rgba(16,185,129,.12);color:#4ade80;border-color:rgba(16,185,129,.25);">Exento</span>
+                  <?php endif; ?>
+                </td>
+                <td><input type="text" value="$<?= number_format($impUnico, 0, ',', '.') ?>" disabled></td>
+              </tr>
               <tr class="titulos-fijos">
                 <td colspan="2" style="text-align:center;font-weight:bold;">OTROS DESCUENTOS</td>
               </tr>
               <tr>
                 <td>Otros descuentos</td>
-                <td><input type="text" value="$<?= number_format((float)$row['otros_descuentos'], 0, ',', '.') ?>" disabled></td>
+                <td><input type="text" value="$<?= number_format((float)($row['otros_descuentos'] ?? 0), 0, ',', '.') ?>" disabled></td>
               </tr>
-
               <tr class="total-fijos">
                 <td><strong>TOTAL DESCUENTOS</strong></td>
                 <td><input type="text" value="$<?= number_format($totalDesc, 0, ',', '.') ?>" disabled></td>
@@ -236,12 +241,13 @@ include __DIR__ . '/includes/header.php';
       </div>
     </div>
 
-    <!-- ===== RESUMEN ===== -->
+    <!-- RESUMEN -->
     <fieldset>
       <div class="flex">
         <div class="flex-1">
           <label>LIQUIDO A RECIBIR
-            <input type="text" value="$<?= number_format($liquidoCalc, 0, ',', '.') ?>" disabled>
+            <input type="text" value="$<?= number_format($liquidoCalc, 0, ',', '.') ?>" disabled
+                   style="text-align:center;font-size:1.4rem;font-weight:bold;">
           </label>
         </div>
       </div>
@@ -252,8 +258,7 @@ include __DIR__ . '/includes/header.php';
       <a class="btn ghost btn-volver" href="/remuneraciones/public/listado_liquidaciones.php">Volver al Listado</a>
     </div>
 
-    <h4>Certifico que he recibido de del colegio a mi entera satisfacción el saldo indicado en la presente Liquidación y no tengo cargo ni cobro
-     posterior que hacer</h4>
+    <h4>Certifico que he recibido de del colegio a mi entera satisfacción el saldo indicado en la presente Liquidación y no tengo cargo ni cobro posterior que hacer</h4>
     <br><br><br>
     ________________________
     <h3>FIRMA CONFORME</h3>
