@@ -6,7 +6,7 @@
 // const DB_USER    = 'root';
 // const DB_PASS    = 'admin';
 // const DB_CHARSET = 'utf8mb4';
-
+m
 define('DB_HOST',    getenv('MYSQLHOST')     ?: '127.0.0.1');
 define('DB_PORT',    getenv('MYSQLPORT')     ?: 3306);
 define('DB_NAME',    getenv('MYSQLDATABASE') ?: 'remuneraciones');
