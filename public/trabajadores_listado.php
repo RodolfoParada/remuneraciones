@@ -43,12 +43,12 @@ try {
 }
 ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
-<link rel="stylesheet" href="/remuneraciones/public/assets/css/trabajadores_listado.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/trabajadores_listado.css" />
 
 <section class="panel">
   <div class="tabs">
-    <a class="tab active"  href="/remuneraciones/public/trabajadores_listado.php">Listado Trabajadores</a>
-    <a class="tab" href="/remuneraciones/public/trabajadores_nuevo.php">Crear Nuevo Trabajador</a>
+    <a class="tab active" href="<?= $basePath ?>trabajadores_listado.php">Listado Trabajadores</a>
+    <a class="tab" href="<?= $basePath ?>trabajadores_nuevo.php">Crear Nuevo Trabajador</a>
   </div>
 
   <?php if ($okMsg): ?>
@@ -151,8 +151,8 @@ try {
   <?php endif; ?>
 
   <!-- ── Botón Inicio abajo a la derecha ── -->
-  <div class="actions" style="margin-top:24px">
-         <a class="btn ghost  btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+ <div class="actions" style="margin-top:24px">
+    <a class="btn ghost btn-volver" href="<?= $basePath ?>index.php">Volver al Inicio</a>
   </div>
 
 </section>

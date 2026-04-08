@@ -155,7 +155,7 @@ function renderCatalogo(string $titulo, string $tabla, array $filas, string $col
 </div>
 <?php } ?>
 
-<link rel="stylesheet" href="/remuneraciones/public/assets/css/catalogos.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/catalogos.css" />
 
 <section class="panel">
     <div class="tabs">
@@ -236,7 +236,7 @@ function renderCatalogo(string $titulo, string $tabla, array $filas, string $col
     </div>
 
     <div class="actions">
-        <a class="btn ghost btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+    <a class="btn ghost btn-volver" href="<?= $basePath ?>index.php">Volver al Inicio</a>
     </div>
 </section>
 

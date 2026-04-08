@@ -94,7 +94,7 @@ try {
 include __DIR__ . '/includes/header.php';
 ?>
 
-<link rel="stylesheet" href="/remuneraciones/public/assets/css/liquidaciones_nuevas.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/liquidaciones_nuevas.css" />
 
 <script>
 var TRABAJADORES_LIQ = <?= json_encode(array_values($trabajadores ?? []), JSON_UNESCAPED_UNICODE) ?>;
@@ -103,7 +103,7 @@ var TRAMOS_IMP       = <?= json_encode(array_values($tramos       ?? []), JSON_U
 
 <section class="panel">
   <div class="tabs">
-    <a class="tab" href="/remuneraciones/public/listado_liquidaciones.php">Listado Liquidaciones</a>
+   <a class="tab" href="<?= $basePath ?>listado_liquidaciones.php">Listado Liquidaciones</a>
     <span class="tab active">Crear Nueva Liquidación</span>
   </div>
 
@@ -114,7 +114,7 @@ var TRAMOS_IMP       = <?= json_encode(array_values($tramos       ?? []), JSON_U
     </div>
   <?php endif; ?>
 
-  <form method="post" class="form" action="/remuneraciones/public/liquidaciones_nueva.php">
+ <form method="post" class="form" action="<?= $basePath ?>liquidaciones_nueva.php">
 
     <!-- ENCABEZADO -->
     <fieldset>
@@ -296,7 +296,7 @@ var TRAMOS_IMP       = <?= json_encode(array_values($tramos       ?? []), JSON_U
 
     <div class="actions">
       <button class="btn azul" name="guardar" type="submit">Guardar liquidación</button>
-      <a class="btn ghost btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+    <a class="btn ghost btn-volver" href="<?= $basePath ?>index.php">Volver al Inicio</a>
     </div>
 
     <H4>Certifico que he recibido de del colegio a mi entera satisfacción el saldo indicado en la presente Liquidación y no tengo cargo ni cobro posterior que hacer</H4>

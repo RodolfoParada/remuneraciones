@@ -57,7 +57,7 @@ try {
 include __DIR__ . '/includes/header.php';
 ?>
 
-<link rel="stylesheet" href="/remuneraciones/public/assets/css/formularios.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/formularios.css" />
 
 <style>
 @media print {
@@ -70,7 +70,7 @@ include __DIR__ . '/includes/header.php';
 
 <section class="panel">
   <div class="tabs">
-    <a class="tab" href="/remuneraciones/public/listado_liquidaciones.php">Listado Liquidaciones</a>
+<a class="tab" href="<?= $basePath ?>listado_liquidaciones.php">Listado Liquidaciones</a>
     <span class="tab active">Detalle de Liquidación</span>
   </div>
 
@@ -255,7 +255,7 @@ include __DIR__ . '/includes/header.php';
 
     <div class="actions">
       <button class="btn azul" onclick="window.print()">Imprimir / PDF</button>
-      <a class="btn ghost btn-volver" href="/remuneraciones/public/listado_liquidaciones.php">Volver al Listado</a>
+     <a class="btn ghost btn-volver" href="<?= $basePath ?>listado_liquidaciones.php">Volver al Listado</a>
     </div>
 
     <h4>Certifico que he recibido de del colegio a mi entera satisfacción el saldo indicado en la presente Liquidación y no tengo cargo ni cobro posterior que hacer</h4>

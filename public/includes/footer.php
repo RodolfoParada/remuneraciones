@@ -1,6 +1,6 @@
 </main>
 
-  <link rel="stylesheet" href="/remuneraciones/public/assets/css/footer.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/footer.css" />
 
   
   <footer class="pie-pagina">

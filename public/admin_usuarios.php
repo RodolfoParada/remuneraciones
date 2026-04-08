@@ -121,7 +121,7 @@ if (isset($_GET['editar'])) {
 
         <div class="actions">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="/remuneraciones/public/admin_usuarios.php" class="btn btn-ghost">Cancelar</a>
+           <a href="<?= $basePath ?>admin_usuarios.php" class="btn btn-ghost">Cancelar</a>
         </div>
     </form>
 </div>

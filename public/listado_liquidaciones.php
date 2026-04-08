@@ -42,13 +42,14 @@ try {
   $errores[] = $e->getMessage();
 }
 ?>
-<link rel="stylesheet" href="/remuneraciones/public/assets/css/listado_liquidaciones.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/listado_liquidaciones.css" />
 
 <section class="panel">
   <div class="tabs">
     <span class="tab active">Listado Liquidaciones</span>
-    <a class="tab" href="/remuneraciones/public/liquidaciones_nueva.php">Crear Nueva liquidación</a>
+   <a class="tab" href="<?= $basePath ?>liquidaciones_nueva.php">Crear Nueva liquidación</a>
   </div>
+
 
   <?php if (!$rows): ?>
     <p class="center lead">No existen liquidaciones registradas.</p>
@@ -75,7 +76,7 @@ try {
             <td><?= (int)$r['anio_periodo'] ?></td>
             <td>$<?= number_format((float)$r['liquido_a_pagar'], 0, ',', '.') ?></td>
             <td style="display: flex; gap: 5px;">
-              <a class="btn small" href="/remuneraciones/public/liquidacion_ver.php?id=<?= (int)$r['id_liquidacion'] ?>">Ver</a>
+             <a class="btn small" href="<?= $basePath ?>liquidacion_ver.php?id=<?= (int)$r['id_liquidacion'] ?>">Ver</a>
               
               <form method="POST" class="form-eliminar">
                 <input type="hidden" name="id_liquidacion" value="<?= (int)$r['id_liquidacion'] ?>">
@@ -115,8 +116,8 @@ try {
     </div>
   </div>
 
-  <div class="actions">
-    <a class="btn ghost btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+<div class="actions">
+    <a class="btn ghost btn-volver" href="<?= $basePath ?>index.php">Volver al Inicio</a>
   </div>
 </section>
 
