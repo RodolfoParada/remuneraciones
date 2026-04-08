@@ -1,7 +1,8 @@
 <?php $pageTitle = 'Resumen'; ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
 
-<link rel="stylesheet" href="<?= $basePath ?>assets/css/resumen.css" />
+
+<link rel="stylesheet" href="<?= $basePath ?>/assets/css/resumen.css" /> 
 <!-- HERO -->
 <div class="resumen-hero">
   <h1>Guía de Remuneraciones Chile - Conceptos Importantes</h1>
@@ -61,9 +62,11 @@
 </div>
 
 <!-- TIP -->
+ 
 <div class="tip-box">
   ⚠️ <span><strong>Es Importante:</strong> Mantente actualizado con los topes imponibles y tablas de impuesto único que publica el SII y la Superintendencia de Pensiones cada año.</span>
 </div>
+
 
 <!-- ACCORDION -->
 <div class="accordion">
