@@ -3,9 +3,16 @@
 require_once __DIR__ . '/../src/Db.php';
 require_once __DIR__ . '/../src/Auth.php';
 
+$basePath = dirname($_SERVER['SCRIPT_NAME']);
+if ($basePath === '/' || $basePath === '\\' || $basePath === '.') {
+    $basePath = '/';
+} else {
+    $basePath = rtrim($basePath, '/') . '/';
+}
+
 // Si ya está logueado, redirigir al inicio
 if (Auth::check()) {
-    header('Location: /remuneraciones/public/bienvenida.php');
+    header('Location: ' . $basePath . 'bienvenida.php');
     exit;
 }
 
@@ -27,12 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $usuario = $stmt->fetch();
 
             if ($usuario && password_verify($password, $usuario['password_hash'])) {
-                // Actualizar último acceso
                 $pdo->prepare("UPDATE usuarios SET ultimo_acceso = NOW() WHERE id_usuario = :id")
                     ->execute([':id' => $usuario['id_usuario']]);
 
                 Auth::login($usuario);
-                header('Location: /remuneraciones/public/bienvenida.php');
+                header('Location: ' . $basePath . 'bienvenida.php');
                 exit;
             } else {
                 $error = 'Correo o contraseña incorrectos.';
@@ -49,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Iniciar Sesión — Remuneraciones</title>
-    <link rel="stylesheet" href="/remuneraciones/public/assets/css/login.css" />
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/login.css" />
 </head>
 <body>
     <div class="login-bg">
@@ -106,6 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <script src="/remuneraciones/public/assets/js/login.js"></script>
+    <script src="<?= $basePath ?>assets/js/login.js"></script>
 </body>
 </html>

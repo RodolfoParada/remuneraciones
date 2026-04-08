@@ -65,7 +65,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="card" style="max-width:600px;">
     <form method="POST">
+        <div clbel>Correo electrónico</label>
+            <input type="email" name="email" value="<?= htmlspecialchars($usuario['email']) ?>" required>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px;">
+            Deja en blanco si no deseas cambiar la contraseña.
+        </p>
+
         <div class="form-group">
+            <label>Contraseña actual</label>
+            <input type="password" name="password_actual" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div class="form-group">
+            <label>Nueva contraseña</label>
+            <input type="password" name="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+        </div>
+
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+           <a href="<?= $basePath ?>index.php" class="btn btn-ghost">Volver</a>
+        </div>
+    </form>
+</div>ass="form-group">
             <label>Nombre completo</label>
             <input type="text" name="nombre" value="<?= htmlspecialchars($usuario['nombre']) ?>" required>
         </div>
@@ -90,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="actions">
             <button type="submit" class="btn btn-primary">Guardar cambios</button>
-            <a href="/remuneraciones/public/index.php" class="btn btn-ghost">Volver</a>
+          <a href="<?= $basePath ?>index.php" class="btn btn-ghost">Volver</a>
         </div>
     </form>
 </div>

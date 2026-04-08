@@ -219,7 +219,7 @@ function selOpt($lista, $idField, $valField, $selected = 0) {
 include __DIR__ . '/includes/header.php';
 ?>
 
-<link rel="stylesheet" href="/remuneraciones/public/assets/css/trabajadores_nuevo.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/trabajadores_nuevo.css" />
 
 <!-- Datos de trabajadores para uso en JS (JSON seguro) -->
 <script>
@@ -232,7 +232,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
 
 <section class="panel">
   <div class="tabs">
-    <a class="tab" href="/remuneraciones/public/trabajadores_listado.php">Listado Trabajadores</a>
+    <a class="tab" href="<?= $basePath ?>trabajadores_listado.php">Listado Trabajadores</a>
     <a class="tab active" id="tab-titulo">Crear Nuevo trabajador</a>
   </div>
 
@@ -394,7 +394,7 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
     <div class="actions">
       <button type="button" id="btn-cancelar-edicion" class="btn" style="display:none">✖ Cancelar</button>
       <button class="btn azul" type="submit" id="btn-guardar">Guardar</button>
-      <a class="btn ghost btn-volver" href="/remuneraciones/public/index.php">Volver al Inicio</a>
+   <a class="btn ghost btn-volver" href="<?= $basePath ?>index.php">Volver al Inicio</a>
     </div>
   </form>
 </section>
