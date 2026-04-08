@@ -255,7 +255,7 @@ include __DIR__ . '/includes/header.php';
 
     <div class="actions">
       <button class="btn azul" onclick="window.print()">Imprimir / PDF</button>
-     <a class="btn ghost btn-volver" href="<?= $basePath ?>listado_liquidaciones.php">Volver al Listado</a>
+     <a class="btn ghost-confirmar btn-volver" href="<?= $basePath ?>listado_liquidaciones.php">Volver al Listado</a>
     </div>
 
     <h4>Certifico que he recibido de del colegio a mi entera satisfacción el saldo indicado en la presente Liquidación y no tengo cargo ni cobro posterior que hacer</h4>

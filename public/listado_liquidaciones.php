@@ -107,11 +107,11 @@ try {
                   font-size:13px;color:var(--muted,#aaa);line-height:1.7">
       </div>
       
-      <small style="display:block;margin-bottom:20px;color:#f87171;">Esta acción no se puede deshacer.</small>
+      <small style="display:block;margin-bottom:20px;color:black;">Esta acción no se puede deshacer.</small>
       
       <div style="display:flex;gap:12px;justify-content:flex-end">
-        <button type="button" onclick="cerrarModalEliminar()" class="btn" style="background:transparent; border:1px solid var(--border); color:var(--txt);">Cancelar</button>
-        <button type="button" id="modal-btn-confirmar" class="btn" style="background:#c0392b; color:#fff; border:none;">Sí, eliminar</button>
+        <button type="button" onclick="cerrarModalEliminar()" class="btn" style="background:#374151; border:1px solid var(--border); color:#fff;">Cancelar</button>
+        <button type="button" id="modal-btn-confirmar" class="btn" style="background:#374151; color:#fff; border:none;">Sí, eliminar</button>
       </div>
     </div>
   </div>
