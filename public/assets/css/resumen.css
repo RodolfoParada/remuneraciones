@@ -14,7 +14,7 @@ body {
   border-radius: 20px;
   padding: 48px 40px;
   margin-bottom: 32px;
-  color: #ffffff;
+  color: #ffffff !important;
   position: relative;
   overflow: hidden;
 }
@@ -35,14 +35,14 @@ body {
 
 /* Modo claro — gradiente azul */
 html.light-mode .resumen-hero {
-  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #7c3aed 100%);
+  background: #333 ;
 }
 
 
 /* Stats strip */
 .stats-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
   gap: 16px;
   margin-bottom: 32px;
 }
@@ -179,12 +179,33 @@ html.light-mode .resumen-hero {
 }
 
 /* Alert box */
-.tip-box {
+
+
+
+ .tip-box {
   background: rgba(245,158,11,0.1);
   border: 1px solid rgba(245,158,11,0.3);
-  color: #eab308; /* Color visible en ambos modos */
+  color: #868383 !important; 
   border-radius: 12px;
   padding: 16px 20px;
   margin-bottom: 32px;
+ 
 }
+/* 
+.tip-box span {
+  color: white;
+}
+
+div.dark-mode div.tip-box {
+  background: rgba(245,158,11,0.15);
+  border: 1px solid rgba(245,158,11,0.4);
+  color: #030303 !important;
+}
+
+div.dark-mode div.tip-box span{
+  color: black;
+}  */
+
+
+
 </style>

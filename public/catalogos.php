@@ -141,7 +141,7 @@ function renderCatalogo(string $titulo, string $tabla, array $filas, string $col
                             onclick="abrirModal('editar','<?= $tabla ?>','<?= $colExtra ?>','<?= htmlspecialchars($labelExtra) ?>',<?= (int)$r[$colId] ?>,'<?= htmlspecialchars(addslashes($r[$colNombre])) ?>','<?= $colExtra ? (float)$r[$colExtra] : '' ?>')">
                             Editar
                         </button>
-                        <button class="btn small btn-eliminar"
+                        <button class="btn small"
                             onclick="abrirEliminar('<?= $tabla ?>',<?= (int)$r[$colId] ?>,'<?= htmlspecialchars(addslashes($r[$colNombre])) ?>')">
                             Eliminar
                         </button>
@@ -219,7 +219,7 @@ function renderCatalogo(string $titulo, string $tabla, array $filas, string $col
                             onclick="abrirModalImp('editar',<?= (int)$r['id_tramo'] ?>,<?= (float)$r['desde'] ?>,<?= $r['hasta'] === null ? 'null' : (float)$r['hasta'] ?>,'<?= $r['factor'] ?>','<?= htmlspecialchars(addslashes($r['tasa_efectiva'])) ?>','<?= (float)$r['cantidad_rebajar'] ?>')">
                             Editar
                         </button>
-                        <button class="btn small btn-eliminar"
+                        <button class="btn small"
                             onclick="abrirEliminar('impuesto_unico',<?= (int)$r['id_tramo'] ?>,'tramo <?= htmlspecialchars($r['tasa_efectiva']) ?>')">
                             Eliminar
                         </button>
@@ -260,7 +260,7 @@ function renderCatalogo(string $titulo, string $tabla, array $filas, string $col
             </div>
             <div class="modal-actions">
                 <button type="submit" class="btn primary">Guardar</button>
-                <button type="button" class="btn ghost" onclick="cerrarModal()">Cancelar</button>
+                <button type="button" class="btn ghost-confirm" onclick="cerrarModal()">Cancelar</button>
             </div>
         </form>
     </div>
@@ -278,8 +278,8 @@ function renderCatalogo(string $titulo, string $tabla, array $filas, string $col
             <input type="hidden" name="id"     id="del-id">
             <input type="hidden" name="nombre" id="del-nombre">
             <div class="modal-actions" style="justify-content:center;">
-                <button type="submit" class="btn btn-danger-confirm">Sí, eliminar</button>
-                <button type="button" class="btn ghost" onclick="cerrarEliminar()">Cancelar</button>
+                <button type="submit" class="btn ghost-confirm">Sí, eliminar</button>
+                <button type="button" class="btn ghost-confirm"    onclick="cerrarEliminar()">Cancelar</button>
             </div>
         </form>
     </div>
@@ -388,7 +388,7 @@ html.light-mode .alert-ok { color: #15803d; }
 
             <div class="modal-actions" style="margin-top:16px;">
                 <button type="submit" class="btn primary">Guardar</button>
-                <button type="button" class="btn ghost" onclick="cerrarModalImp()">Cancelar</button>
+                <button type="button" class="btn ghost-confirm" onclick="cerrarModalImp()">Cancelar</button>
             </div>
         </form>
     </div>
