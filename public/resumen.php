@@ -1,8 +1,8 @@
 <?php $pageTitle = 'Resumen'; ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
 
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/resumen.css" />
 
-<link rel="stylesheet" href="<?= $basePath ?>/assets/css/resumen.css" /> 
 <!-- HERO -->
 <div class="resumen-hero">
   <h1>Guía de Remuneraciones Chile - Conceptos Importantes</h1>

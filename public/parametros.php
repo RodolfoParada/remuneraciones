@@ -1,7 +1,7 @@
 <?php $pageTitle = 'Término de Contrato'; ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
 
-<link rel="stylesheet" href="<?= $basePath ?>/assets/css/resumen.css" /> 
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/resumen.css" />
 
 <div class="resumen-hero">
   <h1>Término de Contrato</h1>
