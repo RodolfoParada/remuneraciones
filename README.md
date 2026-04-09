@@ -92,23 +92,26 @@ CREATE TABLE trabajador (
 
 ## 6. LIQUIDACION (Registro histórico de lo pagado)
 ```
+-- 2. Crear la tabla nueva con horas extras incluidas
 CREATE TABLE liquidacion (
-    id_liquidacion INT AUTO_INCREMENT PRIMARY KEY,
-    rut_trabajador VARCHAR(12),
-    mes_periodo INT,
-    anio_periodo INT,
-    nombre_empleador VARCHAR(100) DEFAULT 'Colegio Ejemplo',
-    dias_trabajados INT DEFAULT 30,
-    sueldo_base_mes DECIMAL(12,2),
-    gratificacion DECIMAL(12,2),
-    colacion DECIMAL(12,2),
-    transporte DECIMAL(12,2),
-    cotiz_previsional DECIMAL(12,2),
-    cotiz_salud DECIMAL(12,2),
-    seguro_cesantia DECIMAL(12,2),
-    impuesto_unico DECIMAL(12,2) DEFAULT 0,
-    liquido_a_pagar DECIMAL(12,2),
-    fecha_emision TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_liquidacion        INT AUTO_INCREMENT PRIMARY KEY,
+    rut_trabajador        VARCHAR(12),
+    mes_periodo           INT,
+    anio_periodo          INT,
+    nombre_empleador      VARCHAR(100) DEFAULT 'Colegio Ejemplo',
+    dias_trabajados       INT DEFAULT 30,
+    sueldo_base_mes       DECIMAL(12,2),
+    gratificacion         DECIMAL(12,2),
+    horas_extra_cantidad  INT DEFAULT 0,
+    horas_extra_monto     DECIMAL(12,2) DEFAULT 0.00,
+    colacion              DECIMAL(12,2),
+    transporte            DECIMAL(12,2),
+    cotiz_previsional     DECIMAL(12,2),
+    cotiz_salud           DECIMAL(12,2),
+    seguro_cesantia       DECIMAL(12,2),
+    impuesto_unico        DECIMAL(12,2) DEFAULT 0,
+    liquido_a_pagar       DECIMAL(12,2),
+    fecha_emision         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rut_trabajador) REFERENCES trabajador(rut_trabajador)
 ) ENGINE=InnoDB;
 ```
