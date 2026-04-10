@@ -274,11 +274,11 @@ include __DIR__ . '/includes/header.php';
         </fieldset>
 
         <!-- ══ BOTONES (no se imprimen) ══ -->
-        <div class="actions">
-            <button class="btn azul" onclick="window.print()">Imprimir / PDF</button>
-            <a class="btn ghost-confirmar btn-volver"
-               href="<?= $basePath ?>listado_liquidaciones.php">Volver al Listado</a>
-        </div>
+         <div class="actions">
+            <button class="btn azul" type="button" onclick="window.print()">Imprimir / PDF</button>
+              <a class="btn ghost-confirmar btn-volver"
+               href="<?= $basePath ?>listado_liquidaciones.php?">Volver al Listado</a>
+         </div>
 
         <!-- ══ FIRMA ══ -->
         <h4>Certifico que he recibido del colegio a mi entera satisfacción el saldo indicado
