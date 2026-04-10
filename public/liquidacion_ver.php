@@ -38,25 +38,20 @@ try {
     $meses = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio',
               'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-    /* ── Calcular totales ── */
-    $horasMonto  = (float)($row['horas_extra_monto']    ?? 0);
-    $horasQty    = (int)  ($row['horas_extra_cantidad'] ?? 0);
-
-    $IT          = (float)($row['sueldo_base_mes'] ?? 0)
-                 + (float)($row['gratificacion']   ?? 0)
-                 + $horasMonto;
-
-    $NN          = (float)($row['colacion']    ?? 0)
-                 + (float)($row['transporte']  ?? 0);
-
+    $horasMonto   = (float)($row['horas_extra_monto']    ?? 0);
+    $horasQty     = (int)  ($row['horas_extra_cantidad'] ?? 0);
+    $IT           = (float)($row['sueldo_base_mes'] ?? 0)
+                  + (float)($row['gratificacion']   ?? 0)
+                  + $horasMonto;
+    $NN           = (float)($row['colacion']   ?? 0)
+                  + (float)($row['transporte'] ?? 0);
     $totalHaberes = $IT + $NN;
-
     $impUnico     = (float)($row['impuesto_unico'] ?? 0);
     $DL           = (float)($row['cotiz_previsional'] ?? 0)
                   + (float)($row['cotiz_salud']       ?? 0)
                   + (float)($row['seguro_cesantia']   ?? 0)
                   + $impUnico;
-    $DV           = (float)($row['otros_descuentos']  ?? 0);
+    $DV           = (float)($row['otros_descuentos'] ?? 0);
     $totalDesc    = $DL + $DV;
     $liquidoCalc  = $totalHaberes - $totalDesc;
 
@@ -68,15 +63,8 @@ include __DIR__ . '/includes/header.php';
 ?>
 
 <link rel="stylesheet" href="<?= $basePath ?>assets/css/formularios.css" />
+<link rel="stylesheet" href="<?= $basePath ?>assets/css/liquidaciones_ver.css" />
 
-<style>
-@media print {
-    header.topbar, .actions, .tabs, footer { display: none !important; }
-    body { background: #fff !important; color: #000 !important; }
-    .panel, .table { border-color: #000 !important; box-shadow: none !important; }
-    .table th, .table td { border-bottom: 1px solid #000 !important; }
-}
-</style>
 
 <section class="panel">
 
@@ -98,23 +86,20 @@ include __DIR__ . '/includes/header.php';
 
     <form class="form">
 
-        <!-- ENCABEZADO -->
+        <!-- ══ IDENTIFICACIÓN ══ -->
         <fieldset>
             <legend>Identificación de la liquidación</legend>
 
             <label>Trabajador
                 <input type="text"
-                       value="<?= htmlspecialchars($row['nombre_completo']) ?>
-                              (<?= htmlspecialchars($row['rut_trabajador']) ?>)"
+                       value="<?= htmlspecialchars($row['nombre_completo']) ?> (<?= htmlspecialchars($row['rut_trabajador']) ?>)"
                        disabled>
             </label>
 
             <div class="flex">
                 <div class="flex-1">
                     <label>Empresa
-                        <input type="text"
-                               value="<?= htmlspecialchars($row['nombre_empleador'] ?? 'Colegio Ejemplo') ?>"
-                               disabled>
+                        <input type="text" value="<?= htmlspecialchars($row['nombre_empleador'] ?? 'Liceo N°14 Juan Gomez Millas') ?>" disabled>
                     </label>
                 </div>
                 <div class="flex-1">
@@ -167,8 +152,7 @@ include __DIR__ . '/includes/header.php';
                 <div class="flex-1">
                     <label>Mes
                         <input type="text"
-                               value="<?= (int)$row['mes_periodo'] ?> —
-                                      <?= htmlspecialchars($meses[(int)$row['mes_periodo']] ?? '') ?>"
+                               value="<?= (int)$row['mes_periodo'] ?> — <?= htmlspecialchars($meses[(int)$row['mes_periodo']] ?? '') ?>"
                                disabled>
                     </label>
                 </div>
@@ -180,7 +164,7 @@ include __DIR__ . '/includes/header.php';
             </div>
         </fieldset>
 
-        <!-- HABERES Y DESCUENTOS -->
+        <!-- ══ HABERES Y DESCUENTOS — dos columnas ══ -->
         <div class="flex">
 
             <!-- Haberes -->
@@ -188,80 +172,39 @@ include __DIR__ . '/includes/header.php';
                 <fieldset>
                     <table class="table">
                         <tbody>
-
                             <tr class="titulos-fijos">
-                                <td colspan="2" style="text-align:center;font-weight:bold;">HABERES IMPONIBLES</td>
+                                <td colspan="2">HABERES IMPONIBLES</td>
                             </tr>
-
                             <tr>
                                 <td>Sueldo base</td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)$row['sueldo_base_mes'], 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)$row['sueldo_base_mes'], 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr>
                                 <td>Gratificación (25% c/tope)</td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)$row['gratificacion'], 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)$row['gratificacion'], 0, ',', '.') ?>" disabled></td>
                             </tr>
-
-                            <!-- Horas extras: solo muestra si hay -->
                             <tr>
                                 <td>
-                                    Horas extras
-                                    <?php if ($horasQty > 0): ?>
-                                        <span class="badge"><?= $horasQty ?> hrs</span>
-                                    <?php else: ?>
-                                        <span class="badge">0 hrs</span>
-                                    <?php endif; ?>
-                                    <small style="display:block;font-size:11px;color:var(--muted)">
-                                        Valor hora × 1,5 (recargo 50%)
-                                    </small>
+                                    Horas extras <span class="badge"><?= $horasQty ?> hrs</span>
+                                    <small style="display:block;font-size:11px;color:var(--muted)">Valor hora × 1,5 (recargo 50%)</small>
                                 </td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format($horasMonto, 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format($horasMonto, 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr class="titulos-fijos">
-                                <td colspan="2" style="text-align:center;font-weight:bold;">HABERES NO IMPONIBLES</td>
+                                <td colspan="2">HABERES NO IMPONIBLES</td>
                             </tr>
-
                             <tr>
                                 <td>Colación</td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)$row['colacion'], 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)$row['colacion'], 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr>
                                 <td>Movilización</td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)($row['transporte'] ?? 0), 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)($row['transporte'] ?? 0), 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr class="total-fijos">
                                 <td><strong>TOTAL HABERES</strong></td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format($totalHaberes, 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format($totalHaberes, 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                         </tbody>
                     </table>
                 </fieldset>
@@ -272,90 +215,51 @@ include __DIR__ . '/includes/header.php';
                 <fieldset>
                     <table class="table">
                         <tbody>
-
                             <tr class="titulos-fijos">
-                                <td colspan="2" style="text-align:center;font-weight:bold;">DESCUENTOS LEGALES</td>
+                                <td colspan="2">DESCUENTOS LEGALES</td>
                             </tr>
-
                             <tr>
                                 <td>Cotiz. previsional obligatoria (AFP) <span class="badge">10% IT</span></td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)$row['cotiz_previsional_obligatoria'], 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)$row['cotiz_previsional_obligatoria'], 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr>
                                 <td>Cotiz. salud obligatoria <span class="badge">7% IT</span></td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)$row['cotiz_salud_obligatoria'], 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)$row['cotiz_salud_obligatoria'], 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr>
                                 <td>Seguro cesantía <span class="badge">0,60% IT</span></td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)$row['seguro_cesantia'], 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)$row['seguro_cesantia'], 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr>
                                 <td>
                                     Impuesto Único 2ª Categoría
                                     <?php if ($impUnico > 0): ?>
-                                        <span class="badge"
-                                              style="background:rgba(245,158,11,.12);color:#fbbf24;border-color:rgba(245,158,11,.25);">
-                                            Aplicado
-                                        </span>
+                                        <span class="badge" style="background:rgba(245,158,11,.12);color:#d97706;border-color:rgba(245,158,11,.4);">Aplicado</span>
                                     <?php else: ?>
-                                        <span class="badge"
-                                              style="background:rgba(16,185,129,.12);color:#4ade80;border-color:rgba(16,185,129,.25);">
-                                            Exento
-                                        </span>
+                                        <span class="badge" style="background:rgba(16,185,129,.12);color:#059669;border-color:rgba(16,185,129,.4);">Exento</span>
                                     <?php endif; ?>
                                 </td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format($impUnico, 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format($impUnico, 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr class="titulos-fijos">
-                                <td colspan="2" style="text-align:center;font-weight:bold;">OTROS DESCUENTOS</td>
+                                <td colspan="2">OTROS DESCUENTOS</td>
                             </tr>
-
                             <tr>
                                 <td>Otros descuentos</td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format((float)($row['otros_descuentos'] ?? 0), 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format((float)($row['otros_descuentos'] ?? 0), 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                             <tr class="total-fijos">
                                 <td><strong>TOTAL DESCUENTOS</strong></td>
-                                <td>
-                                    <input type="text"
-                                           value="$<?= number_format($totalDesc, 0, ',', '.') ?>"
-                                           disabled>
-                                </td>
+                                <td><input type="text" value="$<?= number_format($totalDesc, 0, ',', '.') ?>" disabled></td>
                             </tr>
-
                         </tbody>
                     </table>
                 </fieldset>
             </div>
 
-        </div><!-- /flex -->
+        </div><!-- /flex haberes/descuentos -->
 
-        <!-- RESUMEN -->
+        <!-- ══ LÍQUIDO A PAGAR ══ -->
         <fieldset>
             <div class="flex">
                 <div class="flex-1">
@@ -369,12 +273,14 @@ include __DIR__ . '/includes/header.php';
             </div>
         </fieldset>
 
+        <!-- ══ BOTONES (no se imprimen) ══ -->
         <div class="actions">
             <button class="btn azul" onclick="window.print()">Imprimir / PDF</button>
             <a class="btn ghost-confirmar btn-volver"
                href="<?= $basePath ?>listado_liquidaciones.php">Volver al Listado</a>
         </div>
 
+        <!-- ══ FIRMA ══ -->
         <h4>Certifico que he recibido del colegio a mi entera satisfacción el saldo indicado
             en la presente Liquidación y no tengo cargo ni cobro posterior que hacer</h4>
         <br><br><br>________________________
