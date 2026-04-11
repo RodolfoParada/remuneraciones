@@ -35,13 +35,28 @@ try {
         $nombre = strtoupper(trim($_POST['nombre_completo'] ?? ''));
 
         // ── ELIMINAR ──
-        if ($accion === 'eliminar' && $rut !== '') {
-            try {
-                $stmt = $pdo->prepare("DELETE FROM trabajador WHERE rut_trabajador = :rut");
-                $stmt->execute([':rut' => $rut]);
-                $ok    = true;
-                $okMsg = 'Trabajador eliminado correctamente.';
-                $todosTrabajadores = $pdo->query("
+     // ── ELIMINAR ──
+if ($accion === 'eliminar' && $rut !== '') {
+    try {
+        // Verificar si tiene liquidaciones asociadas antes de eliminar
+        $chkLiq = $pdo->prepare("SELECT COUNT(*) FROM liquidacion WHERE rut_trabajador = :rut");
+        $chkLiq->execute([':rut' => $rut]);
+        $cantLiq = (int)$chkLiq->fetchColumn();
+
+        if ($cantLiq > 0) {
+            // Obtener el nombre del trabajador para el mensaje
+            $chkNom = $pdo->prepare("SELECT nombre_completo FROM trabajador WHERE rut_trabajador = :rut");
+            $chkNom->execute([':rut' => $rut]);
+            $nomTrab = $chkNom->fetchColumn();
+            $errores[] = 'No es posible eliminar a ' . htmlspecialchars($nomTrab) . ' porque tiene ' . $cantLiq . ' liquidación' . ($cantLiq > 1 ? 'es' : '') . ' asociada' . ($cantLiq > 1 ? 's' : '') . '. Elimine primero sus liquidaciones.';
+        } else {
+            $stmt = $pdo->prepare("DELETE FROM trabajador WHERE rut_trabajador = :rut");
+            $stmt->execute([':rut' => $rut]);
+            $ok    = true;
+            $okMsg = 'Trabajador eliminado correctamente.';
+        }
+
+        $todosTrabajadores = $pdo->query("
                     SELECT t.rut_trabajador, t.nombre_completo, t.sueldo_base_fijo,
                            t.colacion, t.transporte,
                            t.id_cargo, t.id_tipo_contrato, t.id_afp, t.id_salud,
@@ -239,13 +254,19 @@ var SALUDES      = <?= json_encode(array_values($sistemasSalud),     JSON_UNESCA
   <!-- Mensajes -->
   <div class="badge success" id="msg-ok-js" style="display:none;margin-bottom:12px"></div>
 
-  <?php if ($errores): ?>
-    <div class="panel panel-errores" style="border-color:#3b1f1f;background:#1a0f0f;margin-bottom:12px">
-      <div class="badge">Se encontraron errores</div>
-      <ul><?php foreach ($errores as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?></ul>
+<?php if ($errores): ?>
+   <div class="panel" style="border-color:#f59e0b;background:rgba(245,158,11,0.08);margin-bottom:12px;border-radius:12px;padding:14px 18px;max-width:100%;box-sizing:border-box;width:100%;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <span style="font-size:18px;">⚠️</span>
+            <strong style="color:#f59e0b;font-size:14px;">Atención</strong>
+        </div>
+        <ul style="margin:0;padding-left:18px;color:var(--txt);">
+            <?php foreach ($errores as $e): ?>
+                <li style="margin-bottom:4px;font-size:13px;"><?= htmlspecialchars($e) ?></li>
+            <?php endforeach; ?>
+        </ul>
     </div>
-  <?php endif; ?>
-
+<?php endif; ?>
   <!-- ══════════════════════════════════════════
        BUSCADOR — botón en flujo, panel flotante fixed
   ══════════════════════════════════════════ -->
