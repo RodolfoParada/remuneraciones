@@ -186,7 +186,7 @@ function renderCatalogo(string $titulo, string $tabla, array $filas, string $col
     <!-- Tabla Impuesto Único -->
     <div class="card" style="margin-top:20px;">
         <div class="cat-header">
-            <h3>⚖️ Impuesto Único de 2ª Categoría — Tramos Mensuales</h3>
+            <h3>Impuesto Único de 2ª Categoría — Tramos Mensuales</h3>
             <?php if ($esAdmin): ?>
             <button class="btn small primary" onclick="abrirModalImp('crear')">+ Agregar tramo</button>
             <?php endif; ?>
