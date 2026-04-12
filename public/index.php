@@ -19,10 +19,10 @@
 
   <a class="card" href="<?= $basePath ?>listado_liquidaciones.php">
     <h2>Liquidaciones</h2>
-    <p class="lead">• Consulta de liquidacion por período</p>
-    <p class="lead">• Búsqueda de liquidacion por trabajador</p>
-    <p class="lead">• Previsualización de liquidacion por trabajador</p>
-    <p class="lead">• Descarga de liquidacion por trabajador</p>
+    <p class="lead">• Consulta de liquidación por período</p>
+    <p class="lead">• Búsqueda de liquidación por trabajador</p>
+    <p class="lead">• Previsualización de liquidación por trabajador</p>
+    <p class="lead">• Descarga de liquidación por trabajador</p>
   </a>
 </section>
 

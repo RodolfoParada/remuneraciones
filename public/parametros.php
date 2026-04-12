@@ -159,9 +159,10 @@
 </div>
 
 <div class="actions" style="margin-bottom:32px;">
-  <a class="btn ghost btn-volver" href="<?= htmlspecialchars($basePath) ?>index.php">← Volver al Inicio</a>
+ <div class="actions" style="margin-bottom:32px;">
+ <a class="btn btn-ghost" href="<?= $basePath ?>index.php">Volver al Inicio</a>
 </div>
-
+ <!-- <a class="btn ghost btn-volver" href="<?= $basePath ?>index.php">Volver al Inicio</a> -->
 <script>
 function toggle(header) {
   const item = header.parentElement;

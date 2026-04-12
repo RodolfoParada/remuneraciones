@@ -244,7 +244,7 @@
 </div>
 
 <div class="actions" style="margin-bottom:32px;">
- <a class="btn btn-ghost" href="<?= $basePath ?>index.php">← Volver al Inicio</a>
+ <a class="btn btn-ghost" href="<?= $basePath ?>index.php">Volver al Inicio</a>
 </div>
 
 <script>
